@@ -19,7 +19,7 @@ public class Main {
     static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
 
-        log.info("TEST", processBuilder.environment().getOrDefault("TEST", "fail"));
+        log.info("TEST-------> " + processBuilder.environment().getOrDefault("TEST", "fail"));
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
