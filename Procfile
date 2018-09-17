@@ -1,1 +1,1 @@
-web: build/install/gps-api/bin/gps-api
+web: -Dserver.port=8080 build/install/gps-api/bin/gps-api
