@@ -1,0 +1,1 @@
+web: build/install/gps-api/bin/gps-api
