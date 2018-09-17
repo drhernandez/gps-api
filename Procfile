@@ -1,1 +1,1 @@
-web: -Dserver.port=$PORT build/install/gps-api/bin/gps-api
+web: build/install/gps-api/bin/gps-api
