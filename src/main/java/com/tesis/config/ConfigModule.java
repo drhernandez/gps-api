@@ -2,7 +2,6 @@ package com.tesis.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.sun.deploy.config.Config;
 import com.tesis.routes.Router;
 import com.tesis.server.Server;
 import org.slf4j.Logger;
