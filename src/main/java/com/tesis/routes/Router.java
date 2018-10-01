@@ -1,6 +1,7 @@
 package com.tesis.routes;
 
 import com.google.common.net.MediaType;
+import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
 import com.tesis.exceptions.ExceptionUtils;
 import org.slf4j.Logger;
@@ -16,7 +17,13 @@ public class Router {
 
     private static final Logger logger = LoggerFactory.getLogger(Router.class);
 
+    @Inject
+    GpsRouter gpsRouter;
+
     public void init() {
+
+        // Validar el device_id
+//        Spark.before();
 
         Spark.notFound((request, response) -> {
             response.header("Content-Type", MediaType.JSON_UTF_8.toString());
@@ -50,5 +57,7 @@ public class Router {
                 response.header("Content-Type", MediaType.JSON_UTF_8.toString());
             }
         }));
+
+        gpsRouter.addRoutes();
     }
 }

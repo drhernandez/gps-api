@@ -2,8 +2,12 @@ package com.tesis.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.tesis.clients.StorageClient;
+import com.tesis.clients.imp.StorageClientImp;
 import com.tesis.routes.Router;
 import com.tesis.server.Server;
+import com.tesis.services.StorageService;
+import com.tesis.services.imp.StorageServiceImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +19,12 @@ public class ConfigModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        super.configure();
+
+        //bind services
+        bind(StorageService.class).to(StorageServiceImp.class);
+
+        //bind clients
+        bind(StorageClient.class).to(StorageClientImp.class);
     }
 
     @Provides
