@@ -17,7 +17,7 @@ public class GpsRouter {
 
         logger.info("Loading locations routes...");
         Spark.path("/locations", () -> {
-            Spark.post("/:device_id", gpsController::addLocation);
+            Spark.post("", gpsController::addLocation);
             Spark.get("/:device_id", gpsController::getLocations);
         });
     }

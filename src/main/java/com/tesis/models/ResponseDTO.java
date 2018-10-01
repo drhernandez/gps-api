@@ -1,7 +1,7 @@
 package com.tesis.models;
 
-import com.tesis.utils.JsonUtils;
 import com.tesis.exceptions.ApiException;
+import com.tesis.utils.JsonUtils;
 
 public class ResponseDTO<T> {
 
