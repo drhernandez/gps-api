@@ -18,31 +18,20 @@ public class StorageClientImp implements StorageClient {
     private List<Location> locations = new ArrayList<>();
 
     @Override
-    public ResponseDTO<List<Location>> getLocations(JsonObject requestInfo) {
+    public ResponseDTO<List<Location>> getLocations(String deviceId) {
 
         ResponseDTO<List<Location>> responseDTO = new ResponseDTO<>();
-
-        String deviceId = requestInfo.get("device_id").toString();
         responseDTO.model = locations.stream().filter(l -> l.getDeviceId().equals(deviceId)).collect(Collectors.toList());
 
         return responseDTO;
     }
 
     @Override
-    public ResponseDTO<Boolean> addLocation(JsonObject requestInfo) {
+    public ResponseDTO<Boolean> addLocation(List<Location> locations) {
 
         ResponseDTO<Boolean> responseDTO = new ResponseDTO<>();
-        JsonElement body = requestInfo.get("body");
-        try {
-            List locationsBody = JsonUtils.INSTANCE.GSON().fromJson(body, List.class);
-            locationsBody.forEach(l -> {
-               Location location = JsonUtils.INSTANCE.GSON().fromJson(JsonUtils.INSTANCE.GSON().toJson(l), Location.class);
-               locations.add(location);
-            });
-            responseDTO.model = true;
-        } catch (Exception e) {
-            responseDTO.model = false;
-        }
+        this.locations.addAll(locations);
+        responseDTO.model = true;
 
         return responseDTO;
     }

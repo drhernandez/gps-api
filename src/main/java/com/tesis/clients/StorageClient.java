@@ -1,6 +1,5 @@
 package com.tesis.clients;
 
-import com.google.gson.JsonObject;
 import com.tesis.models.Location;
 import com.tesis.models.ResponseDTO;
 
@@ -10,15 +9,15 @@ public interface StorageClient {
 
     /**
      * Get available locations by device_id
-     * @param requestInfo
+     * @param deviceId
      * @return
      */
-    ResponseDTO<List<Location>> getLocations(JsonObject requestInfo);
+    ResponseDTO<List<Location>> getLocations(String deviceId);
 
     /**
      * Add new location by device_id
-     * @param requestInfo
+     * @param locations
      * @return
      */
-    ResponseDTO<Boolean> addLocation(JsonObject requestInfo);
+    ResponseDTO<Boolean> addLocation(List<Location> locations);
 }

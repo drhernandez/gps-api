@@ -24,7 +24,7 @@ public class GpsController {
 
     public Object addLocation(Request request, Response response) {
         JsonObject requestInfo = new JsonObject();
-        requestInfo.add("body", new JsonParser().parse(request.body()).getAsJsonArray());
+        requestInfo.addProperty("body", request.body());
         ResponseDTO responseDTO = storageService.addLocation(requestInfo);
         return responseDTO.getModelAsJson();
     }
