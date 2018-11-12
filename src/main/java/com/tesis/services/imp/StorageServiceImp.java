@@ -40,10 +40,10 @@ public class StorageServiceImp implements StorageService {
         List<Location> locations = new ArrayList<>();
         List<String> locationsList = Arrays.asList(body.split(";"));
         locationsList.forEach(elem -> {
-
+            log.info("ELEMENT: " + elem);
             List<String> atributes = Arrays.asList(elem.split(","));
             if (atributes.size() != 6) {
-                log.error("Invalid row: " + elem);
+                log.error("Invalid row. atributes.size != 6. Element: " + elem);
             } else {
                 try {
 
@@ -58,7 +58,7 @@ public class StorageServiceImp implements StorageService {
 
                 } catch (Exception e) {
                     //Los atributos están mal.. Loggear error
-                    log.error("Invalid row: " + elem);
+                    log.error("Invalid row. Element: " + elem + " Exception throwed: " + e.getMessage());
                 }
             }
 
