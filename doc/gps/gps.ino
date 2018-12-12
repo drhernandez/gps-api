@@ -7,20 +7,74 @@ const int RX = 3;
 
 TinyGPS gps;
 SoftwareSerial softSerial(TX, RX);
+SoftwareSerial gsm_gprs(7,8);
 
 // Offset hours from gps time (UTC)
 const int offset = -3;   // UTC-3
 
 // Array size
 const int SIZE = 10;
-const char EXAMPLE[93] = "000000000000000000000000000000000001,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
+const char EXAMPLE[93] = "000000000000000000000000000000000009,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
+const int MEMORY_SIZE = (strlen(EXAMPLE)) * SIZE * sizeof(char) + 1;
 
 time_t prevDisplay = 0; // when the digital clock was displayed
 
 void setup() {
-  Serial.begin(19200); //115200
-  softSerial.begin(9600); //9600
+  Serial.begin(9600); //115200
+  gsm_gprs.begin(19200);   // Setting the baud rate of GSM Module
+  init_gprs_module();
+  //Serial.begin(19200); //115200
+  //softSerial.begin(9600); //9600
 } 
+
+void init_gprs_module(){
+  gsm_gprs.println("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
+  delay(1000);
+  printSerialData();
+  gsm_gprs.println("AT+SAPBR=3,1,\"APN\",\"datos.personal.com\"");
+  delay(1000);
+  printSerialData();
+  gsm_gprs.println("AT+SAPBR=3,1,\"USER\",\"datos\"");
+  delay(1000);
+  printSerialData();
+  gsm_gprs.println("AT+SAPBR=3,1,\"PWD\",\"datos\"");
+  delay(1000);
+  printSerialData();
+  gsm_gprs.println("AT+SAPBR=0,1");
+  delay(1000);
+  printSerialData();
+  gsm_gprs.println("AT+SAPBR=1,1");
+  delay(1000);
+  printSerialData();
+}
+
+void send_http_post(char *coordinate_data){
+  gsm_gprs.println("AT+HTTPINIT");
+  delay(100);
+  printSerialData();
+  gsm_gprs.println("AT+HTTPPARA=\"CID\",1");
+  delay(200);
+  printSerialData();
+  gsm_gprs.println("AT+HTTPPARA=\"URL\",\"http://gps-locations-api.herokuapp.com/locations\"");
+  delay(200);
+  printSerialData();
+  gsm_gprs.println("AT+HTTPPARA=\"CONTENT\",\"text/plain\"");
+  delay(200);
+  printSerialData();
+  gsm_gprs.println("AT+HTTPDATA=" + String(MEMORY_SIZE) + ",10000");
+  delay(200);
+  printSerialData();
+  gsm_gprs.println(coordinate_data);
+  delay(100);
+  printSerialData();
+  gsm_gprs.println("AT+HTTPACTION=1");
+  delay(100);
+  printSerialData();
+  gsm_gprs.println("AT+HTTPTERM");
+  delay(100);
+  printSerialData();
+}
+
 
 void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[], char *coordinate_data) {
   char value[9];
@@ -40,9 +94,11 @@ void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[
   strcat(coordinate_data, value);
   strcat(coordinate_data, ",");
 
-  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00", 
-    day(), month(), year(), hour(), minute(), second());
-  strcat(coordinate_data, sz);
+  strcat(coordinate_data, "10-09-2018T20:51:09:000-03:00;");
+
+//  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00", 
+//    day(), month(), year(), hour(), minute(), second());
+//  strcat(coordinate_data, sz);
   return 0;
 }
 
@@ -53,14 +109,13 @@ void buildWeft() {
   int Year;
   byte Month, Day, Hour, Minute, Second;
   char *coordinate_data;
-  coordinate_data = malloc((strlen(EXAMPLE)) * SIZE * sizeof(char) + 1);
+  coordinate_data = malloc(MEMORY_SIZE);
   if (coordinate_data == NULL) {
     Serial.println("La aplicacion no pudo reservar memoria y se va a cerrar!"); 
     exit(EXIT_FAILURE);
   }
-
   // data mocked
-  for (unsigned long start = millis(); millis() - start < 1000;) {
+  for (unsigned int start = 0; start <= 9; start ++) {
       parseCoordinates(-31.4109, -64.1897, 8, 246, "000000000000000000000000000000000001", coordinate_data);
     }
 /*  
@@ -123,7 +178,13 @@ void logData(float flat, float flon) {
 void sendData(char *coordinate_data) {
  // post to the service
  // ...
- Serial.println(coordinate_data);
+ send_http_post(coordinate_data);
+ //Serial.println(coordinate_data);
+}
+
+void printSerialData(){
+ while(gsm_gprs.available()!=0)
+ Serial.write(gsm_gprs.read());
 }
 
 void loop() {
@@ -134,7 +195,7 @@ void loop() {
   flat = -31.4109;
   flon = -64.1897;
   buildWeft();
-  
+/*  
   gps.stats(&chars, &sentences, &failed);
   Serial.print(" CHARS=");
   Serial.print(chars);
@@ -145,5 +206,6 @@ void loop() {
   
   if (chars == 0)
     Serial.println("** No characters received from GPS: check wiring **");
+*/
 }
 
