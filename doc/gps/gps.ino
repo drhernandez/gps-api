@@ -7,7 +7,7 @@ const int RX = 3;
 
 TinyGPS gps;
 SoftwareSerial softSerial(TX, RX);
-SoftwareSerial gsm_gprs(7,8);
+SoftwareSerial gsm_gprs(7, 8);
 
 // Offset hours from gps time (UTC)
 const int offset = -3;   // UTC-3
@@ -15,6 +15,7 @@ const int offset = -3;   // UTC-3
 // Array size
 const int SIZE = 10;
 const char EXAMPLE[93] = "000000000000000000000000000000000009,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
+char DEVICE_ID[37] = "000000000000000000000000000000000009";
 const int MEMORY_SIZE = (strlen(EXAMPLE)) * SIZE * sizeof(char) + 1;
 
 time_t prevDisplay = 0; // when the digital clock was displayed
@@ -22,12 +23,39 @@ time_t prevDisplay = 0; // when the digital clock was displayed
 void setup() {
   Serial.begin(9600); //115200
   gsm_gprs.begin(19200);   // Setting the baud rate of GSM Module
+  delay(1000);
+  Serial.write("iniciando");
   init_gprs_module();
+  delay(500);
   //Serial.begin(19200); //115200
   //softSerial.begin(9600); //9600
-} 
+}
 
-void init_gprs_module(){
+void loop() {
+  bool newData = false;
+  unsigned long chars;
+  unsigned short sentences, failed;
+  float flat, flon;
+  flat = -31.4109;
+  flon = -64.1897;
+  buildWeft();
+  Serial.write("finishhhh");
+  delay(5000);
+  /*
+    gps.stats(&chars, &sentences, &failed);
+    Serial.print(" CHARS=");
+    Serial.print(chars);
+    Serial.print(" SENTENCES=");
+    Serial.print(sentences);
+    Serial.print(" CSUM ERR=");
+    Serial.println(failed);
+
+    if (chars == 0)
+      Serial.println("** No characters received from GPS: check wiring **");
+  */
+}
+
+void init_gprs_module() {
   gsm_gprs.println("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
   delay(1000);
   printSerialData();
@@ -48,7 +76,7 @@ void init_gprs_module(){
   printSerialData();
 }
 
-void send_http_post(char *coordinate_data){
+void send_http_post(char *coordinate_data) {
   gsm_gprs.println("AT+HTTPINIT");
   delay(100);
   printSerialData();
@@ -73,6 +101,7 @@ void send_http_post(char *coordinate_data){
   gsm_gprs.println("AT+HTTPTERM");
   delay(100);
   printSerialData();
+  delay(5000);
 }
 
 
@@ -96,10 +125,9 @@ void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[
 
   strcat(coordinate_data, "10-09-2018T20:51:09:000-03:00;");
 
-//  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00", 
-//    day(), month(), year(), hour(), minute(), second());
-//  strcat(coordinate_data, sz);
-  return 0;
+  //  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00",
+  //    day(), month(), year(), hour(), minute(), second());
+  //  strcat(coordinate_data, sz);
 }
 
 void buildWeft() {
@@ -109,53 +137,52 @@ void buildWeft() {
   int Year;
   byte Month, Day, Hour, Minute, Second;
   char *coordinate_data;
-  coordinate_data = malloc(MEMORY_SIZE);
+  coordinate_data = (char*)malloc(MEMORY_SIZE);
   if (coordinate_data == NULL) {
-    Serial.println("La aplicacion no pudo reservar memoria y se va a cerrar!"); 
+    Serial.println("La aplicacion no pudo reservar memoria y se va a cerrar!");
     exit(EXIT_FAILURE);
   }
   // data mocked
   for (unsigned int start = 0; start <= 9; start ++) {
-      parseCoordinates(-31.4109, -64.1897, 8, 246, "000000000000000000000000000000000001", coordinate_data);
-    }
-/*  
-  for(int i=0; i<SIZE; i++) {
-
-    for (unsigned long start = millis(); millis() - start < 1000;) {
-      while (softSerial.available()) {
-        char c = softSerial.read();
-        //Serial.write(c); // uncomment this line to see the GPS data
-        if (gps.encode(c)) // validating the sentence
-          newData = true;
-      }
-    }
-    if (newData) {
-    float flat, flon;
-    unsigned long age;
-    int Year;
-    byte Month, Day, Hour, Minute, Second;
-    gps.crack_datetime(&Year, &Month, &Day, &Hour, &Minute, &Second, NULL, &age);
-    gps.f_get_position(&flat, &flon, &age);
-    if (age < 500) {
-      // set the Time to the latest GPS reading
-      setTime(Hour, Minute, Second, Day, Month, Year);
-      adjustTime(offset * SECS_PER_HOUR);
-    }
-    if (timeStatus() != timeNotSet) {
-      if (now() != prevDisplay){ 
-        //update the display only if the time has changed
-        prevDisplay = now();
-      }
-    }
-    //logData(flat, flon);
-    parseCoordinates(flat, flon, gps.satellites(), gps.hdop(), "000000000000000000000000000000000001", coordinate_data);
-   }
+    parseCoordinates(-31.4109, -64.1897, 8, 246, DEVICE_ID, coordinate_data);
   }
-*/
-  sendData(coordinate_data);
+  /*
+    for(int i=0; i<SIZE; i++) {
+
+      for (unsigned long start = millis(); millis() - start < 1000;) {
+        while (softSerial.available()) {
+          char c = softSerial.read();
+          //Serial.write(c); // uncomment this line to see the GPS data
+          if (gps.encode(c)) // validating the sentence
+            newData = true;
+        }
+      }
+      if (newData) {
+      float flat, flon;
+      unsigned long age;
+      int Year;
+      byte Month, Day, Hour, Minute, Second;
+      gps.crack_datetime(&Year, &Month, &Day, &Hour, &Minute, &Second, NULL, &age);
+      gps.f_get_position(&flat, &flon, &age);
+      if (age < 500) {
+        // set the Time to the latest GPS reading
+        setTime(Hour, Minute, Second, Day, Month, Year);
+        adjustTime(offset * SECS_PER_HOUR);
+      }
+      if (timeStatus() != timeNotSet) {
+        if (now() != prevDisplay){
+          //update the display only if the time has changed
+          prevDisplay = now();
+        }
+      }
+      //logData(flat, flon);
+      parseCoordinates(flat, flon, gps.satellites(), gps.hdop(), "000000000000000000000000000000000001", coordinate_data);
+     }
+    }
+  */
+  send_http_post(coordinate_data);
   //delay(500);
   free(coordinate_data);
-  return 0;
 }
 
 void logData(float flat, float flon) {
@@ -170,42 +197,19 @@ void logData(float flat, float flon) {
   Serial.print(" TIME=");
   // digital clock display of the time
   char sz[30];
-  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00", 
-    day(), month(), year(), hour(), minute(), second());
+  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00",
+          day(), month(), year(), hour(), minute(), second());
   Serial.print(sz);
 }
 
 void sendData(char *coordinate_data) {
- // post to the service
- // ...
- send_http_post(coordinate_data);
- //Serial.println(coordinate_data);
+  // post to the service
+  // ...
+  send_http_post(coordinate_data);
+  //Serial.println(coordinate_data);
 }
 
-void printSerialData(){
- while(gsm_gprs.available()!=0)
- Serial.write(gsm_gprs.read());
+void printSerialData() {
+  while (gsm_gprs.available() != 0)
+    Serial.write(gsm_gprs.read());
 }
-
-void loop() {
-  bool newData = false;
-  unsigned long chars;
-  unsigned short sentences, failed;
-  float flat, flon;
-  flat = -31.4109;
-  flon = -64.1897;
-  buildWeft();
-/*  
-  gps.stats(&chars, &sentences, &failed);
-  Serial.print(" CHARS=");
-  Serial.print(chars);
-  Serial.print(" SENTENCES=");
-  Serial.print(sentences);
-  Serial.print(" CSUM ERR=");
-  Serial.println(failed);
-  
-  if (chars == 0)
-    Serial.println("** No characters received from GPS: check wiring **");
-*/
-}
-
