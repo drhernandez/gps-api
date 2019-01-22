@@ -13,9 +13,9 @@ SoftwareSerial gsm_gprs(7, 8);
 const int offset = -3;   // UTC-3
 
 // Array size
-const int SIZE = 10;
+const int SIZE = 9;
 const char EXAMPLE[61] = "00004,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
-char DEVICE_ID[6] = "00004";
+char DEVICE_ID[6] = "00005";
 const int MEMORY_SIZE = (strlen(EXAMPLE)) * SIZE * sizeof(char) + 1;
 
 time_t prevDisplay = 0; // when the digital clock was displayed
@@ -28,7 +28,7 @@ void setup() {
   init_gprs_module();
   delay(500);
   //Serial.begin(19200); //115200
-  //softSerial.begin(9600); //9600
+  softSerial.begin(9600); //9600
 }
 
 void loop() {
@@ -40,8 +40,8 @@ void loop() {
   flon = -64.1897;
   buildWeft();
   Serial.write("finishhhh");
-  delay(5000);
-  /*
+  delay(500);
+/*  
     gps.stats(&chars, &sentences, &failed);
     Serial.print(" CHARS=");
     Serial.print(chars);
@@ -52,7 +52,7 @@ void loop() {
 
     if (chars == 0)
       Serial.println("** No characters received from GPS: check wiring **");
-  */
+*/  
 }
 
 void init_gprs_module() {
@@ -102,6 +102,7 @@ void send_http_post(char *coordinate_data) {
   delay(100);
   printSerialData();
   delay(5000);
+  Serial.println(coordinate_data);
 }
 
 
@@ -123,11 +124,11 @@ void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[
   strcat(coordinate_data, value);
   strcat(coordinate_data, ",");
 
-  strcat(coordinate_data, "10-09-2018T20:51:09:000-03:00;");
+  //strcat(coordinate_data, "10-09-2018T20:51:09:000-03:00;");
 
-  //  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00",
-  //    day(), month(), year(), hour(), minute(), second());
-  //  strcat(coordinate_data, sz);
+  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00;",
+    day(), month(), year(), hour(), minute(), second());
+  strcat(coordinate_data, sz);
 }
 
 void buildWeft() {
@@ -143,10 +144,10 @@ void buildWeft() {
     exit(EXIT_FAILURE);
   }
   // data mocked
-  for (unsigned int start = 0; start <= 9; start ++) {
-    parseCoordinates(-31.4109, -64.1897, 8, 246, DEVICE_ID, coordinate_data);
-  }
-  /*
+  //for (unsigned int start = 0; start <= 9; start ++) {
+  //  parseCoordinates(-31.4109, -64.1897, 8, 246, DEVICE_ID, coordinate_data);
+  //}
+  
     for(int i=0; i<SIZE; i++) {
 
       for (unsigned long start = millis(); millis() - start < 1000;) {
@@ -176,10 +177,11 @@ void buildWeft() {
         }
       }
       //logData(flat, flon);
-      parseCoordinates(flat, flon, gps.satellites(), gps.hdop(), "000000000000000000000000000000000001", coordinate_data);
+      parseCoordinates(flat, flon, gps.satellites(), gps.hdop(), DEVICE_ID, coordinate_data);
      }
     }
-  */
+  
+  //sendData(coordinate_data);
   send_http_post(coordinate_data);
   //delay(500);
   free(coordinate_data);
