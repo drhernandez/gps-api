@@ -4,16 +4,17 @@ import com.google.inject.Inject;
 import com.tesis.controllers.GpsController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.RouteGroup;
 import spark.Spark;
 
-public class GpsRouter {
+public class GpsRouter implements RouteGroup {
 
     private static Logger logger = LoggerFactory.getLogger(GpsRouter.class);
 
     @Inject
     GpsController gpsController;
 
-    protected void addRoutes() {
+    public void addRoutes() {
 
         logger.info("Loading locations routes...");
         Spark.path("/locations", () -> {
