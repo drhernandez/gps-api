@@ -4,6 +4,7 @@
 package com.tesis.jooq.tables.daos;
 
 
+import com.google.inject.Inject;
 import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.records.VehiclesRecord;
 
@@ -38,6 +39,7 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     /**
      * Create a new VehiclesDao with an attached configuration
      */
+    @Inject
     public VehiclesDao(Configuration configuration) {
         super(Vehicles.VEHICLES, com.tesis.jooq.tables.pojos.Vehicles.class, configuration);
     }

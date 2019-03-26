@@ -4,6 +4,7 @@
 package com.tesis.jooq.tables.daos;
 
 
+import com.google.inject.Inject;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.records.UsersRecord;
 
@@ -38,6 +39,7 @@ public class UsersDao extends DAOImpl<UsersRecord, com.tesis.jooq.tables.pojos.U
     /**
      * Create a new UsersDao with an attached configuration
      */
+    @Inject
     public UsersDao(Configuration configuration) {
         super(Users.USERS, com.tesis.jooq.tables.pojos.Users.class, configuration);
     }

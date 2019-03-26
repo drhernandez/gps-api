@@ -5,6 +5,7 @@ package com.tesis.jooq.tables.daos;
 
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.records.DevicesRecord;
 

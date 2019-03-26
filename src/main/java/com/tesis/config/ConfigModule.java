@@ -3,18 +3,15 @@ package com.tesis.config;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-import com.tesis.clients.StorageClient;
-import com.tesis.clients.imp.StorageClientImp;
 import com.tesis.routes.DevicesRouter;
-import com.tesis.routes.GpsRouter;
 import com.tesis.routes.Router;
+import com.tesis.routes.TrackingRouter;
 import com.tesis.server.Server;
 import com.tesis.services.DevicesService;
-import com.tesis.services.StorageService;
+import com.tesis.services.TrackingService;
 import com.tesis.services.imp.DevicesServiceImp;
-import com.tesis.services.imp.StorageServiceImp;
+import com.tesis.services.imp.TrackingServiceImp;
 import org.jooq.Configuration;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DefaultConfiguration;
@@ -37,14 +34,11 @@ public class ConfigModule extends AbstractModule {
 
         //bind routers
         bind(RouteGroup.class).annotatedWith(Names.named("devices-router")).to(DevicesRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("gps-router")).to(GpsRouter.class);
+        bind(RouteGroup.class).annotatedWith(Names.named("tracking-router")).to(TrackingRouter.class);
 
         //bind services
-        bind(StorageService.class).to(StorageServiceImp.class);
+        bind(TrackingService.class).to(TrackingServiceImp.class);
         bind(DevicesService.class).to(DevicesServiceImp.class);
-
-        //bind clients
-        bind(StorageClient.class).to(StorageClientImp.class);
     }
 
     @Provides

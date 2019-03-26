@@ -4,6 +4,8 @@
 package com.tesis.jooq.tables.daos;
 
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.tesis.jooq.tables.Trakings;
 import com.tesis.jooq.tables.records.TrakingsRecord;
 
@@ -39,6 +41,7 @@ public class TrakingsDao extends DAOImpl<TrakingsRecord, com.tesis.jooq.tables.p
     /**
      * Create a new TrakingsDao with an attached configuration
      */
+    @Inject
     public TrakingsDao(Configuration configuration) {
         super(Trakings.TRAKINGS, com.tesis.jooq.tables.pojos.Trakings.class, configuration);
     }
