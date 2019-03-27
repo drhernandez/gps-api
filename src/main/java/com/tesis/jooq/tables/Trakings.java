@@ -17,6 +17,7 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -41,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trakings extends TableImpl<TrakingsRecord> {
 
-    private static final long serialVersionUID = -196283869;
+    private static final long serialVersionUID = 774770496;
 
     /**
      * The reference instance of <code>public.trakings</code>
@@ -59,7 +60,7 @@ public class Trakings extends TableImpl<TrakingsRecord> {
     /**
      * The column <code>public.trakings.id</code>.
      */
-    public final TableField<TrakingsRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<TrakingsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('trakings_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.trakings.device_id</code>.
@@ -138,6 +139,14 @@ public class Trakings extends TableImpl<TrakingsRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.TRAKINGS_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Identity<TrakingsRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_TRAKINGS;
     }
 
     /**

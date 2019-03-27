@@ -15,7 +15,7 @@ public class Tracking extends Trakings {
         super(value);
     }
 
-    public Tracking(Long id, Long deviceId, Float lat, Float long_, Integer sat, Integer hdop, Timestamp time) {
+    public Tracking(Integer id, Long deviceId, Float lat, Float long_, Integer sat, Integer hdop, Timestamp time) {
         super(id, deviceId, lat, long_, sat, hdop, time);
     }
 

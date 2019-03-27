@@ -16,6 +16,7 @@ import com.tesis.jooq.tables.records.VehiclesRecord;
 import javax.annotation.Generated;
 
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.UniqueKey;
 import org.jooq.impl.Internal;
 
@@ -38,6 +39,7 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
+    public static final Identity<TrakingsRecord, Integer> IDENTITY_TRAKINGS = Identities0.IDENTITY_TRAKINGS;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -60,6 +62,10 @@ public class Keys {
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
+
+    private static class Identities0 {
+        public static Identity<TrakingsRecord, Integer> IDENTITY_TRAKINGS = Internal.createIdentity(Trakings.TRAKINGS, Trakings.TRAKINGS.ID);
+    }
 
     private static class UniqueKeys0 {
         public static final UniqueKey<DevicesRecord> DEVICES_PKEY = Internal.createUniqueKey(Devices.DEVICES, "devices_pkey", Devices.DEVICES.ID);
