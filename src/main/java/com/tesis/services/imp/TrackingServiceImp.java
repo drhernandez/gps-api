@@ -2,9 +2,9 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
-import com.tesis.jooq.tables.daos.TrakingsDao;
+import com.tesis.jooq.tables.daos.TrackingsDao;
+import com.tesis.jooq.tables.pojos.Trackings;
 import com.tesis.models.ResponseDTO;
-import com.tesis.models.Tracking;
 import com.tesis.services.TrackingService;
 
 import java.util.List;
@@ -12,12 +12,12 @@ import java.util.List;
 public class TrackingServiceImp implements TrackingService {
 
     @Inject
-    TrakingsDao trakingsDao;
+    TrackingsDao trakingsDao;
 
     @Override
-    public ResponseDTO<List<Tracking>> saveTracking(List<Tracking> trakings) {
+    public ResponseDTO<List<Trackings>> saveTracking(List<Trackings> trakings) {
 
-        ResponseDTO<List<Tracking>> responseDTO = new ResponseDTO<>();
+        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO<>();
 
         try {
             trakings.forEach(tracking -> trakingsDao.insert(tracking));
@@ -26,6 +26,14 @@ public class TrackingServiceImp implements TrackingService {
             responseDTO.error = new ApiException("db_error", "Error inserting tracking data", e);
         }
 
+        return responseDTO;
+    }
+
+    @Override
+    public ResponseDTO<List<Trackings>> getTrackingsByDeviceID(Long deviceID) {
+
+        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO();
+        responseDTO.model = trakingsDao.fetchByDeviceId(deviceID);
         return responseDTO;
     }
 }

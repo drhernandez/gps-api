@@ -5,7 +5,7 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.Devices;
-import com.tesis.jooq.tables.Trakings;
+import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 
@@ -31,9 +31,9 @@ public class Tables {
     public static final Devices DEVICES = com.tesis.jooq.tables.Devices.DEVICES;
 
     /**
-     * The table <code>public.trakings</code>.
+     * The table <code>public.trackings</code>.
      */
-    public static final Trakings TRAKINGS = com.tesis.jooq.tables.Trakings.TRAKINGS;
+    public static final Trackings TRACKINGS = com.tesis.jooq.tables.Trackings.TRACKINGS;
 
     /**
      * The table <code>public.users</code>.

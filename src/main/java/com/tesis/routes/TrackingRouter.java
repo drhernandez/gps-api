@@ -20,6 +20,7 @@ public class TrackingRouter implements RouteGroup {
         logger.info("Loading Tracking routes...");
         Spark.path("/trackings", () -> {
             Spark.post("", trackingController::saveTracking);
+            Spark.get("/:device_id", trackingController::getTrackingsByDeviceID);
         });
     }
 }

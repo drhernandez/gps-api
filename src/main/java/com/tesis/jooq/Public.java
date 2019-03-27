@@ -5,7 +5,7 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.Devices;
-import com.tesis.jooq.tables.Trakings;
+import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 
@@ -34,7 +34,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = 1502350284;
+    private static final long serialVersionUID = 2028678162;
 
     /**
      * The reference instance of <code>public</code>
@@ -47,9 +47,9 @@ public class Public extends SchemaImpl {
     public final Devices DEVICES = com.tesis.jooq.tables.Devices.DEVICES;
 
     /**
-     * The table <code>public.trakings</code>.
+     * The table <code>public.trackings</code>.
      */
-    public final Trakings TRAKINGS = com.tesis.jooq.tables.Trakings.TRAKINGS;
+    public final Trackings TRACKINGS = com.tesis.jooq.tables.Trackings.TRACKINGS;
 
     /**
      * The table <code>public.users</code>.
@@ -99,7 +99,7 @@ public class Public extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             Devices.DEVICES,
-            Trakings.TRAKINGS,
+            Trackings.TRACKINGS,
             Users.USERS,
             Vehicles.VEHICLES);
     }

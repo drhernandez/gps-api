@@ -5,7 +5,7 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.Devices;
-import com.tesis.jooq.tables.Trakings;
+import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 
@@ -46,7 +46,7 @@ public class Indexes {
     private static class Indexes0 {
         public static Index DEVICES_PKEY = Internal.createIndex("devices_pkey", Devices.DEVICES, new OrderField[] { Devices.DEVICES.ID }, true);
         public static Index DEVICES_VEHICLE_ID_KEY = Internal.createIndex("devices_vehicle_id_key", Devices.DEVICES, new OrderField[] { Devices.DEVICES.VEHICLE_ID }, true);
-        public static Index TRAKINGS_PKEY = Internal.createIndex("trakings_pkey", Trakings.TRAKINGS, new OrderField[] { Trakings.TRAKINGS.ID }, true);
+        public static Index TRAKINGS_PKEY = Internal.createIndex("trakings_pkey", Trackings.TRACKINGS, new OrderField[] { Trackings.TRACKINGS.ID }, true);
         public static Index USERS_PKEY = Internal.createIndex("users_pkey", Users.USERS, new OrderField[] { Users.USERS.ID }, true);
         public static Index VEHICLES_PKEY = Internal.createIndex("vehicles_pkey", Vehicles.VEHICLES, new OrderField[] { Vehicles.VEHICLES.ID }, true);
     }
