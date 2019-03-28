@@ -15,7 +15,7 @@ const int offset = -3;   // UTC-3
 // Array size
 const int SIZE = 9;
 const char EXAMPLE[61] = "00004,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
-char DEVICE_ID[6] = "00005";
+char DEVICE_ID[6] = "00006";
 const int MEMORY_SIZE = (strlen(EXAMPLE)) * SIZE * sizeof(char) + 1;
 
 time_t prevDisplay = 0; // when the digital clock was displayed
