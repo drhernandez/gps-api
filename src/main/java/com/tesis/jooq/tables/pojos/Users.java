@@ -22,17 +22,17 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users implements Serializable {
 
-    private static final long serialVersionUID = 273425956;
+    private static final long serialVersionUID = -164131178;
 
-    private Long   id;
-    private String userName;
-    private String password;
-    private String name;
-    private String lastName;
-    private String dni;
-    private String address;
-    private String phone;
-    private String email;
+    private Integer id;
+    private String  userName;
+    private String  password;
+    private String  name;
+    private String  lastName;
+    private String  dni;
+    private String  address;
+    private String  phone;
+    private String  email;
 
     public Users() {}
 
@@ -49,15 +49,15 @@ public class Users implements Serializable {
     }
 
     public Users(
-        Long   id,
-        String userName,
-        String password,
-        String name,
-        String lastName,
-        String dni,
-        String address,
-        String phone,
-        String email
+        Integer id,
+        String  userName,
+        String  password,
+        String  name,
+        String  lastName,
+        String  dni,
+        String  address,
+        String  phone,
+        String  email
     ) {
         this.id = id;
         this.userName = userName;
@@ -70,11 +70,11 @@ public class Users implements Serializable {
         this.email = email;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

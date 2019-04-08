@@ -19,6 +19,7 @@ public class UsersRouter implements RouteGroup {
 
         logger.info("Loading users routes...");
         Spark.path("/users", () -> {
+            Spark.post("", userController::createUser);
             Spark.get("", userController::getUsers);
             Spark.get("/:user_id", userController::getUsersByUserID);
         });

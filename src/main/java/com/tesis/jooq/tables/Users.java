@@ -16,6 +16,7 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -40,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users extends TableImpl<UsersRecord> {
 
-    private static final long serialVersionUID = -1327774022;
+    private static final long serialVersionUID = 873453426;
 
     /**
      * The reference instance of <code>public.users</code>
@@ -58,7 +59,7 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>public.users.id</code>.
      */
-    public final TableField<UsersRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<UsersRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('users_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.users.user_name</code>.
@@ -147,6 +148,14 @@ public class Users extends TableImpl<UsersRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.USERS_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Identity<UsersRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_USERS;
     }
 
     /**
