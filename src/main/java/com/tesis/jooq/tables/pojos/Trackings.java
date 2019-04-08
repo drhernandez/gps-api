@@ -5,13 +5,10 @@ package com.tesis.jooq.tables.pojos;
 
 
 import com.tesis.exceptions.ParseArgsException;
-import org.jooq.impl.ParserException;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.util.IllegalFormatException;
 
 import javax.annotation.Generated;
 

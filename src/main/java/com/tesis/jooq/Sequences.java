@@ -24,7 +24,17 @@ import org.jooq.impl.SequenceImpl;
 public class Sequences {
 
     /**
-     * The sequence <code>public.trakings_id_seq</code>
+     * The sequence <code>public.trackings_id_seq</code>
      */
-    public static final Sequence<Integer> TRAKINGS_ID_SEQ = new SequenceImpl<Integer>("trakings_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
+    public static final Sequence<Integer> TRACKINGS_ID_SEQ = new SequenceImpl<Integer>("trackings_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
+
+    /**
+     * The sequence <code>public.users_id_seq</code>
+     */
+    public static final Sequence<Integer> USERS_ID_SEQ = new SequenceImpl<Integer>("users_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
+
+    /**
+     * The sequence <code>public.vehicles_id_seq</code>
+     */
+    public static final Sequence<Integer> VEHICLES_ID_SEQ = new SequenceImpl<Integer>("vehicles_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
 }

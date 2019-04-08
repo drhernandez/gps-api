@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings extends TableImpl<TrackingsRecord> {
 
-    private static final long serialVersionUID = 615273798;
+    private static final long serialVersionUID = 2047350266;
 
     /**
      * The reference instance of <code>public.trackings</code>
@@ -60,7 +60,7 @@ public class Trackings extends TableImpl<TrackingsRecord> {
     /**
      * The column <code>public.trackings.id</code>.
      */
-    public final TableField<TrackingsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('trakings_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TrackingsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('trackings_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.trackings.device_id</code>.
@@ -138,7 +138,7 @@ public class Trackings extends TableImpl<TrackingsRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.TRAKINGS_PKEY);
+        return Arrays.<Index>asList(Indexes.TRACKINGS_PKEY);
     }
 
     /**
@@ -154,7 +154,7 @@ public class Trackings extends TableImpl<TrackingsRecord> {
      */
     @Override
     public UniqueKey<TrackingsRecord> getPrimaryKey() {
-        return Keys.TRAKINGS_PKEY;
+        return Keys.TRACKINGS_PKEY;
     }
 
     /**
@@ -162,7 +162,7 @@ public class Trackings extends TableImpl<TrackingsRecord> {
      */
     @Override
     public List<UniqueKey<TrackingsRecord>> getKeys() {
-        return Arrays.<UniqueKey<TrackingsRecord>>asList(Keys.TRAKINGS_PKEY);
+        return Arrays.<UniqueKey<TrackingsRecord>>asList(Keys.TRACKINGS_PKEY);
     }
 
     /**
@@ -170,11 +170,11 @@ public class Trackings extends TableImpl<TrackingsRecord> {
      */
     @Override
     public List<ForeignKey<TrackingsRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<TrackingsRecord, ?>>asList(Keys.TRACKINGS__TRAKINGS_DEVICE_ID_FKEY);
+        return Arrays.<ForeignKey<TrackingsRecord, ?>>asList(Keys.TRACKINGS__TRACKINGS_DEVICE_ID_FKEY);
     }
 
     public Devices devices() {
-        return new Devices(this, Keys.TRACKINGS__TRAKINGS_DEVICE_ID_FKEY);
+        return new Devices(this, Keys.TRACKINGS__TRACKINGS_DEVICE_ID_FKEY);
     }
 
     /**

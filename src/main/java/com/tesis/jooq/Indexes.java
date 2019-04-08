@@ -35,7 +35,7 @@ public class Indexes {
 
     public static final Index DEVICES_PKEY = Indexes0.DEVICES_PKEY;
     public static final Index DEVICES_VEHICLE_ID_KEY = Indexes0.DEVICES_VEHICLE_ID_KEY;
-    public static final Index TRAKINGS_PKEY = Indexes0.TRAKINGS_PKEY;
+    public static final Index TRACKINGS_PKEY = Indexes0.TRACKINGS_PKEY;
     public static final Index USERS_PKEY = Indexes0.USERS_PKEY;
     public static final Index VEHICLES_PKEY = Indexes0.VEHICLES_PKEY;
 
@@ -46,7 +46,7 @@ public class Indexes {
     private static class Indexes0 {
         public static Index DEVICES_PKEY = Internal.createIndex("devices_pkey", Devices.DEVICES, new OrderField[] { Devices.DEVICES.ID }, true);
         public static Index DEVICES_VEHICLE_ID_KEY = Internal.createIndex("devices_vehicle_id_key", Devices.DEVICES, new OrderField[] { Devices.DEVICES.VEHICLE_ID }, true);
-        public static Index TRAKINGS_PKEY = Internal.createIndex("trakings_pkey", Trackings.TRACKINGS, new OrderField[] { Trackings.TRACKINGS.ID }, true);
+        public static Index TRACKINGS_PKEY = Internal.createIndex("trackings_pkey", Trackings.TRACKINGS, new OrderField[] { Trackings.TRACKINGS.ID }, true);
         public static Index USERS_PKEY = Internal.createIndex("users_pkey", Users.USERS, new OrderField[] { Users.USERS.ID }, true);
         public static Index VEHICLES_PKEY = Internal.createIndex("vehicles_pkey", Vehicles.VEHICLES, new OrderField[] { Vehicles.VEHICLES.ID }, true);
     }
