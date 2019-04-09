@@ -12,12 +12,11 @@ import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.tesis.config.Constants.MIN_LENGHT;
+import static com.tesis.config.Constants.MIN_LENGTH;
 
 public class TrackingController {
 
@@ -36,7 +35,7 @@ public class TrackingController {
         List<Trackings> trackings = new ArrayList<>();
         Arrays.asList(body.split(";")).forEach(t -> {
             String[] args = t.split(",");
-            if (args.length > MIN_LENGHT) {
+            if (args.length > MIN_LENGTH) {
                 try {
                     Trackings traking = new Trackings(args);
                     trackings.add(traking);
