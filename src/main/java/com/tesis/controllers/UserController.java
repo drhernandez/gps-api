@@ -6,6 +6,7 @@ import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 import com.tesis.utils.JsonUtils;
+import org.jooq.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -38,16 +39,16 @@ public class UserController {
         String param = request.params("user_id");
         Integer userID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: TrackingController.getTrackingsByDeviceID]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
         }
 
         try {
             userID = Integer.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: TrackingController.getTrackingsByDeviceID]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
         }
 
-        ResponseDTO<List<Users>> responseDTO = userService.getUsersByUserID(userID);
+        ResponseDTO<Users> responseDTO = userService.getUsersByUserID(userID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -66,6 +67,28 @@ public class UserController {
         if (responseDTO.error != null) {
             throw responseDTO.error;
         }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public  Object updateUser(Request request, Response response) throws ApiException {
+
+        String param = request.params("user_id");
+        Integer userID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+        }
+
+        try {
+            userID = Integer.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+        }
+
+        Users user = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Users.class);
+        //Add validations
+
+        ResponseDTO<Users> responseDTO = userService.updateUser(userID, user);
 
         return responseDTO.getModelAsJson();
     }
