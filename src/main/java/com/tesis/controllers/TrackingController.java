@@ -32,8 +32,8 @@ public class TrackingController {
         }
 
         List<Trackings> trackings = new ArrayList<>();
+        logger.info(String.format("BODY: %s", body));
         Arrays.asList(body.split(";")).forEach(t -> {
-            logger.info(String.format("LINE: %s", t));
             String[] args = t.split(",");
             Trackings traking = null;
             try {
