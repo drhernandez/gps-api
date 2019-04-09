@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.tesis.config.Constants.MIN_LENGHT;
+
 public class TrackingController {
 
     private static Logger logger = LoggerFactory.getLogger(TrackingController.class);
@@ -32,15 +34,15 @@ public class TrackingController {
         }
 
         List<Trackings> trackings = new ArrayList<>();
-        logger.info(String.format("BODY: %s", body));
         Arrays.asList(body.split(";")).forEach(t -> {
             String[] args = t.split(",");
-            Trackings traking = null;
-            try {
-                traking = new Trackings(args);
-                trackings.add(traking);
-            } catch (ParseArgsException e) {
-                logger.error(e.getMessage(), e);
+            if (args.length < MIN_LENGHT) {
+                try {
+                    Trackings traking = new Trackings(args);
+                    trackings.add(traking);
+                } catch (ParseArgsException e) {
+                    logger.error(e.getMessage());
+                }
             }
         });
 

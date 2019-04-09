@@ -46,7 +46,7 @@ public class Router {
             Throwable t = ExceptionUtils.getFromChain(e, ApiException.class);
 
             ApiException apiException = t instanceof ApiException ? (ApiException) t : new ApiException(internal_error.name(), "Internal server error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, t);
-            logger.error(apiException.getMessage());
+            logger.error(apiException.getMessage(), e);
             response.status(apiException.getStatus());
             response.header("Content-Type", MediaType.JSON_UTF_8.toString());
             response.body(apiException.toJson());
