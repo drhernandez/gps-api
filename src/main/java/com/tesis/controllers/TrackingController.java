@@ -12,6 +12,7 @@ import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,7 @@ public class TrackingController {
 
         List<Trackings> trackings = new ArrayList<>();
         Arrays.asList(body.split(";")).forEach(t -> {
+            logger.info(String.format("LINE: %s", t));
             String[] args = t.split(",");
             Trackings traking = null;
             try {
