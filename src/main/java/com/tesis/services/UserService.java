@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserService {
 
     ResponseDTO<List<Users>> getUsers();
-    ResponseDTO<List<Users>> getUsersByUserID(Integer userID);
-    ResponseDTO<Users> createUser(Users users);
+    ResponseDTO<Users> getUsersByUserID(Integer userID);
+    ResponseDTO<Users> createUser(Users user);
+    ResponseDTO<Users> updateUser(Integer userID, Users user);
 }
