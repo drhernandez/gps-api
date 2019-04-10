@@ -12,4 +12,5 @@ public interface UserService {
     ResponseDTO<Users> getUsersByUserID(Integer userID);
     ResponseDTO<Users> createUser(Users user);
     ResponseDTO<Users> updateUser(Integer userID, Users user);
+    ResponseDTO<Users> deleteUser(Integer userID);
 }
