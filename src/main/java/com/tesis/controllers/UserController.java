@@ -92,4 +92,20 @@ public class UserController {
 
         return responseDTO.getModelAsJson();
     }
+
+    public Object deleteUser(Request request, Response response) throws  ApiException {
+        String param = request.params("user_id");
+        Integer userID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+        }
+        try {
+            userID = Integer.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+        }
+        ResponseDTO responseDTO = userService.deleteUser(userID);
+        response.status(200);
+        return responseDTO;
+    }
 }

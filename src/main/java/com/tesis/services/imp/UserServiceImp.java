@@ -66,4 +66,16 @@ public class UserServiceImp implements UserService {
         }
         return responseDTO;
     }
+
+    @Override
+    public ResponseDTO<Users> deleteUser(Integer userID) {
+        ResponseDTO<Users> responseDTO = new ResponseDTO<>();
+        try {
+            usersDao.deleteById(userID);
+        }catch (Exception e) {
+            logger.error(String.format("No se pudo eliminar el usuario %s", userID));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el usuario.");
+        }
+        return responseDTO;
+    }
 }
