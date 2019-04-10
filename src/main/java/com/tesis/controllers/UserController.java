@@ -2,7 +2,6 @@ package com.tesis.controllers;
 
 import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
-import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
