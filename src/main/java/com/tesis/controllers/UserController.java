@@ -76,13 +76,13 @@ public class UserController {
         String param = request.params("user_id");
         Integer userID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.updateUser]");
         }
 
         try {
             userID = Integer.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.updateUser]");
         }
 
         Users user = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Users.class);
@@ -97,12 +97,12 @@ public class UserController {
         String param = request.params("user_id");
         Integer userID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
         }
         try {
             userID = Integer.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
         }
         ResponseDTO responseDTO = userService.deleteUser(userID);
         response.status(200);
