@@ -7,9 +7,12 @@ import com.google.inject.name.Names;
 import com.tesis.routes.DevicesRouter;
 import com.tesis.routes.Router;
 import com.tesis.routes.TrackingRouter;
+import com.tesis.routes.UsersRouter;
 import com.tesis.server.Server;
 import com.tesis.services.DevicesService;
 import com.tesis.services.TrackingService;
+import com.tesis.services.UserService;
+import com.tesis.services.imp.UserServiceImp;
 import com.tesis.services.imp.DevicesServiceImp;
 import com.tesis.services.imp.TrackingServiceImp;
 import org.jooq.Configuration;
@@ -35,10 +38,12 @@ public class ConfigModule extends AbstractModule {
         //bind routers
         bind(RouteGroup.class).annotatedWith(Names.named("devices-router")).to(DevicesRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("tracking-router")).to(TrackingRouter.class);
+        bind(RouteGroup.class).annotatedWith(Names.named("user-router")).to(UsersRouter.class);
 
         //bind services
         bind(TrackingService.class).to(TrackingServiceImp.class);
         bind(DevicesService.class).to(DevicesServiceImp.class);
+        bind(UserService.class).to(UserServiceImp.class);
     }
 
     @Provides
