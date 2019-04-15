@@ -1,0 +1,1 @@
+java -classpath jooq-3.11.9.jar:jooq-meta-3.11.9.jar:jooq-codegen-3.11.9.jar:postgresql-42.2.5.jar:. org.jooq.codegen.GenerationTool codegen.xml 

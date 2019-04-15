@@ -58,12 +58,7 @@ void buildWeft() {
     Serial.println("La aplicacion no pudo reservar memoria y se va a cerrar!"); 
     exit(EXIT_FAILURE);
   }
-
-  // data mocked
-  for (unsigned long start = millis(); millis() - start < 1000;) {
-      parseCoordinates(-31.4109, -64.1897, 8, 246, "000000000000000000000000000000000001", coordinate_data);
-    }
-/*  
+  
   for(int i=0; i<SIZE; i++) {
 
     for (unsigned long start = millis(); millis() - start < 1000;) {
@@ -96,7 +91,6 @@ void buildWeft() {
     parseCoordinates(flat, flon, gps.satellites(), gps.hdop(), "000000000000000000000000000000000001", coordinate_data);
    }
   }
-*/
   sendData(coordinate_data);
   //delay(500);
   free(coordinate_data);
@@ -146,4 +140,3 @@ void loop() {
   if (chars == 0)
     Serial.println("** No characters received from GPS: check wiring **");
 }
-
