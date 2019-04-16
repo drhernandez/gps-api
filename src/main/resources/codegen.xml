@@ -46,7 +46,7 @@
             <packageName>com.tesis.jooq</packageName>
 
             <!-- The destination directory of your generated classes. Using Maven directory layout here -->
-            <directory>/Users/diehernandez/IntelliJProyects/gps-api/src/main/java</directory>
+            <directory>./../java</directory>
         </target>
     </generator>
 </configuration>

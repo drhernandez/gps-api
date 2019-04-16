@@ -8,5 +8,5 @@ import java.util.List;
 public interface TrackingService {
 
     ResponseDTO<List<Trackings>> saveTracking(List<Trackings> trakings);
-    ResponseDTO<List<Trackings>> getTrackingsByDeviceID(Long deviceID);
+    ResponseDTO<List<Trackings>> getTrackingsByDeviceID(Integer deviceID);
 }

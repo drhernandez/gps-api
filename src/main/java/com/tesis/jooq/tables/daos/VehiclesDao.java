@@ -4,14 +4,17 @@
 package com.tesis.jooq.tables.daos;
 
 
-import com.google.inject.Inject;
 import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.records.VehiclesRecord;
-import org.jooq.Configuration;
-import org.jooq.impl.DAOImpl;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 import javax.annotation.Generated;
-import java.util.List;
+import javax.inject.Inject;
+
+import org.jooq.Configuration;
+import org.jooq.impl.DAOImpl;
 
 
 /**
@@ -62,5 +65,40 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
      */
     public com.tesis.jooq.tables.pojos.Vehicles fetchOneById(Integer value) {
         return fetchOne(Vehicles.VEHICLES.ID, value);
+    }
+
+    /**
+     * Fetch records that have <code>deleted_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByDeletedAt(Timestamp... values) {
+        return fetch(Vehicles.VEHICLES.DELETED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>last_updated IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByLastUpdated(Timestamp... values) {
+        return fetch(Vehicles.VEHICLES.LAST_UPDATED, values);
+    }
+
+    /**
+     * Fetch records that have <code>type IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByType(String... values) {
+        return fetch(Vehicles.VEHICLES.TYPE, values);
+    }
+
+    /**
+     * Fetch records that have <code>plate IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByPlate(String... values) {
+        return fetch(Vehicles.VEHICLES.PLATE, values);
+    }
+
+    /**
+     * Fetch records that have <code>model IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByModel(String... values) {
+        return fetch(Vehicles.VEHICLES.MODEL, values);
     }
 }

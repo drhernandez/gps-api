@@ -4,13 +4,14 @@
 package com.tesis.jooq.tables.daos;
 
 
-import com.google.inject.Inject;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.records.UsersRecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
+import javax.inject.Inject;
 
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
@@ -64,6 +65,20 @@ public class UsersDao extends DAOImpl<UsersRecord, com.tesis.jooq.tables.pojos.U
      */
     public com.tesis.jooq.tables.pojos.Users fetchOneById(Integer value) {
         return fetchOne(Users.USERS.ID, value);
+    }
+
+    /**
+     * Fetch records that have <code>deleted_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Users> fetchByDeletedAt(Timestamp... values) {
+        return fetch(Users.USERS.DELETED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>last_updated IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Users> fetchByLastUpdated(Timestamp... values) {
+        return fetch(Users.USERS.LAST_UPDATED, values);
     }
 
     /**

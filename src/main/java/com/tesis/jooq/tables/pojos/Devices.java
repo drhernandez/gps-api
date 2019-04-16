@@ -5,6 +5,7 @@ package com.tesis.jooq.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -22,18 +23,22 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices implements Serializable {
 
-    private static final long serialVersionUID = 363944725;
+    private static final long serialVersionUID = -1053720010;
 
-    private Long   id;
-    private Long   userId;
-    private Long   vehicleId;
-    private String model;
-    private String softwareVersion;
+    private Long      id;
+    private Timestamp deletedAt;
+    private Timestamp lastUpdated;
+    private Integer   userId;
+    private Long      vehicleId;
+    private String    model;
+    private String    softwareVersion;
 
     public Devices() {}
 
     public Devices(Devices value) {
         this.id = value.id;
+        this.deletedAt = value.deletedAt;
+        this.lastUpdated = value.lastUpdated;
         this.userId = value.userId;
         this.vehicleId = value.vehicleId;
         this.model = value.model;
@@ -41,13 +46,17 @@ public class Devices implements Serializable {
     }
 
     public Devices(
-        Long   id,
-        Long   userId,
-        Long   vehicleId,
-        String model,
-        String softwareVersion
+        Long      id,
+        Timestamp deletedAt,
+        Timestamp lastUpdated,
+        Integer   userId,
+        Long      vehicleId,
+        String    model,
+        String    softwareVersion
     ) {
         this.id = id;
+        this.deletedAt = deletedAt;
+        this.lastUpdated = lastUpdated;
         this.userId = userId;
         this.vehicleId = vehicleId;
         this.model = model;
@@ -62,11 +71,27 @@ public class Devices implements Serializable {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public Timestamp getDeletedAt() {
+        return this.deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Timestamp getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public Integer getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -99,6 +124,8 @@ public class Devices implements Serializable {
         StringBuilder sb = new StringBuilder("Devices (");
 
         sb.append(id);
+        sb.append(", ").append(deletedAt);
+        sb.append(", ").append(lastUpdated);
         sb.append(", ").append(userId);
         sb.append(", ").append(vehicleId);
         sb.append(", ").append(model);

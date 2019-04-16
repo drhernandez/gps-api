@@ -9,6 +9,7 @@ import com.tesis.jooq.Keys;
 import com.tesis.jooq.Public;
 import com.tesis.jooq.tables.records.DevicesRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -40,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices extends TableImpl<DevicesRecord> {
 
-    private static final long serialVersionUID = 1255803556;
+    private static final long serialVersionUID = -643830202;
 
     /**
      * The reference instance of <code>public.devices</code>
@@ -61,9 +63,19 @@ public class Devices extends TableImpl<DevicesRecord> {
     public final TableField<DevicesRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
+     * The column <code>public.devices.deleted_at</code>.
+     */
+    public final TableField<DevicesRecord, Timestamp> DELETED_AT = createField("deleted_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>public.devices.last_updated</code>.
+     */
+    public final TableField<DevicesRecord, Timestamp> LAST_UPDATED = createField("last_updated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
      * The column <code>public.devices.user_id</code>.
      */
-    public final TableField<DevicesRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<DevicesRecord, Integer> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('devices_user_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.devices.vehicle_id</code>.
@@ -127,6 +139,14 @@ public class Devices extends TableImpl<DevicesRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.DEVICES_PKEY, Indexes.DEVICES_VEHICLE_ID_KEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Identity<DevicesRecord, Integer> getIdentity() {
+        return Keys.IDENTITY_DEVICES;
     }
 
     /**

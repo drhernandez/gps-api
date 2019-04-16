@@ -9,6 +9,7 @@ import com.tesis.jooq.Keys;
 import com.tesis.jooq.Public;
 import com.tesis.jooq.tables.records.VehiclesRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles extends TableImpl<VehiclesRecord> {
 
-    private static final long serialVersionUID = 3728718;
+    private static final long serialVersionUID = 844121536;
 
     /**
      * The reference instance of <code>public.vehicles</code>
@@ -60,6 +61,31 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      * The column <code>public.vehicles.id</code>.
      */
     public final TableField<VehiclesRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('vehicles_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>public.vehicles.deleted_at</code>.
+     */
+    public final TableField<VehiclesRecord, Timestamp> DELETED_AT = createField("deleted_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>public.vehicles.last_updated</code>.
+     */
+    public final TableField<VehiclesRecord, Timestamp> LAST_UPDATED = createField("last_updated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>public.vehicles.type</code>.
+     */
+    public final TableField<VehiclesRecord, String> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
+
+    /**
+     * The column <code>public.vehicles.plate</code>.
+     */
+    public final TableField<VehiclesRecord, String> PLATE = createField("plate", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
+
+    /**
+     * The column <code>public.vehicles.model</code>.
+     */
+    public final TableField<VehiclesRecord, String> MODEL = createField("model", org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
 
     /**
      * Create a <code>public.vehicles</code> table reference

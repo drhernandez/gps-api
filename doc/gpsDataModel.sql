@@ -5,6 +5,8 @@ drop table USERS;
 
 create table USERS(
 	id serial primary key not null,
+	deleted_at timestamp,
+	last_updated timestamp,
 	user_name varchar(45) not null,
 	password varchar(45) not null,
 	name varchar(45) not null,
@@ -16,12 +18,19 @@ create table USERS(
 );
 
 create table VEHICLES(
-	id serial primary key not null
+	id serial primary key not null,
+	deleted_at timestamp,
+	last_updated timestamp,
+	type varchar(45),
+	plate varchar(45) not null,
+	model varchar(45)	
 );
 
 create table DEVICES(
 	id bigint primary key not null,
-	user_id bigint references USERS(id) on delete restrict not null,
+	deleted_at timestamp,
+	last_updated timestamp,
+	user_id serial references USERS(id) on delete restrict not null,
 	vehicle_id bigint unique references VEHICLES(id) on delete restrict not null,
 	model varchar(45) not null,
 	software_version varchar(45)
@@ -29,7 +38,7 @@ create table DEVICES(
 
 create table TRACKINGS(
 	id serial primary key not null,
-	device_id bigint references DEVICES(id) on delete restrict not null,
+	device_id serial references DEVICES(id) on delete restrict not null,
 	lat real not null,
 	long real  not null,
 	sat integer not null,

@@ -9,6 +9,7 @@ import com.tesis.jooq.Keys;
 import com.tesis.jooq.Public;
 import com.tesis.jooq.tables.records.UsersRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users extends TableImpl<UsersRecord> {
 
-    private static final long serialVersionUID = 873453426;
+    private static final long serialVersionUID = -1761160269;
 
     /**
      * The reference instance of <code>public.users</code>
@@ -60,6 +61,16 @@ public class Users extends TableImpl<UsersRecord> {
      * The column <code>public.users.id</code>.
      */
     public final TableField<UsersRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('users_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>public.users.deleted_at</code>.
+     */
+    public final TableField<UsersRecord, Timestamp> DELETED_AT = createField("deleted_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>public.users.last_updated</code>.
+     */
+    public final TableField<UsersRecord, Timestamp> LAST_UPDATED = createField("last_updated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * The column <code>public.users.user_name</code>.

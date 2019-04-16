@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings extends TableImpl<TrackingsRecord> {
 
-    private static final long serialVersionUID = 2047350266;
+    private static final long serialVersionUID = -358700806;
 
     /**
      * The reference instance of <code>public.trackings</code>
@@ -65,7 +65,7 @@ public class Trackings extends TableImpl<TrackingsRecord> {
     /**
      * The column <code>public.trackings.device_id</code>.
      */
-    public final TableField<TrackingsRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<TrackingsRecord, Integer> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('trackings_device_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>public.trackings.lat</code>.

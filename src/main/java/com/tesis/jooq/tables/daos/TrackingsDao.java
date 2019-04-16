@@ -4,7 +4,6 @@
 package com.tesis.jooq.tables.daos;
 
 
-import com.google.inject.Inject;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.records.TrackingsRecord;
 
@@ -12,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
+import javax.inject.Inject;
 
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
@@ -70,7 +70,7 @@ public class TrackingsDao extends DAOImpl<TrackingsRecord, com.tesis.jooq.tables
     /**
      * Fetch records that have <code>device_id IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByDeviceId(Long... values) {
+    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByDeviceId(Integer... values) {
         return fetch(Trackings.TRACKINGS.DEVICE_ID, values);
     }
 

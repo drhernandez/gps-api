@@ -5,6 +5,7 @@ package com.tesis.jooq.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -22,22 +23,26 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users implements Serializable {
 
-    private static final long serialVersionUID = -164131178;
+    private static final long serialVersionUID = 866283217;
 
-    private Integer id;
-    private String  userName;
-    private String  password;
-    private String  name;
-    private String  lastName;
-    private String  dni;
-    private String  address;
-    private String  phone;
-    private String  email;
+    private Integer   id;
+    private Timestamp deletedAt;
+    private Timestamp lastUpdated;
+    private String    userName;
+    private String    password;
+    private String    name;
+    private String    lastName;
+    private String    dni;
+    private String    address;
+    private String    phone;
+    private String    email;
 
     public Users() {}
 
     public Users(Users value) {
         this.id = value.id;
+        this.deletedAt = value.deletedAt;
+        this.lastUpdated = value.lastUpdated;
         this.userName = value.userName;
         this.password = value.password;
         this.name = value.name;
@@ -49,17 +54,21 @@ public class Users implements Serializable {
     }
 
     public Users(
-        Integer id,
-        String  userName,
-        String  password,
-        String  name,
-        String  lastName,
-        String  dni,
-        String  address,
-        String  phone,
-        String  email
+        Integer   id,
+        Timestamp deletedAt,
+        Timestamp lastUpdated,
+        String    userName,
+        String    password,
+        String    name,
+        String    lastName,
+        String    dni,
+        String    address,
+        String    phone,
+        String    email
     ) {
         this.id = id;
+        this.deletedAt = deletedAt;
+        this.lastUpdated = lastUpdated;
         this.userName = userName;
         this.password = password;
         this.name = name;
@@ -76,6 +85,22 @@ public class Users implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Timestamp getDeletedAt() {
+        return this.deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Timestamp getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public String getUserName() {
@@ -147,6 +172,8 @@ public class Users implements Serializable {
         StringBuilder sb = new StringBuilder("Users (");
 
         sb.append(id);
+        sb.append(", ").append(deletedAt);
+        sb.append(", ").append(lastUpdated);
         sb.append(", ").append(userName);
         sb.append(", ").append(password);
         sb.append(", ").append(name);
