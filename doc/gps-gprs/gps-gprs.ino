@@ -70,7 +70,7 @@ void init_gprs_module() {
   printSerialData();
 }
 
-void send_http_post(char *coordinate_data) {
+void send_http_post(char coordinate_data[]) {
   gsm_gprs.println(F("AT+HTTPINIT"));
   delay(100);
   printSerialData();
@@ -100,7 +100,7 @@ void send_http_post(char *coordinate_data) {
 }
 
 
-void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[], char *coordinate_data) {
+void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[], char coordinate_data[]) {
   char value[9];
   char sz[30];
   strcat(coordinate_data, device_id);
@@ -127,12 +127,7 @@ void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[
 
 void buildWeft() {
   bool newData = false;
-  char *coordinate_data;
-  coordinate_data = (char*)malloc(MEMORY_SIZE);
-  if (coordinate_data == NULL) {
-    Serial.println("La aplicacion no pudo reservar memoria y se va a cerrar!");
-    exit(EXIT_FAILURE);
-  }
+  char coordinate_data[MEMORY_SIZE];
   // data mocked
 //  for (unsigned int start = 0; start <= 9; start ++) {
 //    parseCoordinates(-31.4109, -64.1897, 8, 246, DEVICE_ID, coordinate_data);
@@ -171,10 +166,7 @@ void buildWeft() {
      }
     }
 
-  //sendData(coordinate_data);
   send_http_post(coordinate_data);
-  //delay(500);
-  free(coordinate_data);
 }
 
 void logData(float flat, float flon) {
@@ -194,7 +186,7 @@ void logData(float flat, float flon) {
   Serial.print(sz);
 }
 
-void sendData(char *coordinate_data) {
+void sendData(char coordinate_data[]) {
   // post to the service
   // ...
   send_http_post(coordinate_data);
