@@ -2,20 +2,20 @@
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 
-const int TX = 4;
-const int RX = 3;
+const byte TX = 4;
+const byte RX = 3;
 
 TinyGPS gps;
 SoftwareSerial softSerial(TX, RX);
 SoftwareSerial gsm_gprs(7, 8);
 
 // Offset hours from gps time (UTC)
-const int offset = -3;   // UTC-3
+const byte offset = -3;   // UTC-3
 
 // Array size
-const int SIZE = 9;
-const char EXAMPLE[61] = "00004,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
-char DEVICE_ID[6] = "00002";
+const byte SIZE = 5;
+const char EXAMPLE[61] PROGMEM = "00004,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
+const char DEVICE_ID[6] PROGMEM = "00002";
 const int MEMORY_SIZE = (strlen(EXAMPLE)) * SIZE * sizeof(char) + 1;
 
 time_t prevDisplay = 0; // when the digital clock was displayed
@@ -24,7 +24,7 @@ void setup() {
   Serial.begin(9600); //115200
   gsm_gprs.begin(19200);   // Setting the baud rate of GSM Module
   delay(1000);
-  Serial.write("iniciando");
+  Serial.println(F("iniciando"));
   init_gprs_module();
   delay(500);
   //Serial.begin(19200); //115200
@@ -32,14 +32,8 @@ void setup() {
 }
 
 void loop() {
-  bool newData = false;
-  unsigned long chars;
-  unsigned short sentences, failed;
-  float flat, flon;
-  flat = -31.4109;
-  flon = -64.1897;
   buildWeft();
-  Serial.write("finishhhh");
+  Serial.println(F("finishhhh"));
   delay(500);
 /*  
     gps.stats(&chars, &sentences, &failed);
@@ -56,37 +50,37 @@ void loop() {
 }
 
 void init_gprs_module() {
-  gsm_gprs.println("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
+  gsm_gprs.println(F("AT+SAPBR=3,1,\"Contype\",\"GPRS\""));
   delay(1000);
   printSerialData();
-  gsm_gprs.println("AT+SAPBR=3,1,\"APN\",\"datos.personal.com\"");
+  gsm_gprs.println(F("AT+SAPBR=3,1,\"APN\",\"datos.personal.com\""));
   delay(1000);
   printSerialData();
-  gsm_gprs.println("AT+SAPBR=3,1,\"USER\",\"datos\"");
+  gsm_gprs.println(F("AT+SAPBR=3,1,\"USER\",\"datos\""));
   delay(1000);
   printSerialData();
-  gsm_gprs.println("AT+SAPBR=3,1,\"PWD\",\"datos\"");
+  gsm_gprs.println(F("AT+SAPBR=3,1,\"PWD\",\"datos\""));
   delay(1000);
   printSerialData();
-  gsm_gprs.println("AT+SAPBR=0,1");
+  gsm_gprs.println(F("AT+SAPBR=0,1"));
   delay(1000);
   printSerialData();
-  gsm_gprs.println("AT+SAPBR=1,1");
+  gsm_gprs.println(F("AT+SAPBR=1,1"));
   delay(1000);
   printSerialData();
 }
 
 void send_http_post(char *coordinate_data) {
-  gsm_gprs.println("AT+HTTPINIT");
+  gsm_gprs.println(F("AT+HTTPINIT"));
   delay(100);
   printSerialData();
-  gsm_gprs.println("AT+HTTPPARA=\"CID\",1");
+  gsm_gprs.println(F("AT+HTTPPARA=\"CID\",1"));
   delay(200);
   printSerialData();
-  gsm_gprs.println("AT+HTTPPARA=\"URL\",\"http://gps-locations-api.herokuapp.com/trackings\"");
+  gsm_gprs.println(F("AT+HTTPPARA=\"URL\",\"http://gps-locations-api.herokuapp.com/trackings\""));
   delay(200);
   printSerialData();
-  gsm_gprs.println("AT+HTTPPARA=\"CONTENT\",\"text/plain\"");
+  gsm_gprs.println(F("AT+HTTPPARA=\"CONTENT\",\"text/plain\""));
   delay(200);
   printSerialData();
   gsm_gprs.println("AT+HTTPDATA=" + String(MEMORY_SIZE) + ",10000");
@@ -95,13 +89,13 @@ void send_http_post(char *coordinate_data) {
   gsm_gprs.println(coordinate_data);
   delay(100);
   printSerialData();
-  gsm_gprs.println("AT+HTTPACTION=1");
+  gsm_gprs.println(F("AT+HTTPACTION=1"));
   delay(100);
   printSerialData();
-  gsm_gprs.println("AT+HTTPTERM");
+  gsm_gprs.println(F("AT+HTTPTERM"));
   delay(100);
   printSerialData();
-  delay(5000);
+  delay(4000);
   Serial.println(coordinate_data);
 }
 
@@ -133,10 +127,6 @@ void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[
 
 void buildWeft() {
   bool newData = false;
-  float flat, flon;
-  unsigned long age;
-  int Year;
-  byte Month, Day, Hour, Minute, Second;
   char *coordinate_data;
   coordinate_data = (char*)malloc(MEMORY_SIZE);
   if (coordinate_data == NULL) {
