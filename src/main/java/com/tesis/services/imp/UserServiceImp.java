@@ -11,7 +11,9 @@ import com.tesis.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.time.LocalDateTime;
 
 @Singleton
 public class UserServiceImp implements UserService {
@@ -22,7 +24,7 @@ public class UserServiceImp implements UserService {
     UsersDao usersDao;
 
     public ResponseDTO<List<Users>> getUsers() {
-        return new ResponseDTO(usersDao.findAll(), null);
+        return new ResponseDTO(usersDao.findAllActives(), null);
     }
 
     public ResponseDTO<Users> getUsersByUserID(Integer userID) {
@@ -49,6 +51,8 @@ public class UserServiceImp implements UserService {
     public ResponseDTO<Users> updateUser(Integer userID, Users newData) {
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
         Users user = usersDao.fetchOneById(userID);
+        user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setDeletedAt(null);
         user.setUserName(newData.getUserName());
         user.setPassword(newData.getPassword());
         user.setName(newData.getName());
@@ -71,7 +75,9 @@ public class UserServiceImp implements UserService {
     public ResponseDTO<Users> deleteUser(Integer userID) {
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
         try {
-            usersDao.deleteById(userID);
+            Users user = usersDao.fetchOneById(userID);
+            user.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
+            usersDao.update(user);
         }catch (Exception e) {
             logger.error(String.format("No se pudo eliminar el usuario %s", userID));
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el usuario.");

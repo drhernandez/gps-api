@@ -6,7 +6,6 @@ import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 import com.tesis.utils.JsonUtils;
-import org.jooq.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -106,6 +105,6 @@ public class UserController {
         }
         ResponseDTO responseDTO = userService.deleteUser(userID);
         response.status(200);
-        return responseDTO;
+        return responseDTO.getModelAsJson();
     }
 }

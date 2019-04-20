@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
+import org.jooq.impl.DSL;
 
 
 /**
@@ -43,6 +44,10 @@ public class UsersDao extends DAOImpl<UsersRecord, com.tesis.jooq.tables.pojos.U
     @Inject
     public UsersDao(Configuration configuration) {
         super(Users.USERS, com.tesis.jooq.tables.pojos.Users.class, configuration);
+    }
+
+    public List<com.tesis.jooq.tables.pojos.Users> findAllActives(){
+        return DSL.using(configuration()).selectFrom(Users.USERS).where(Users.USERS.DELETED_AT.isNull()).fetch().map(mapper());
     }
 
     /**
