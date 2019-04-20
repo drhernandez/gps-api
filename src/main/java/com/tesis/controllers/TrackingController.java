@@ -35,7 +35,7 @@ public class TrackingController {
         List<Trackings> trackings = new ArrayList<>();
         Arrays.asList(body.split(";")).forEach(t -> {
             String[] args = t.split(",");
-            if (args.length > MIN_LENGTH) {
+            if (args.length >= MIN_LENGTH) {
                 try {
                     Trackings traking = new Trackings(args);
                     trackings.add(traking);
