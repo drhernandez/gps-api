@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
-import javax.inject.Inject;
 
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
@@ -40,7 +39,6 @@ public class DevicesDao extends DAOImpl<DevicesRecord, com.tesis.jooq.tables.poj
     /**
      * Create a new DevicesDao with an attached configuration
      */
-    @Inject
     public DevicesDao(Configuration configuration) {
         super(Devices.DEVICES, com.tesis.jooq.tables.pojos.Devices.class, configuration);
     }

@@ -41,8 +41,8 @@ public class Users implements Serializable {
 
     public Users(Users value) {
         this.id = value.id;
-        this.deletedAt = null;
-        this.lastUpdated = null;
+        this.deletedAt = value.deletedAt;
+        this.lastUpdated = value.lastUpdated;
         this.userName = value.userName;
         this.password = value.password;
         this.name = value.name;

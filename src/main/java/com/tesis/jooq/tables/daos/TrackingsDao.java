@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
-import javax.inject.Inject;
 
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
@@ -40,7 +39,6 @@ public class TrackingsDao extends DAOImpl<TrackingsRecord, com.tesis.jooq.tables
     /**
      * Create a new TrackingsDao with an attached configuration
      */
-    @Inject
     public TrackingsDao(Configuration configuration) {
         super(Trackings.TRACKINGS, com.tesis.jooq.tables.pojos.Trackings.class, configuration);
     }
@@ -70,7 +68,7 @@ public class TrackingsDao extends DAOImpl<TrackingsRecord, com.tesis.jooq.tables
     /**
      * Fetch records that have <code>device_id IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByDeviceId(Integer... values) {
+    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByDeviceId(Long... values) {
         return fetch(Trackings.TRACKINGS.DEVICE_ID, values);
     }
 

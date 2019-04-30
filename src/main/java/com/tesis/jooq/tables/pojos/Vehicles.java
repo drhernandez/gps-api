@@ -36,8 +36,8 @@ public class Vehicles implements Serializable {
 
     public Vehicles(Vehicles value) {
         this.id = value.id;
-        this.deletedAt = null;
-        this.lastUpdated = null;
+        this.deletedAt = value.deletedAt;
+        this.lastUpdated = value.lastUpdated;
         this.type = value.type;
         this.plate = value.plate;
         this.model = value.model;

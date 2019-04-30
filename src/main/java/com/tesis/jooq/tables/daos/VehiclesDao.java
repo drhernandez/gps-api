@@ -11,11 +11,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
-import javax.inject.Inject;
 
 import org.jooq.Configuration;
 import org.jooq.impl.DAOImpl;
-import org.jooq.impl.DSL;
 
 
 /**
@@ -41,18 +39,8 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     /**
      * Create a new VehiclesDao with an attached configuration
      */
-    @Inject
     public VehiclesDao(Configuration configuration) {
         super(Vehicles.VEHICLES, com.tesis.jooq.tables.pojos.Vehicles.class, configuration);
-    }
-
-    public List<com.tesis.jooq.tables.pojos.Vehicles> findAllActives(){
-        return DSL
-                .using(configuration())
-                .selectFrom(Vehicles.VEHICLES)
-                .where(Vehicles.VEHICLES.DELETED_AT.isNull())
-                .fetch()
-                .map(mapper());
     }
 
     /**

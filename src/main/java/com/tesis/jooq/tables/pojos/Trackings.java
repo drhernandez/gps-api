@@ -4,12 +4,8 @@
 package com.tesis.jooq.tables.pojos;
 
 
-import com.tesis.exceptions.ParseArgsException;
-import com.tesis.utils.JsonUtils;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import javax.annotation.Generated;
 
@@ -27,10 +23,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings implements Serializable {
 
-    private static final long serialVersionUID = -1544448419;
+    private static final long serialVersionUID = -993127719;
 
     private Integer   id;
-    private Integer   deviceId;
+    private Long      deviceId;
     private Float     lat;
     private Float     long_;
     private Integer   sat;
@@ -51,7 +47,7 @@ public class Trackings implements Serializable {
 
     public Trackings(
         Integer   id,
-        Integer   deviceId,
+        Long      deviceId,
         Float     lat,
         Float     long_,
         Integer   sat,
@@ -67,20 +63,6 @@ public class Trackings implements Serializable {
         this.time = time;
     }
 
-    public Trackings(String[] args) throws ParseArgsException {
-        try {
-            this.id = null;
-            this.deviceId = Integer.valueOf(args[0]);
-            this.lat = Float.valueOf(args[1]);
-            this.long_ = Float.valueOf(args[2]);
-            this.sat = Integer.valueOf(args[3]);
-            this.hdop = Integer.valueOf(args[4]);
-            this.time = Timestamp.valueOf(LocalDateTime.now());
-        } catch (Exception e) {
-            throw new ParseArgsException("Cannot create new tracking from args: " + JsonUtils.INSTANCE.GSON().toJson(args));
-        }
-    }
-
     public Integer getId() {
         return this.id;
     }
@@ -89,11 +71,11 @@ public class Trackings implements Serializable {
         this.id = id;
     }
 
-    public Integer getDeviceId() {
+    public Long getDeviceId() {
         return this.deviceId;
     }
 
-    public void setDeviceId(Integer deviceId) {
+    public void setDeviceId(Long deviceId) {
         this.deviceId = deviceId;
     }
 

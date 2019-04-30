@@ -38,7 +38,7 @@ create table DEVICES(
 
 create table TRACKINGS(
 	id serial primary key not null,
-	device_id serial references DEVICES(id) on delete restrict not null,
+	device_id bigint references DEVICES(id) on delete restrict not null,
 	lat real not null,
 	long real  not null,
 	sat integer not null,
