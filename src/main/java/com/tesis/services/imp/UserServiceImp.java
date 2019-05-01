@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
-import com.tesis.jooq.tables.daos.UsersDao;
+import com.tesis.daos.UserDaoExt;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
@@ -21,7 +21,7 @@ public class UserServiceImp implements UserService {
     Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
 
     @Inject
-    UsersDao usersDao;
+    UserDaoExt usersDao;
 
     public ResponseDTO<List<Users>> getUsers() {
         return new ResponseDTO(usersDao.findAllActives(), null);

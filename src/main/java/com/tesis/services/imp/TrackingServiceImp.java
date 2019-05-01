@@ -30,7 +30,7 @@ public class TrackingServiceImp implements TrackingService {
     }
 
     @Override
-    public ResponseDTO<List<Trackings>> getTrackingsByDeviceID(Integer deviceID) {
+    public ResponseDTO<List<Trackings>> getTrackingsByDeviceID(Long deviceID) {
 
         ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO();
         responseDTO.model = trakingsDao.fetchByDeviceId(deviceID);

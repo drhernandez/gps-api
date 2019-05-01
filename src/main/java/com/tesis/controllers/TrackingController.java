@@ -56,13 +56,13 @@ public class TrackingController {
     public Object getTrackingsByDeviceID(Request request, Response response) throws ApiException {
 
         String param = request.params("device_id");
-        Integer deviceID;
+        Long deviceID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: TrackingController.getTrackingsByDeviceID]");
         }
 
         try {
-            deviceID = Integer.valueOf(param);
+            deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: TrackingController.getTrackingsByDeviceID]");
         }

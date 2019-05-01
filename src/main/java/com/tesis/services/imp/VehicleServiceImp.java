@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
-import com.tesis.jooq.tables.daos.VehiclesDao;
+import com.tesis.daos.VehicleDaoExt;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.VehicleService;
@@ -21,7 +21,7 @@ public class VehicleServiceImp implements VehicleService {
     Logger logger = LoggerFactory.getLogger(VehicleServiceImp.class);
 
     @Inject
-    VehiclesDao vehiclesDao;
+    VehicleDaoExt vehiclesDao;
 
     public ResponseDTO<List<Vehicles>> getVehicles() {
         return new ResponseDTO(vehiclesDao.findAllActives(), null);
