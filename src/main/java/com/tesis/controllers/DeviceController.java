@@ -17,6 +17,17 @@ public class DeviceController {
     @Inject
     DevicesService devicesService;
 
+    public Object createDevice(Request request, Response response) throws ApiException {
+        Devices device = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Devices.class);
+        ResponseDTO<Devices> responseDTO = devicesService.createDevice(device);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
     public Object getDevices(Request request, Response response) throws ApiException {
 
         ResponseDTO<List<Devices>> responseDTO = devicesService.getDevices();

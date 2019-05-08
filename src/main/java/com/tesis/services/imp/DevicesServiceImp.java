@@ -11,7 +11,6 @@ import com.tesis.services.DevicesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.ws.Response;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,9 +20,23 @@ public class DevicesServiceImp implements DevicesService {
 
     Logger logger = LoggerFactory.getLogger(DevicesServiceImp.class);
 
-
     @Inject
     DeviceDaoExt devicesDao;
+
+    @Override
+    public ResponseDTO<Devices> createDevice(Devices device) {
+        ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
+
+        try {
+            devicesDao.insert(device);
+            responseDTO.model = device;
+        } catch (Exception e) {
+            logger.error(String.format("No se pudo guardar el device %s", device.toString()));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el device.");
+        }
+
+        return responseDTO;
+    }
 
     public ResponseDTO<List<Devices>> getDevices() {
         return new ResponseDTO(devicesDao.findAllActives(), null);
