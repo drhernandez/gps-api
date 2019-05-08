@@ -40,8 +40,8 @@ public class VehicleServiceImp implements VehicleService {
             vehiclesDao.insert(Vehicle);
             responseDTO.model = Vehicle;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el usuario %s", Vehicle.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el usuario.");
+            logger.error(String.format("No se pudo guardar el vehiculo %s", Vehicle.toString()));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el vehiculo.");
         }
 
         return responseDTO;
@@ -60,22 +60,20 @@ public class VehicleServiceImp implements VehicleService {
             vehiclesDao.update(Vehicle);
             responseDTO.model = Vehicle;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo modificar el usuario %s", Vehicle.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el usuario.");
+            logger.error(String.format("No se pudo modificar el vahiculo %s", Vehicle.toString()));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el vehiculo.");
         }
         return responseDTO;
     }
 
     @Override
-    public ResponseDTO<Vehicles> deleteVehicle(Integer VehicleID) {
+    public ResponseDTO<Vehicles> deleteVehicle(Integer vehicleID) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
         try {
-            Vehicles Vehicle = vehiclesDao.fetchOneById(VehicleID);
-            Vehicle.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
-            vehiclesDao.update(Vehicle);
+            vehiclesDao.deleteVehicle(vehicleID);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar el usuario %s", VehicleID));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el usuario.");
+            logger.error(String.format("No se pudo eliminar el vehiculo %s", vehicleID));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el vehiculo.");
         }
         return responseDTO;
     }
