@@ -23,9 +23,9 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users implements Serializable {
 
-    private static final long serialVersionUID = 866283217;
+    private static final long serialVersionUID = 1292202733;
 
-    private Integer   id;
+    private Long      id;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
     private String    userName;
@@ -54,7 +54,7 @@ public class Users implements Serializable {
     }
 
     public Users(
-        Integer   id,
+        Long      id,
         Timestamp deletedAt,
         Timestamp lastUpdated,
         String    userName,
@@ -79,11 +79,11 @@ public class Users implements Serializable {
         this.email = email;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

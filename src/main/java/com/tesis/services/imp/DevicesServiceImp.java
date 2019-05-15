@@ -42,8 +42,7 @@ public class DevicesServiceImp implements DevicesService {
         return new ResponseDTO(devicesDao.findAllActives(), null);
     }
 
-    @Override
-    public ResponseDTO<Devices> getDeciveByVehicleID(Long deviceID) {
+    public ResponseDTO<Devices> getDeciveByDeviceID(Long deviceID) {
         return new ResponseDTO<Devices>(devicesDao.fetchOneById(deviceID), null);
     }
 
@@ -69,10 +68,10 @@ public class DevicesServiceImp implements DevicesService {
     }
 
     @Override
-    public ResponseDTO<Devices> deleteVehicle(Long deviceId) {
+    public ResponseDTO<Devices> deleteDevice(Long deviceId) {
         ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
         try {
-            devicesDao.deleteVehicle(deviceId);
+            devicesDao.deleteDevice(deviceId);
         }catch (Exception e) {
             logger.error(String.format("No se pudo eliminar el device %s", deviceId));
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el device.");

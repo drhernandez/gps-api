@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices extends TableImpl<DevicesRecord> {
 
-    private static final long serialVersionUID = -643830202;
+    private static final long serialVersionUID = -2119849886;
 
     /**
      * The reference instance of <code>public.devices</code>
@@ -75,7 +75,7 @@ public class Devices extends TableImpl<DevicesRecord> {
     /**
      * The column <code>public.devices.user_id</code>.
      */
-    public final TableField<DevicesRecord, Integer> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('devices_user_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<DevicesRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('devices_user_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.devices.vehicle_id</code>.
@@ -145,7 +145,7 @@ public class Devices extends TableImpl<DevicesRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Identity<DevicesRecord, Integer> getIdentity() {
+    public Identity<DevicesRecord, Long> getIdentity() {
         return Keys.IDENTITY_DEVICES;
     }
 

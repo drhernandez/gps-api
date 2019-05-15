@@ -8,8 +8,8 @@ import java.util.List;
 public interface VehicleService {
 
     ResponseDTO<List<Vehicles>> getVehicles();
-    ResponseDTO<Vehicles> getVehiclesByVehicleID(Integer VehicleID);
+    ResponseDTO<Vehicles> getVehiclesByVehicleID(Long VehicleID);
     ResponseDTO<Vehicles> createVehicle(Vehicles Vehicle);
-    ResponseDTO<Vehicles> updateVehicle(Integer VehicleID, Vehicles Vehicle);
-    ResponseDTO<Vehicles> deleteVehicle(Integer VehicleID);
+    ResponseDTO<Vehicles> updateVehicle(Long VehicleID, Vehicles Vehicle);
+    ResponseDTO<Vehicles> deleteVehicle(Long VehicleID);
 }

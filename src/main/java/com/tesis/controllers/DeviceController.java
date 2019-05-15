@@ -51,7 +51,7 @@ public class DeviceController {
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]");
         }
-        ResponseDTO<Devices> responseDTO = devicesService.getDeciveByVehicleID(deviceID);
+        ResponseDTO<Devices> responseDTO = devicesService.getDeciveByDeviceID(deviceID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -92,7 +92,7 @@ public class DeviceController {
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: deviceController.deleteDevice]");
         }
-        ResponseDTO responseDTO = devicesService.deleteVehicle(deviceID);
+        ResponseDTO responseDTO = devicesService.deleteDevice(deviceID);
         response.status(200);
         return responseDTO.getModelAsJson();
     }

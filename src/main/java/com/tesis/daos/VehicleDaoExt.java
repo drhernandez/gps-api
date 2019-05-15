@@ -8,6 +8,7 @@ import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.Devices;
 
 import java.sql.Timestamp;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,14 +30,15 @@ public class VehicleDaoExt extends VehiclesDao {
                 .map(mapper());
     }
 
-    public void deleteVehicle(Integer vehicleID){
+    public void deleteVehicle(Long vehicleID){
         DSL.using(configuration()).transaction(t1 -> {
+
             t1.dsl().update(Devices.DEVICES)
-                    .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now()))
+                    .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .where(Devices.DEVICES.VEHICLE_ID.eq(Long.valueOf(vehicleID)))
                     .execute();
             t1.dsl().update(Vehicles.VEHICLES)
-                    .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now()))
+                    .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))
                     .execute();
         });

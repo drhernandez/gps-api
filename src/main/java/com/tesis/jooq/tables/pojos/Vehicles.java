@@ -23,9 +23,9 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles implements Serializable {
 
-    private static final long serialVersionUID = -1208318914;
+    private static final long serialVersionUID = -1812978214;
 
-    private Integer   id;
+    private Long      id;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
     private String    type;
@@ -44,7 +44,7 @@ public class Vehicles implements Serializable {
     }
 
     public Vehicles(
-        Integer   id,
+        Long      id,
         Timestamp deletedAt,
         Timestamp lastUpdated,
         String    type,
@@ -59,11 +59,11 @@ public class Vehicles implements Serializable {
         this.model = model;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

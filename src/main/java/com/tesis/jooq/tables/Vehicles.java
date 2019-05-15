@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles extends TableImpl<VehiclesRecord> {
 
-    private static final long serialVersionUID = 844121536;
+    private static final long serialVersionUID = 180721446;
 
     /**
      * The reference instance of <code>public.vehicles</code>
@@ -60,7 +60,7 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
     /**
      * The column <code>public.vehicles.id</code>.
      */
-    public final TableField<VehiclesRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('vehicles_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<VehiclesRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('vehicles_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.vehicles.deleted_at</code>.
@@ -140,7 +140,7 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Identity<VehiclesRecord, Integer> getIdentity() {
+    public Identity<VehiclesRecord, Long> getIdentity() {
         return Keys.IDENTITY_VEHICLES;
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 public interface DevicesService {
     ResponseDTO<Devices> createDevice(Devices device);
     ResponseDTO<List<Devices>> getDevices();
-    ResponseDTO<Devices> getDeciveByVehicleID(Long deviceID);
+    ResponseDTO<Devices> getDeciveByDeviceID(Long deviceID);
     ResponseDTO<Devices> updateDevice(Long deviceID, Devices newDevice);
-    ResponseDTO<Devices> deleteVehicle(Long deviceId);
+    ResponseDTO<Devices> deleteDevice(Long deviceId);
 }

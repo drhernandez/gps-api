@@ -27,7 +27,7 @@ public class VehicleServiceImp implements VehicleService {
         return new ResponseDTO(vehiclesDao.findAllActives(), null);
     }
 
-    public ResponseDTO<Vehicles> getVehiclesByVehicleID(Integer VehicleID) {
+    public ResponseDTO<Vehicles> getVehiclesByVehicleID(Long VehicleID) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO(vehiclesDao.fetchOneById(VehicleID), null);
         return responseDTO;
     }
@@ -48,7 +48,7 @@ public class VehicleServiceImp implements VehicleService {
     }
 
     @Override
-    public ResponseDTO<Vehicles> updateVehicle(Integer VehicleID, Vehicles newData) {
+    public ResponseDTO<Vehicles> updateVehicle(Long VehicleID, Vehicles newData) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
         Vehicles Vehicle = vehiclesDao.fetchOneById(VehicleID);
         Vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
@@ -67,7 +67,7 @@ public class VehicleServiceImp implements VehicleService {
     }
 
     @Override
-    public ResponseDTO<Vehicles> deleteVehicle(Integer vehicleID) {
+    public ResponseDTO<Vehicles> deleteVehicle(Long vehicleID) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
         try {
             vehiclesDao.deleteVehicle(vehicleID);

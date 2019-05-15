@@ -36,13 +36,13 @@ public class VehicleController {
     public Object getVehiclesByVehicleID(Request request, Response response) throws ApiException {
 
         String param = request.params("Vehicle_id");
-        Integer VehicleID;
+        Long VehicleID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]");
         }
 
         try {
-            VehicleID = Integer.valueOf(param);
+            VehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]");
         }
@@ -73,13 +73,13 @@ public class VehicleController {
     public  Object updateVehicle(Request request, Response response) throws ApiException {
 
         String param = request.params("Vehicle_id");
-        Integer VehicleID;
+        Long VehicleID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.updateVehicle]");
         }
 
         try {
-            VehicleID = Integer.valueOf(param);
+            VehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.updateVehicle]");
         }
@@ -94,12 +94,12 @@ public class VehicleController {
 
     public Object deleteVehicle(Request request, Response response) throws  ApiException {
         String param = request.params("Vehicle_id");
-        Integer VehicleID;
+        Long VehicleID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.deleteVehicle]");
         }
         try {
-            VehicleID = Integer.valueOf(param);
+            VehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.deleteVehicle]");
         }

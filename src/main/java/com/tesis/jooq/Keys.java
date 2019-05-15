@@ -39,10 +39,10 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
-    public static final Identity<DevicesRecord, Integer> IDENTITY_DEVICES = Identities0.IDENTITY_DEVICES;
-    public static final Identity<TrackingsRecord, Integer> IDENTITY_TRACKINGS = Identities0.IDENTITY_TRACKINGS;
-    public static final Identity<UsersRecord, Integer> IDENTITY_USERS = Identities0.IDENTITY_USERS;
-    public static final Identity<VehiclesRecord, Integer> IDENTITY_VEHICLES = Identities0.IDENTITY_VEHICLES;
+    public static final Identity<DevicesRecord, Long> IDENTITY_DEVICES = Identities0.IDENTITY_DEVICES;
+    public static final Identity<TrackingsRecord, Long> IDENTITY_TRACKINGS = Identities0.IDENTITY_TRACKINGS;
+    public static final Identity<UsersRecord, Long> IDENTITY_USERS = Identities0.IDENTITY_USERS;
+    public static final Identity<VehiclesRecord, Long> IDENTITY_VEHICLES = Identities0.IDENTITY_VEHICLES;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
@@ -67,10 +67,10 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class Identities0 {
-        public static Identity<DevicesRecord, Integer> IDENTITY_DEVICES = Internal.createIdentity(Devices.DEVICES, Devices.DEVICES.USER_ID);
-        public static Identity<TrackingsRecord, Integer> IDENTITY_TRACKINGS = Internal.createIdentity(Trackings.TRACKINGS, Trackings.TRACKINGS.ID);
-        public static Identity<UsersRecord, Integer> IDENTITY_USERS = Internal.createIdentity(Users.USERS, Users.USERS.ID);
-        public static Identity<VehiclesRecord, Integer> IDENTITY_VEHICLES = Internal.createIdentity(Vehicles.VEHICLES, Vehicles.VEHICLES.ID);
+        public static Identity<DevicesRecord, Long> IDENTITY_DEVICES = Internal.createIdentity(Devices.DEVICES, Devices.DEVICES.USER_ID);
+        public static Identity<TrackingsRecord, Long> IDENTITY_TRACKINGS = Internal.createIdentity(Trackings.TRACKINGS, Trackings.TRACKINGS.ID);
+        public static Identity<UsersRecord, Long> IDENTITY_USERS = Internal.createIdentity(Users.USERS, Users.USERS.ID);
+        public static Identity<VehiclesRecord, Long> IDENTITY_VEHICLES = Internal.createIdentity(Vehicles.VEHICLES, Vehicles.VEHICLES.ID);
     }
 
     private static class UniqueKeys0 {

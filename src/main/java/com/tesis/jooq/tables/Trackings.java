@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings extends TableImpl<TrackingsRecord> {
 
-    private static final long serialVersionUID = 2047350266;
+    private static final long serialVersionUID = 1819310762;
 
     /**
      * The reference instance of <code>public.trackings</code>
@@ -60,7 +60,7 @@ public class Trackings extends TableImpl<TrackingsRecord> {
     /**
      * The column <code>public.trackings.id</code>.
      */
-    public final TableField<TrackingsRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('trackings_id_seq'::regclass)", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<TrackingsRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('trackings_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.trackings.device_id</code>.
@@ -145,7 +145,7 @@ public class Trackings extends TableImpl<TrackingsRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Identity<TrackingsRecord, Integer> getIdentity() {
+    public Identity<TrackingsRecord, Long> getIdentity() {
         return Keys.IDENTITY_TRACKINGS;
     }
 

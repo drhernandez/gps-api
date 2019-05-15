@@ -6,6 +6,7 @@ import com.tesis.jooq.tables.Devices;
 
 import javax.inject.Inject;
 import java.sql.Timestamp;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,16 +30,16 @@ public class DeviceDaoExt extends  DevicesDao{
                 .map(mapper());
     }
 
-    public void deleteVehicle(Long deviceID){
-        Integer vehicleID = Math.toIntExact(fetchOneById(deviceID).getVehicleId());
+    public void deleteDevice(Long deviceID){
+        Long vehicleID = fetchOneById(deviceID).getVehicleId();
 
         DSL.using(configuration()).transaction(t -> {
             t.dsl().update(Vehicles.VEHICLES)
-                    .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now()))
+                    .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))
                     .execute();
             t.dsl().update(Devices.DEVICES)
-                   .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now()))
+                   .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                    .where(Devices.DEVICES.ID.eq(deviceID))
                    .execute();
         });

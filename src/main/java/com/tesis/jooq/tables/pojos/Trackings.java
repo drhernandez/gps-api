@@ -27,9 +27,9 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings implements Serializable {
 
-    private static final long serialVersionUID = -993127719;
+    private static final long serialVersionUID = 1166029105;
 
-    private Integer   id;
+    private Long      id;
     private Long      deviceId;
     private Float     lat;
     private Float     long_;
@@ -50,7 +50,7 @@ public class Trackings implements Serializable {
     }
 
     public Trackings(
-        Integer   id,
+        Long      id,
         Long      deviceId,
         Float     lat,
         Float     long_,
@@ -81,11 +81,11 @@ public class Trackings implements Serializable {
         }
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
