@@ -6,7 +6,6 @@ import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 import com.tesis.utils.JsonUtils;
-import org.jooq.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -37,13 +36,13 @@ public class UserController {
     public Object getUsersByUserID(Request request, Response response) throws ApiException {
 
         String param = request.params("user_id");
-        Integer userID;
+        Long userID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
         }
 
         try {
-            userID = Integer.valueOf(param);
+            userID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getUserByUserID]");
         }
@@ -74,13 +73,13 @@ public class UserController {
     public  Object updateUser(Request request, Response response) throws ApiException {
 
         String param = request.params("user_id");
-        Integer userID;
+        Long userID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.updateUser]");
         }
 
         try {
-            userID = Integer.valueOf(param);
+            userID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.updateUser]");
         }
@@ -95,17 +94,17 @@ public class UserController {
 
     public Object deleteUser(Request request, Response response) throws  ApiException {
         String param = request.params("user_id");
-        Integer userID;
+        Long userID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
         }
         try {
-            userID = Integer.valueOf(param);
+            userID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
         }
         ResponseDTO responseDTO = userService.deleteUser(userID);
         response.status(200);
-        return responseDTO;
+        return responseDTO.getModelAsJson();
     }
 }

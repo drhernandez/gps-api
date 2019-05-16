@@ -19,7 +19,11 @@ public class DevicesRouter implements RouteGroup {
 
         logger.info("Loading devices routes...");
         Spark.path("/devices", () -> {
+            Spark.post("", deviceController::createDevice);
             Spark.get("", deviceController::getDevices);
+            Spark.get("/:device_id", deviceController::getDeciveByDeviceID);
+            Spark.put("/:device_id", deviceController::updateDevice);
+            Spark.delete("/:device_id", deviceController::deleteDevice);
         });
     }
 }

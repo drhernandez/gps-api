@@ -5,6 +5,7 @@ package com.tesis.jooq.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -22,28 +23,88 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles implements Serializable {
 
-    private static final long serialVersionUID = -605036896;
+    private static final long serialVersionUID = -1812978214;
 
-    private Integer id;
+    private Long      id;
+    private Timestamp deletedAt;
+    private Timestamp lastUpdated;
+    private String    type;
+    private String    plate;
+    private String    model;
 
     public Vehicles() {}
 
     public Vehicles(Vehicles value) {
         this.id = value.id;
+        this.deletedAt = value.deletedAt;
+        this.lastUpdated = value.lastUpdated;
+        this.type = value.type;
+        this.plate = value.plate;
+        this.model = value.model;
     }
 
     public Vehicles(
-        Integer id
+        Long      id,
+        Timestamp deletedAt,
+        Timestamp lastUpdated,
+        String    type,
+        String    plate,
+        String    model
     ) {
         this.id = id;
+        this.deletedAt = deletedAt;
+        this.lastUpdated = lastUpdated;
+        this.type = type;
+        this.plate = plate;
+        this.model = model;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Timestamp getDeletedAt() {
+        return this.deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Timestamp getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPlate() {
+        return this.plate;
+    }
+
+    public void setPlate(String plate) {
+        this.plate = plate;
+    }
+
+    public String getModel() {
+        return this.model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     @Override
@@ -51,6 +112,11 @@ public class Vehicles implements Serializable {
         StringBuilder sb = new StringBuilder("Vehicles (");
 
         sb.append(id);
+        sb.append(", ").append(deletedAt);
+        sb.append(", ").append(lastUpdated);
+        sb.append(", ").append(type);
+        sb.append(", ").append(plate);
+        sb.append(", ").append(model);
 
         sb.append(")");
         return sb.toString();

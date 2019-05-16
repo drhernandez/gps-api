@@ -4,10 +4,10 @@
 package com.tesis.jooq.tables.daos;
 
 
-import com.google.inject.Inject;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.records.DevicesRecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -39,7 +39,6 @@ public class DevicesDao extends DAOImpl<DevicesRecord, com.tesis.jooq.tables.poj
     /**
      * Create a new DevicesDao with an attached configuration
      */
-    @Inject
     public DevicesDao(Configuration configuration) {
         super(Devices.DEVICES, com.tesis.jooq.tables.pojos.Devices.class, configuration);
     }
@@ -64,6 +63,20 @@ public class DevicesDao extends DAOImpl<DevicesRecord, com.tesis.jooq.tables.poj
      */
     public com.tesis.jooq.tables.pojos.Devices fetchOneById(Long value) {
         return fetchOne(Devices.DEVICES.ID, value);
+    }
+
+    /**
+     * Fetch records that have <code>deleted_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Devices> fetchByDeletedAt(Timestamp... values) {
+        return fetch(Devices.DEVICES.DELETED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>last_updated IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Devices> fetchByLastUpdated(Timestamp... values) {
+        return fetch(Devices.DEVICES.LAST_UPDATED, values);
     }
 
     /**
