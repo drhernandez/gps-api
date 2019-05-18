@@ -50,7 +50,6 @@ public class DevicesServiceImp implements DevicesService {
     public ResponseDTO<Devices> updateDevice(Long deviceID, Devices newDevice) {
         ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
         Devices device = devicesDao.fetchOneById(deviceID);
-        device.setUserId(newDevice.getUserId());
         device.setDeletedAt(null);
         device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
         device.setVehicleId(newDevice.getVehicleId());
