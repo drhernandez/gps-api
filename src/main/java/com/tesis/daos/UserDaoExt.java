@@ -34,16 +34,16 @@ public class UserDaoExt extends  UsersDao{
         DSL.using(configuration()).transaction(tx -> {
 
             try {
-                List<Long> vehiclesIds = tx.dsl().selectFrom(Devices.DEVICES)
-                        .where(Devices.DEVICES.USER_ID.eq(userID)).fetch(Devices.DEVICES.VEHICLE_ID, Long.class);
+                List<Long> vehiclesIds = tx.dsl().selectFrom(Vehicles.VEHICLES)
+                        .where(Vehicles.VEHICLES.USER_ID.eq(userID)).fetch(Vehicles.VEHICLES.ID, Long.class);
+
+                int devicesUpdateExecution = tx.dsl().update(Devices.DEVICES)
+                        .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                        .where(Devices.DEVICES.VEHICLE_ID.in(vehiclesIds)).execute();
 
                 int vehiclesUpdateExecution = tx.dsl().update(Vehicles.VEHICLES)
                         .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                         .where(Vehicles.VEHICLES.ID.in(vehiclesIds)).execute();
-
-                int devicesUpdateExecution = tx.dsl().update(Devices.DEVICES)
-                        .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
-                        .where(Devices.DEVICES.USER_ID.eq(userID)).execute();
 
                 int userUpdateExecution = tx.dsl().update(Users.USERS)
                         .set(Users.USERS.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))

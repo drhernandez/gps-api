@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles extends TableImpl<VehiclesRecord> {
 
-    private static final long serialVersionUID = 180721446;
+    private static final long serialVersionUID = -1228803295;
 
     /**
      * The reference instance of <code>public.vehicles</code>
@@ -71,6 +71,11 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      * The column <code>public.vehicles.last_updated</code>.
      */
     public final TableField<VehiclesRecord, Timestamp> LAST_UPDATED = createField("last_updated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>public.vehicles.user_id</code>.
+     */
+    public final TableField<VehiclesRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('vehicles_user_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.vehicles.type</code>.
@@ -158,6 +163,18 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
     @Override
     public List<UniqueKey<VehiclesRecord>> getKeys() {
         return Arrays.<UniqueKey<VehiclesRecord>>asList(Keys.VEHICLES_PKEY);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ForeignKey<VehiclesRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<VehiclesRecord, ?>>asList(Keys.VEHICLES__VEHICLES_USER_ID_FKEY);
+    }
+
+    public Users users() {
+        return new Users(this, Keys.VEHICLES__VEHICLES_USER_ID_FKEY);
     }
 
     /**

@@ -4,12 +4,8 @@
 package com.tesis.jooq.tables.pojos;
 
 
-import com.tesis.exceptions.ParseArgsException;
-import com.tesis.utils.JsonUtils;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import javax.annotation.Generated;
 
@@ -27,9 +23,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings implements Serializable {
 
-    private static final long serialVersionUID = 1166029105;
+    private static final long serialVersionUID = -1722364462;
 
     private Long      id;
+    private Timestamp deletedAt;
+    private Timestamp lastUpdated;
     private Long      deviceId;
     private Float     lat;
     private Float     long_;
@@ -41,6 +39,8 @@ public class Trackings implements Serializable {
 
     public Trackings(Trackings value) {
         this.id = value.id;
+        this.deletedAt = value.deletedAt;
+        this.lastUpdated = value.lastUpdated;
         this.deviceId = value.deviceId;
         this.lat = value.lat;
         this.long_ = value.long_;
@@ -51,6 +51,8 @@ public class Trackings implements Serializable {
 
     public Trackings(
         Long      id,
+        Timestamp deletedAt,
+        Timestamp lastUpdated,
         Long      deviceId,
         Float     lat,
         Float     long_,
@@ -59,6 +61,8 @@ public class Trackings implements Serializable {
         Timestamp time
     ) {
         this.id = id;
+        this.deletedAt = deletedAt;
+        this.lastUpdated = lastUpdated;
         this.deviceId = deviceId;
         this.lat = lat;
         this.long_ = long_;
@@ -67,26 +71,28 @@ public class Trackings implements Serializable {
         this.time = time;
     }
 
-    public Trackings(String[] args) throws ParseArgsException {
-        try {
-            this.id = null;
-            this.deviceId = Long.valueOf(args[0]);
-            this.lat = Float.valueOf(args[1]);
-            this.long_ = Float.valueOf(args[2]);
-            this.sat = Integer.valueOf(args[3]);
-            this.hdop = Integer.valueOf(args[4]);
-            this.time = Timestamp.valueOf(LocalDateTime.now());
-        } catch (Exception e) {
-            throw new ParseArgsException("Cannot create new tracking from args: " + JsonUtils.INSTANCE.GSON().toJson(args));
-        }
-    }
-
     public Long getId() {
         return this.id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Timestamp getDeletedAt() {
+        return this.deletedAt;
+    }
+
+    public void setDeletedAt(Timestamp deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Timestamp getLastUpdated() {
+        return this.lastUpdated;
+    }
+
+    public void setLastUpdated(Timestamp lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public Long getDeviceId() {
@@ -142,6 +148,8 @@ public class Trackings implements Serializable {
         StringBuilder sb = new StringBuilder("Trackings (");
 
         sb.append(id);
+        sb.append(", ").append(deletedAt);
+        sb.append(", ").append(lastUpdated);
         sb.append(", ").append(deviceId);
         sb.append(", ").append(lat);
         sb.append(", ").append(long_);

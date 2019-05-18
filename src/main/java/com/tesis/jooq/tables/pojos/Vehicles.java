@@ -23,11 +23,12 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles implements Serializable {
 
-    private static final long serialVersionUID = -1812978214;
+    private static final long serialVersionUID = -499630656;
 
     private Long      id;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
+    private Long      userId;
     private String    type;
     private String    plate;
     private String    model;
@@ -38,6 +39,7 @@ public class Vehicles implements Serializable {
         this.id = value.id;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
+        this.userId = value.userId;
         this.type = value.type;
         this.plate = value.plate;
         this.model = value.model;
@@ -47,6 +49,7 @@ public class Vehicles implements Serializable {
         Long      id,
         Timestamp deletedAt,
         Timestamp lastUpdated,
+        Long      userId,
         String    type,
         String    plate,
         String    model
@@ -54,6 +57,7 @@ public class Vehicles implements Serializable {
         this.id = id;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
+        this.userId = userId;
         this.type = type;
         this.plate = plate;
         this.model = model;
@@ -81,6 +85,14 @@ public class Vehicles implements Serializable {
 
     public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getType() {
@@ -114,6 +126,7 @@ public class Vehicles implements Serializable {
         sb.append(id);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
+        sb.append(", ").append(userId);
         sb.append(", ").append(type);
         sb.append(", ").append(plate);
         sb.append(", ").append(model);

@@ -66,6 +66,20 @@ public class TrackingsDao extends DAOImpl<TrackingsRecord, com.tesis.jooq.tables
     }
 
     /**
+     * Fetch records that have <code>deleted_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByDeletedAt(Timestamp... values) {
+        return fetch(Trackings.TRACKINGS.DELETED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>last_updated IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByLastUpdated(Timestamp... values) {
+        return fetch(Trackings.TRACKINGS.LAST_UPDATED, values);
+    }
+
+    /**
      * Fetch records that have <code>device_id IN (values)</code>
      */
     public List<com.tesis.jooq.tables.pojos.Trackings> fetchByDeviceId(Long... values) {
