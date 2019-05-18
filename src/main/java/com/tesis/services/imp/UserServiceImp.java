@@ -7,19 +7,13 @@ import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.daos.DeviceDaoExt;
 import com.tesis.daos.VehicleDaoExt;
-import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.jooq.tables.pojos.Users;
-import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
-import org.jooq.User;
-import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
-import java.time.Clock;
-import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
 
@@ -30,8 +24,6 @@ public class UserServiceImp implements UserService {
 
     @Inject
     UserDaoExt usersDao;
-    DeviceDaoExt deviceDao;
-    VehicleDaoExt vehicleDao;
 
     public ResponseDTO<List<Users>> getUsers() {
         return new ResponseDTO(usersDao.findAllActives(), null);

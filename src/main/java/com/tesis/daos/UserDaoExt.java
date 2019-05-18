@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.tesis.jooq.tables.Devices;
+import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.daos.UsersDao;
@@ -36,20 +37,25 @@ public class UserDaoExt extends  UsersDao{
             try {
                 List<Long> vehiclesIds = tx.dsl().selectFrom(Vehicles.VEHICLES)
                         .where(Vehicles.VEHICLES.USER_ID.eq(userID)).fetch(Vehicles.VEHICLES.ID, Long.class);
+                List<Long> devicesIds = tx.dsl().selectFrom(Devices.DEVICES)
+                        .where(Devices.DEVICES.VEHICLE_ID.in(vehiclesIds)).fetch(Devices.DEVICES.ID, Long.class);
 
-                int devicesUpdateExecution = tx.dsl().update(Devices.DEVICES)
+                tx.dsl().update(Trackings.TRACKINGS)
+                        .set(Trackings.TRACKINGS.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                        .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
+                        .execute();
+
+                tx.dsl().update(Devices.DEVICES)
                         .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                         .where(Devices.DEVICES.VEHICLE_ID.in(vehiclesIds)).execute();
 
-                int vehiclesUpdateExecution = tx.dsl().update(Vehicles.VEHICLES)
+                tx.dsl().update(Vehicles.VEHICLES)
                         .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                         .where(Vehicles.VEHICLES.ID.in(vehiclesIds)).execute();
 
-                int userUpdateExecution = tx.dsl().update(Users.USERS)
+                tx.dsl().update(Users.USERS)
                         .set(Users.USERS.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                         .where(Users.USERS.ID.eq(userID)).execute();
-
-                logger.info(String.format("Deleted user %s. Execution result: %d", userID, vehiclesUpdateExecution + devicesUpdateExecution + userUpdateExecution));
 
             } catch (Exception e) {
                 logger.error(String.format("[message: Error trying to delete user %s on cascade] [e-message: %s]", userID, e.getMessage()));
