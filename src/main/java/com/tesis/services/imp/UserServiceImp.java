@@ -5,8 +5,6 @@ import com.google.inject.Singleton;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
-import com.tesis.daos.DeviceDaoExt;
-import com.tesis.daos.VehicleDaoExt;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
@@ -14,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
+import java.time.Clock;
 import java.util.List;
 import java.time.LocalDateTime;
 
@@ -53,7 +52,7 @@ public class UserServiceImp implements UserService {
     public ResponseDTO<Users> updateUser(Long userID, Users newData) {
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
         Users user = usersDao.fetchOneById(userID);
-        user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
         user.setDeletedAt(null);
         user.setUserName(newData.getUserName());
         user.setPassword(newData.getPassword());
