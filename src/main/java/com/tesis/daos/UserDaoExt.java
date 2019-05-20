@@ -40,8 +40,7 @@ public class UserDaoExt extends  UsersDao{
                 List<Long> devicesIds = tx.dsl().selectFrom(Devices.DEVICES)
                         .where(Devices.DEVICES.VEHICLE_ID.in(vehiclesIds)).fetch(Devices.DEVICES.ID, Long.class);
 
-                tx.dsl().update(Trackings.TRACKINGS)
-                        .set(Trackings.TRACKINGS.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                tx.dsl().delete(Trackings.TRACKINGS)
                         .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
                         .execute();
 

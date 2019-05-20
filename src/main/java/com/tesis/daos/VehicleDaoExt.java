@@ -37,8 +37,7 @@ public class VehicleDaoExt extends VehiclesDao {
             List<Long> devicesIds = t.dsl().selectFrom(Devices.DEVICES)
                     .where(Devices.DEVICES.VEHICLE_ID.eq(vehicleID))
                     .fetch(Trackings.TRACKINGS.ID, Long.class);
-            t.dsl().update(Trackings.TRACKINGS)
-                    .set(Trackings.TRACKINGS.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+            t.dsl().delete(Trackings.TRACKINGS)
                     .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
                     .execute();
             t.dsl().update(Devices.DEVICES)
