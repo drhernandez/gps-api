@@ -27,11 +27,9 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings implements Serializable {
 
-    private static final long serialVersionUID = -1722364462;
+    private static final long serialVersionUID = 1166029105;
 
     private Long      id;
-    private Timestamp deletedAt;
-    private Timestamp lastUpdated;
     private Long      deviceId;
     private Float     lat;
     private Float     long_;
@@ -43,8 +41,6 @@ public class Trackings implements Serializable {
 
     public Trackings(Trackings value) {
         this.id = value.id;
-        this.deletedAt = value.deletedAt;
-        this.lastUpdated = value.lastUpdated;
         this.deviceId = value.deviceId;
         this.lat = value.lat;
         this.long_ = value.long_;
@@ -55,8 +51,6 @@ public class Trackings implements Serializable {
 
     public Trackings(
         Long      id,
-        Timestamp deletedAt,
-        Timestamp lastUpdated,
         Long      deviceId,
         Float     lat,
         Float     long_,
@@ -65,8 +59,6 @@ public class Trackings implements Serializable {
         Timestamp time
     ) {
         this.id = id;
-        this.deletedAt = deletedAt;
-        this.lastUpdated = lastUpdated;
         this.deviceId = deviceId;
         this.lat = lat;
         this.long_ = long_;
@@ -78,8 +70,6 @@ public class Trackings implements Serializable {
     public Trackings(String[] args) throws ParseArgsException {
         try {
             this.id = null;
-            this.deletedAt = null;
-            this.lastUpdated = null;
             this.deviceId = Long.valueOf(args[0]);
             this.lat = Float.valueOf(args[1]);
             this.long_ = Float.valueOf(args[2]);
@@ -97,22 +87,6 @@ public class Trackings implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Timestamp getDeletedAt() {
-        return this.deletedAt;
-    }
-
-    public void setDeletedAt(Timestamp deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public Timestamp getLastUpdated() {
-        return this.lastUpdated;
-    }
-
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
     }
 
     public Long getDeviceId() {
@@ -168,8 +142,6 @@ public class Trackings implements Serializable {
         StringBuilder sb = new StringBuilder("Trackings (");
 
         sb.append(id);
-        sb.append(", ").append(deletedAt);
-        sb.append(", ").append(lastUpdated);
         sb.append(", ").append(deviceId);
         sb.append(", ").append(lat);
         sb.append(", ").append(long_);

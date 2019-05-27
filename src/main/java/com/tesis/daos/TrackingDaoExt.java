@@ -19,8 +19,7 @@ public class TrackingDaoExt extends TrackingsDao {
         return DSL
                 .using(configuration())
                 .selectFrom(Trackings.TRACKINGS)
-                .where(Trackings.TRACKINGS.DELETED_AT.isNull())
-                .and(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID))
+                .where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID))
                 .fetch()
                 .map(mapper());
     }

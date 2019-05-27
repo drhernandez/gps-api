@@ -38,8 +38,6 @@ create table DEVICES(
 
 create table TRACKINGS(
 	id serial primary key not null,
-	deleted_at timestamp,
-	last_updated timestamp,
 	device_id bigint references DEVICES(id) on delete restrict not null,
 	lat real not null,
 	long real  not null,
