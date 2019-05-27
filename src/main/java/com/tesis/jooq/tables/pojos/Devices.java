@@ -23,12 +23,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices implements Serializable {
 
-    private static final long serialVersionUID = 1366676156;
+    private static final long serialVersionUID = 181225478;
 
     private Long      id;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
-    private Long      userId;
     private Long      vehicleId;
     private String    model;
     private String    softwareVersion;
@@ -39,7 +38,6 @@ public class Devices implements Serializable {
         this.id = value.id;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
-        this.userId = value.userId;
         this.vehicleId = value.vehicleId;
         this.model = value.model;
         this.softwareVersion = value.softwareVersion;
@@ -49,7 +47,6 @@ public class Devices implements Serializable {
         Long      id,
         Timestamp deletedAt,
         Timestamp lastUpdated,
-        Long      userId,
         Long      vehicleId,
         String    model,
         String    softwareVersion
@@ -57,7 +54,6 @@ public class Devices implements Serializable {
         this.id = id;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
-        this.userId = userId;
         this.vehicleId = vehicleId;
         this.model = model;
         this.softwareVersion = softwareVersion;
@@ -85,14 +81,6 @@ public class Devices implements Serializable {
 
     public void setLastUpdated(Timestamp lastUpdated) {
         this.lastUpdated = lastUpdated;
-    }
-
-    public Long getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getVehicleId() {
@@ -126,7 +114,6 @@ public class Devices implements Serializable {
         sb.append(id);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
-        sb.append(", ").append(userId);
         sb.append(", ").append(vehicleId);
         sb.append(", ").append(model);
         sb.append(", ").append(softwareVersion);

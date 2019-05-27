@@ -17,7 +17,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -42,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices extends TableImpl<DevicesRecord> {
 
-    private static final long serialVersionUID = -2119849886;
+    private static final long serialVersionUID = 487009165;
 
     /**
      * The reference instance of <code>public.devices</code>
@@ -71,11 +70,6 @@ public class Devices extends TableImpl<DevicesRecord> {
      * The column <code>public.devices.last_updated</code>.
      */
     public final TableField<DevicesRecord, Timestamp> LAST_UPDATED = createField("last_updated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
-
-    /**
-     * The column <code>public.devices.user_id</code>.
-     */
-    public final TableField<DevicesRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('devices_user_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.devices.vehicle_id</code>.
@@ -145,14 +139,6 @@ public class Devices extends TableImpl<DevicesRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Identity<DevicesRecord, Long> getIdentity() {
-        return Keys.IDENTITY_DEVICES;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UniqueKey<DevicesRecord> getPrimaryKey() {
         return Keys.DEVICES_PKEY;
     }
@@ -170,11 +156,7 @@ public class Devices extends TableImpl<DevicesRecord> {
      */
     @Override
     public List<ForeignKey<DevicesRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<DevicesRecord, ?>>asList(Keys.DEVICES__DEVICES_USER_ID_FKEY, Keys.DEVICES__DEVICES_VEHICLE_ID_FKEY);
-    }
-
-    public Users users() {
-        return new Users(this, Keys.DEVICES__DEVICES_USER_ID_FKEY);
+        return Arrays.<ForeignKey<DevicesRecord, ?>>asList(Keys.DEVICES__DEVICES_VEHICLE_ID_FKEY);
     }
 
     public Vehicles vehicles() {

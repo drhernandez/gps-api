@@ -2,6 +2,7 @@ package com.tesis.daos;
 
 import javax.inject.Inject;
 
+import com.tesis.jooq.tables.Trackings;
 import org.jooq.Configuration;
 import com.tesis.jooq.tables.daos.VehiclesDao;
 import com.tesis.jooq.tables.Vehicles;
@@ -31,13 +32,19 @@ public class VehicleDaoExt extends VehiclesDao {
     }
 
     public void deleteVehicle(Long vehicleID){
-        DSL.using(configuration()).transaction(t1 -> {
+        DSL.using(configuration()).transaction(t -> {
 
-            t1.dsl().update(Devices.DEVICES)
+            List<Long> devicesIds = t.dsl().selectFrom(Devices.DEVICES)
+                    .where(Devices.DEVICES.VEHICLE_ID.eq(vehicleID))
+                    .fetch(Trackings.TRACKINGS.ID, Long.class);
+            t.dsl().delete(Trackings.TRACKINGS)
+                    .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
+                    .execute();
+            t.dsl().update(Devices.DEVICES)
                     .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .where(Devices.DEVICES.VEHICLE_ID.eq(Long.valueOf(vehicleID)))
                     .execute();
-            t1.dsl().update(Vehicles.VEHICLES)
+            t.dsl().update(Vehicles.VEHICLES)
                     .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))
                     .execute();

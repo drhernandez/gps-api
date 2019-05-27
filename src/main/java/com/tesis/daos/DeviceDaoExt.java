@@ -1,5 +1,6 @@
 package com.tesis.daos;
 
+import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.daos.DevicesDao;
 import com.tesis.jooq.tables.Devices;
@@ -34,6 +35,9 @@ public class DeviceDaoExt extends  DevicesDao{
         Long vehicleID = fetchOneById(deviceID).getVehicleId();
 
         DSL.using(configuration()).transaction(t -> {
+            t.dsl().delete(Trackings.TRACKINGS)
+                    .where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID))
+                    .execute();
             t.dsl().update(Vehicles.VEHICLES)
                     .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))

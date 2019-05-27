@@ -53,6 +53,7 @@ public class VehicleServiceImp implements VehicleService {
         Vehicles Vehicle = vehiclesDao.fetchOneById(VehicleID);
         Vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
         Vehicle.setDeletedAt(null);
+        Vehicle.setUserId(newData.getUserId());
         Vehicle.setType(newData.getType());
         Vehicle.setPlate(newData.getPlate());
         Vehicle.setModel(newData.getModel());

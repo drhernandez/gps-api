@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,9 +51,8 @@ public class DevicesServiceImp implements DevicesService {
     public ResponseDTO<Devices> updateDevice(Long deviceID, Devices newDevice) {
         ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
         Devices device = devicesDao.fetchOneById(deviceID);
-        device.setUserId(newDevice.getUserId());
         device.setDeletedAt(null);
-        device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
         device.setVehicleId(newDevice.getVehicleId());
         device.setModel(newDevice.getModel());
         device.setSoftwareVersion(newDevice.getSoftwareVersion());
