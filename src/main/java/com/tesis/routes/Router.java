@@ -1,14 +1,17 @@
 package com.tesis.routes;
 
 import com.google.common.net.MediaType;
-import com.google.inject.Inject;
+import com.google.inject.*;
 import com.tesis.exceptions.ApiException;
 import com.tesis.exceptions.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.RouteGroup;
 import spark.Spark;
 
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.List;
 
 import static com.tesis.enums.ErrorCodes.internal_error;
 import static com.tesis.enums.ErrorCodes.route_not_found;
@@ -18,9 +21,13 @@ public class Router {
     private static final Logger logger = LoggerFactory.getLogger(Router.class);
 
     @Inject
-    GpsRouter gpsRouter;
+    Injector injector;
 
     public void init() {
+
+        // Find all routers binded to the RouterGroup interface and load the routes for each router
+        List<Binding<RouteGroup>> routerBindings = injector.findBindingsByType(TypeLiteral.get(RouteGroup.class));
+        routerBindings.stream().map(binding -> injector.getInstance(binding.getKey())).forEach(RouteGroup::addRoutes);
 
         // Validar el device_id
 //        Spark.before();
@@ -41,6 +48,7 @@ public class Router {
             ApiException apiException = t instanceof ApiException ? (ApiException) t : new ApiException(internal_error.name(), "Internal server error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, t);
             logger.error(apiException.getMessage(), e);
             response.status(apiException.getStatus());
+            response.header("Content-Type", MediaType.JSON_UTF_8.toString());
             response.body(apiException.toJson());
         });
 
@@ -57,7 +65,5 @@ public class Router {
                 response.header("Content-Type", MediaType.JSON_UTF_8.toString());
             }
         }));
-
-        gpsRouter.addRoutes();
     }
 }

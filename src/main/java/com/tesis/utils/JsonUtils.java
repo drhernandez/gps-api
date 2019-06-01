@@ -1,8 +1,10 @@
 package com.tesis.utils;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+import org.codehaus.jackson.type.TypeReference;
+
+import java.util.List;
 
 public enum JsonUtils {
 
@@ -20,5 +22,13 @@ public enum JsonUtils {
 
     public Gson GSON() {
         return gson;
+    }
+
+    public <T> List<T> parseJsonList(JsonElement json, Class<T> clazz) {
+        return gson.fromJson(json, new TypeToken<List<T>>(){}.getType());
+    }
+
+    public <T> T parseJson(JsonElement json, Class<T> clazz) {
+        return gson.fromJson(json, clazz);
     }
 }
