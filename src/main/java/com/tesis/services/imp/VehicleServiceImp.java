@@ -33,14 +33,14 @@ public class VehicleServiceImp implements VehicleService {
     }
 
     @Override
-    public ResponseDTO<Vehicles> createVehicle(Vehicles Vehicle) {
+    public ResponseDTO<Vehicles> createVehicle(Vehicles vehicle) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
 
         try {
-            vehiclesDao.insert(Vehicle);
-            responseDTO.model = Vehicle;
+            vehiclesDao.insert(vehicle);
+            responseDTO.model = vehicle;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el vehiculo %s", Vehicle.toString()));
+            logger.error(String.format("No se pudo guardar el vehiculo %s", vehicle.toString()));
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el vehiculo.");
         }
 
@@ -50,18 +50,20 @@ public class VehicleServiceImp implements VehicleService {
     @Override
     public ResponseDTO<Vehicles> updateVehicle(Long VehicleID, Vehicles newData) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
-        Vehicles Vehicle = vehiclesDao.fetchOneById(VehicleID);
-        Vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        Vehicle.setDeletedAt(null);
-        Vehicle.setUserId(newData.getUserId());
-        Vehicle.setType(newData.getType());
-        Vehicle.setPlate(newData.getPlate());
-        Vehicle.setModel(newData.getModel());
+        Vehicles vehicle = vehiclesDao.fetchOneById(VehicleID);
+        vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        vehicle.setDeletedAt(null);
+        vehicle.setUserId(newData.getUserId());
+        vehicle.setType(newData.getType());
+        vehicle.setPlate(newData.getPlate());
+        vehicle.setModel(newData.getModel());
+        vehicle.setDeviceId(newData.getDeviceId());
+
         try {
-            vehiclesDao.update(Vehicle);
-            responseDTO.model = Vehicle;
+            vehiclesDao.update(vehicle);
+            responseDTO.model = vehicle;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo modificar el vahiculo %s", Vehicle.toString()));
+            logger.error(String.format("No se pudo modificar el vahiculo %s", vehicle.toString()));
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el vehiculo.");
         }
         return responseDTO;

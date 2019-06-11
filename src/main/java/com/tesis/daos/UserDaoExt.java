@@ -37,8 +37,9 @@ public class UserDaoExt extends  UsersDao{
             try {
                 List<Long> vehiclesIds = tx.dsl().selectFrom(Vehicles.VEHICLES)
                         .where(Vehicles.VEHICLES.USER_ID.eq(userID)).fetch(Vehicles.VEHICLES.ID, Long.class);
-                List<Long> devicesIds = tx.dsl().selectFrom(Devices.DEVICES)
-                        .where(Devices.DEVICES.VEHICLE_ID.in(vehiclesIds)).fetch(Devices.DEVICES.ID, Long.class);
+
+                List<Long> devicesIds = tx.dsl().selectFrom(Vehicles.VEHICLES)
+                        .where(Vehicles.VEHICLES.USER_ID.eq(userID)).fetch(Vehicles.VEHICLES.DEVICE_ID, Long.class);
 
                 tx.dsl().delete(Trackings.TRACKINGS)
                         .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
@@ -46,9 +47,10 @@ public class UserDaoExt extends  UsersDao{
 
                 tx.dsl().update(Devices.DEVICES)
                         .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
-                        .where(Devices.DEVICES.VEHICLE_ID.in(vehiclesIds)).execute();
+                        .where(Devices.DEVICES.ID.in(vehiclesIds)).execute();
 
                 tx.dsl().update(Vehicles.VEHICLES)
+                        .set(Vehicles.VEHICLES.DEVICE_ID, (Long) null)
                         .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                         .where(Vehicles.VEHICLES.ID.in(vehiclesIds)).execute();
 

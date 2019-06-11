@@ -53,7 +53,6 @@ public class DevicesServiceImp implements DevicesService {
         Devices device = devicesDao.fetchOneById(deviceID);
         device.setDeletedAt(null);
         device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
-        device.setVehicleId(newDevice.getVehicleId());
         device.setModel(newDevice.getModel());
         device.setSoftwareVersion(newDevice.getSoftwareVersion());
 
