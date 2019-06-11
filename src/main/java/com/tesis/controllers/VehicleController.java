@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
+import com.tesis.services.TrackingService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
 import org.slf4j.Logger;
@@ -21,6 +22,8 @@ public class VehicleController {
 
     @Inject
     VehicleService vehicleService;
+    @Inject
+    TrackingService trackingService;
 
     public Object getVehicles(Request request, Response response) throws ApiException {
 
@@ -104,6 +107,23 @@ public class VehicleController {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.deleteVehicle]");
         }
         ResponseDTO responseDTO = vehicleService.deleteVehicle(VehicleID);
+        response.status(200);
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object getTrackingsByVehicleID(Request request, Response response) throws ApiException {
+        String param = request.params("vehicle_id");
+        Long vehicleID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getTrackingsByVehicleID]");
+        }
+        try {
+            vehicleID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getTrackingsByVehicleID]");
+        }
+
+        ResponseDTO responseDTO = trackingService.getTrackingsByVehicleID(vehicleID);
         response.status(200);
         return responseDTO.getModelAsJson();
     }

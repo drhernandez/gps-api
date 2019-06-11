@@ -5,6 +5,7 @@ import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
+import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ public class UserController {
 
     @Inject
     UserService userService;
+    @Inject
+    VehicleService vehicleService;
 
     public Object getUsers(Request request, Response response) throws ApiException {
 
@@ -70,7 +73,7 @@ public class UserController {
         return responseDTO.getModelAsJson();
     }
 
-    public  Object updateUser(Request request, Response response) throws ApiException {
+    public Object updateUser(Request request, Response response) throws ApiException {
 
         String param = request.params("user_id");
         Long userID;
@@ -104,6 +107,22 @@ public class UserController {
             throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
         }
         ResponseDTO responseDTO = userService.deleteUser(userID);
+        response.status(200);
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object getVehiclesByUserID(Request request, Response response) throws ApiException {
+        String param = request.params("user_id");
+        Long userID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getVehiclesByUserID]");
+        }
+        try {
+            userID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.getVehiclesByUserID]");
+        }
+        ResponseDTO responseDTO = vehicleService.getVehiclesByUserID(userID);
         response.status(200);
         return responseDTO.getModelAsJson();
     }
