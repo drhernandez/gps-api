@@ -80,20 +80,6 @@ public class DevicesDao extends DAOImpl<DevicesRecord, com.tesis.jooq.tables.poj
     }
 
     /**
-     * Fetch records that have <code>vehicle_id IN (values)</code>
-     */
-    public List<com.tesis.jooq.tables.pojos.Devices> fetchByVehicleId(Long... values) {
-        return fetch(Devices.DEVICES.VEHICLE_ID, values);
-    }
-
-    /**
-     * Fetch a unique record that has <code>vehicle_id = value</code>
-     */
-    public com.tesis.jooq.tables.pojos.Devices fetchOneByVehicleId(Long value) {
-        return fetchOne(Devices.DEVICES.VEHICLE_ID, value);
-    }
-
-    /**
      * Fetch records that have <code>model IN (values)</code>
      */
     public List<com.tesis.jooq.tables.pojos.Devices> fetchByModel(String... values) {

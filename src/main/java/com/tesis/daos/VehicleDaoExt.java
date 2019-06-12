@@ -34,18 +34,18 @@ public class VehicleDaoExt extends VehiclesDao {
     public void deleteVehicle(Long vehicleID){
         DSL.using(configuration()).transaction(t -> {
 
-            List<Long> devicesIds = t.dsl().selectFrom(Devices.DEVICES)
-                    .where(Devices.DEVICES.VEHICLE_ID.eq(vehicleID))
-                    .fetch(Trackings.TRACKINGS.ID, Long.class);
-            t.dsl().delete(Trackings.TRACKINGS)
-                    .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
-                    .execute();
+            Long deviceID = t.dsl().selectFrom(Vehicles.VEHICLES)
+                    .where(Vehicles.VEHICLES.ID.eq(vehicleID)).fetchAny(Vehicles.VEHICLES.DEVICE_ID);
+
+            t.dsl().delete(Trackings.TRACKINGS).where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID)).execute();
             t.dsl().update(Devices.DEVICES)
                     .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
-                    .where(Devices.DEVICES.VEHICLE_ID.eq(Long.valueOf(vehicleID)))
+                    .where(Devices.DEVICES.ID.eq(deviceID))
                     .execute();
+
             t.dsl().update(Vehicles.VEHICLES)
                     .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                    .set(Vehicles.VEHICLES.DEVICE_ID, (Long) null)
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))
                     .execute();
         });

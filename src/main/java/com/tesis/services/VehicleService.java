@@ -12,4 +12,5 @@ public interface VehicleService {
     ResponseDTO<Vehicles> createVehicle(Vehicles Vehicle);
     ResponseDTO<Vehicles> updateVehicle(Long VehicleID, Vehicles Vehicle);
     ResponseDTO<Vehicles> deleteVehicle(Long VehicleID);
+    ResponseDTO<List<Vehicles>> getVehiclesByUserID(Long userID);
 }
