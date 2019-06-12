@@ -23,12 +23,13 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles implements Serializable {
 
-    private static final long serialVersionUID = -499630656;
+    private static final long serialVersionUID = -1273811951;
 
     private Long      id;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
     private Long      userId;
+    private Long      deviceId;
     private String    type;
     private String    plate;
     private String    model;
@@ -40,6 +41,7 @@ public class Vehicles implements Serializable {
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
         this.userId = value.userId;
+        this.deviceId = value.deviceId;
         this.type = value.type;
         this.plate = value.plate;
         this.model = value.model;
@@ -50,6 +52,7 @@ public class Vehicles implements Serializable {
         Timestamp deletedAt,
         Timestamp lastUpdated,
         Long      userId,
+        Long      deviceId,
         String    type,
         String    plate,
         String    model
@@ -58,6 +61,7 @@ public class Vehicles implements Serializable {
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
         this.userId = userId;
+        this.deviceId = deviceId;
         this.type = type;
         this.plate = plate;
         this.model = model;
@@ -95,6 +99,14 @@ public class Vehicles implements Serializable {
         this.userId = userId;
     }
 
+    public Long getDeviceId() {
+        return this.deviceId;
+    }
+
+    public void setDeviceId(Long deviceId) {
+        this.deviceId = deviceId;
+    }
+
     public String getType() {
         return this.type;
     }
@@ -127,6 +139,7 @@ public class Vehicles implements Serializable {
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
         sb.append(", ").append(userId);
+        sb.append(", ").append(deviceId);
         sb.append(", ").append(type);
         sb.append(", ").append(plate);
         sb.append(", ").append(model);

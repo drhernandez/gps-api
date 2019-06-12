@@ -32,20 +32,20 @@ public class DeviceDaoExt extends  DevicesDao{
     }
 
     public void deleteDevice(Long deviceID){
-        Long vehicleID = fetchOneById(deviceID).getVehicleId();
 
         DSL.using(configuration()).transaction(t -> {
+
             t.dsl().delete(Trackings.TRACKINGS)
                     .where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID))
-                    .execute();
-            t.dsl().update(Vehicles.VEHICLES)
-                    .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
-                    .where(Vehicles.VEHICLES.ID.eq(vehicleID))
                     .execute();
             t.dsl().update(Devices.DEVICES)
                    .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                    .where(Devices.DEVICES.ID.eq(deviceID))
                    .execute();
+            t.dsl().update(Vehicles.VEHICLES)
+                    .set(Vehicles.VEHICLES.DEVICE_ID, (Long) null)
+                    .where(Vehicles.VEHICLES.DEVICE_ID.eq(deviceID))
+                    .execute();
         });
     }
 }

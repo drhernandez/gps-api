@@ -48,7 +48,6 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<DevicesRecord> DEVICES_PKEY = UniqueKeys0.DEVICES_PKEY;
-    public static final UniqueKey<DevicesRecord> DEVICES_VEHICLE_ID_KEY = UniqueKeys0.DEVICES_VEHICLE_ID_KEY;
     public static final UniqueKey<TrackingsRecord> TRACKINGS_PKEY = UniqueKeys0.TRACKINGS_PKEY;
     public static final UniqueKey<UsersRecord> USERS_PKEY = UniqueKeys0.USERS_PKEY;
     public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = UniqueKeys0.VEHICLES_PKEY;
@@ -57,9 +56,9 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<DevicesRecord, VehiclesRecord> DEVICES__DEVICES_VEHICLE_ID_FKEY = ForeignKeys0.DEVICES__DEVICES_VEHICLE_ID_FKEY;
     public static final ForeignKey<TrackingsRecord, DevicesRecord> TRACKINGS__TRACKINGS_DEVICE_ID_FKEY = ForeignKeys0.TRACKINGS__TRACKINGS_DEVICE_ID_FKEY;
     public static final ForeignKey<VehiclesRecord, UsersRecord> VEHICLES__VEHICLES_USER_ID_FKEY = ForeignKeys0.VEHICLES__VEHICLES_USER_ID_FKEY;
+    public static final ForeignKey<VehiclesRecord, DevicesRecord> VEHICLES__VEHICLES_DEVICE_ID_FKEY = ForeignKeys0.VEHICLES__VEHICLES_DEVICE_ID_FKEY;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
@@ -73,15 +72,14 @@ public class Keys {
 
     private static class UniqueKeys0 {
         public static final UniqueKey<DevicesRecord> DEVICES_PKEY = Internal.createUniqueKey(Devices.DEVICES, "devices_pkey", Devices.DEVICES.ID);
-        public static final UniqueKey<DevicesRecord> DEVICES_VEHICLE_ID_KEY = Internal.createUniqueKey(Devices.DEVICES, "devices_vehicle_id_key", Devices.DEVICES.VEHICLE_ID);
         public static final UniqueKey<TrackingsRecord> TRACKINGS_PKEY = Internal.createUniqueKey(Trackings.TRACKINGS, "trackings_pkey", Trackings.TRACKINGS.ID);
         public static final UniqueKey<UsersRecord> USERS_PKEY = Internal.createUniqueKey(Users.USERS, "users_pkey", Users.USERS.ID);
         public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = Internal.createUniqueKey(Vehicles.VEHICLES, "vehicles_pkey", Vehicles.VEHICLES.ID);
     }
 
     private static class ForeignKeys0 {
-        public static final ForeignKey<DevicesRecord, VehiclesRecord> DEVICES__DEVICES_VEHICLE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.VEHICLES_PKEY, Devices.DEVICES, "devices__devices_vehicle_id_fkey", Devices.DEVICES.VEHICLE_ID);
         public static final ForeignKey<TrackingsRecord, DevicesRecord> TRACKINGS__TRACKINGS_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, Trackings.TRACKINGS, "trackings__trackings_device_id_fkey", Trackings.TRACKINGS.DEVICE_ID);
         public static final ForeignKey<VehiclesRecord, UsersRecord> VEHICLES__VEHICLES_USER_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.USERS_PKEY, Vehicles.VEHICLES, "vehicles__vehicles_user_id_fkey", Vehicles.VEHICLES.USER_ID);
+        public static final ForeignKey<VehiclesRecord, DevicesRecord> VEHICLES__VEHICLES_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, Vehicles.VEHICLES, "vehicles__vehicles_device_id_fkey", Vehicles.VEHICLES.DEVICE_ID);
     }
 }

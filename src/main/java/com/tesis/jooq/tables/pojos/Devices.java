@@ -23,12 +23,11 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices implements Serializable {
 
-    private static final long serialVersionUID = 181225478;
+    private static final long serialVersionUID = -1616586769;
 
     private Long      id;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
-    private Long      vehicleId;
     private String    model;
     private String    softwareVersion;
 
@@ -38,7 +37,6 @@ public class Devices implements Serializable {
         this.id = value.id;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
-        this.vehicleId = value.vehicleId;
         this.model = value.model;
         this.softwareVersion = value.softwareVersion;
     }
@@ -47,14 +45,12 @@ public class Devices implements Serializable {
         Long      id,
         Timestamp deletedAt,
         Timestamp lastUpdated,
-        Long      vehicleId,
         String    model,
         String    softwareVersion
     ) {
         this.id = id;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
-        this.vehicleId = vehicleId;
         this.model = model;
         this.softwareVersion = softwareVersion;
     }
@@ -83,14 +79,6 @@ public class Devices implements Serializable {
         this.lastUpdated = lastUpdated;
     }
 
-    public Long getVehicleId() {
-        return this.vehicleId;
-    }
-
-    public void setVehicleId(Long vehicleId) {
-        this.vehicleId = vehicleId;
-    }
-
     public String getModel() {
         return this.model;
     }
@@ -114,7 +102,6 @@ public class Devices implements Serializable {
         sb.append(id);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
-        sb.append(", ").append(vehicleId);
         sb.append(", ").append(model);
         sb.append(", ").append(softwareVersion);
 
