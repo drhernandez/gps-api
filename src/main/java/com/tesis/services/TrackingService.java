@@ -10,4 +10,5 @@ public interface TrackingService {
     ResponseDTO<List<Trackings>> saveTracking(List<Trackings> trakings);
     ResponseDTO<List<Trackings>> getTrackingsByDeviceID(Long deviceID);
     ResponseDTO<List<Trackings>> getTrackingsByVehicleID(Long vehicleID);
+    ResponseDTO<Trackings> getLocationByVehicleID(Long vehicleID);
 }

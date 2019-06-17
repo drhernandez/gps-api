@@ -50,4 +50,14 @@ public class TrackingServiceImp implements TrackingService {
         responseDTO.model = trakingsDao.fetchByDeviceId(vehicle.getDeviceId());
         return responseDTO;
     }
+
+    @Override
+    public ResponseDTO<Trackings> getLocationByVehicleID(Long vehicleID) {
+        Vehicles vehicle = vehiclesDao.fetchOneById(vehicleID);
+
+        ResponseDTO<Trackings> responseDTO = new ResponseDTO();
+        responseDTO.model = trakingsDao.findLocationByDeviceID(vehicle.getDeviceId());
+
+        return responseDTO;
+    }
 }

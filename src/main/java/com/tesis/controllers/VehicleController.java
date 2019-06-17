@@ -127,4 +127,21 @@ public class VehicleController {
         response.status(200);
         return responseDTO.getModelAsJson();
     }
+
+    public Object getLocationByVehicleID(Request request, Response response) throws ApiException {
+        String param = request.params("vehicle_id");
+        Long vehicleID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getLocationByVehicleID]");
+        }
+        try {
+            vehicleID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getLocationByVehicleID]");
+        }
+
+        ResponseDTO responseDTO = trackingService.getLocationByVehicleID(vehicleID);
+        response.status(200);
+        return responseDTO.getModelAsJson();
+    }
 }
