@@ -23,4 +23,26 @@ public class TrackingDaoExt extends TrackingsDao {
                 .fetch()
                 .map(mapper());
     }
+
+
+    public com.tesis.jooq.tables.pojos.Trackings findLocationByDeviceID(Long deviceID){
+        try {
+            return DSL
+                    .using(configuration())
+                    .selectFrom(Trackings.TRACKINGS)
+                    .where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID))
+                    .orderBy(Trackings.TRACKINGS.TIME.desc())
+                    .fetchAny().map(record -> new com.tesis.jooq.tables.pojos.Trackings(
+                                record.getValue(Trackings.TRACKINGS.ID),
+                                record.getValue(Trackings.TRACKINGS.DEVICE_ID),
+                                record.getValue(Trackings.TRACKINGS.LAT),
+                                record.getValue(Trackings.TRACKINGS.LONG),
+                                record.getValue(Trackings.TRACKINGS.SAT),
+                                record.getValue(Trackings.TRACKINGS.HDOP),
+                                record.getValue(Trackings.TRACKINGS.TIME))
+                    );
+        }catch (Exception e){
+            return null;
+        }
+    }
 }
