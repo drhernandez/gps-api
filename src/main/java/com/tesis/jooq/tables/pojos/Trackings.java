@@ -27,12 +27,13 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Trackings implements Serializable {
 
-    private static final long serialVersionUID = 1166029105;
+    private static final long serialVersionUID = 347598754;
 
     private Long      id;
     private Long      deviceId;
     private Float     lat;
-    private Float     long_;
+    private Float     lng;
+    private Float     speed;
     private Integer   sat;
     private Integer   hdop;
     private Timestamp time;
@@ -43,7 +44,8 @@ public class Trackings implements Serializable {
         this.id = value.id;
         this.deviceId = value.deviceId;
         this.lat = value.lat;
-        this.long_ = value.long_;
+        this.lng = value.lng;
+        this.speed = value.speed;
         this.sat = value.sat;
         this.hdop = value.hdop;
         this.time = value.time;
@@ -53,7 +55,8 @@ public class Trackings implements Serializable {
         Long      id,
         Long      deviceId,
         Float     lat,
-        Float     long_,
+        Float     lng,
+        Float     speed,
         Integer   sat,
         Integer   hdop,
         Timestamp time
@@ -61,7 +64,8 @@ public class Trackings implements Serializable {
         this.id = id;
         this.deviceId = deviceId;
         this.lat = lat;
-        this.long_ = long_;
+        this.lng = lng;
+        this.speed = speed;
         this.sat = sat;
         this.hdop = hdop;
         this.time = time;
@@ -72,7 +76,7 @@ public class Trackings implements Serializable {
             this.id = null;
             this.deviceId = Long.valueOf(args[0]);
             this.lat = Float.valueOf(args[1]);
-            this.long_ = Float.valueOf(args[2]);
+            this.lng = Float.valueOf(args[2]);
             this.sat = Integer.valueOf(args[3]);
             this.hdop = Integer.valueOf(args[4]);
             this.time = Timestamp.valueOf(LocalDateTime.now());
@@ -105,12 +109,20 @@ public class Trackings implements Serializable {
         this.lat = lat;
     }
 
-    public Float getLong() {
-        return this.long_;
+    public Float getLng() {
+        return this.lng;
     }
 
-    public void setLong(Float long_) {
-        this.long_ = long_;
+    public void setLng(Float lng) {
+        this.lng = lng;
+    }
+
+    public Float getSpeed() {
+        return this.speed;
+    }
+
+    public void setSpeed(Float speed) {
+        this.speed = speed;
     }
 
     public Integer getSat() {
@@ -144,7 +156,8 @@ public class Trackings implements Serializable {
         sb.append(id);
         sb.append(", ").append(deviceId);
         sb.append(", ").append(lat);
-        sb.append(", ").append(long_);
+        sb.append(", ").append(lng);
+        sb.append(", ").append(speed);
         sb.append(", ").append(sat);
         sb.append(", ").append(hdop);
         sb.append(", ").append(time);
