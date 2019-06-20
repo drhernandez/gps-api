@@ -10,10 +10,12 @@ import com.tesis.services.DevicesService;
 import com.tesis.services.TrackingService;
 import com.tesis.services.UserService;
 import com.tesis.services.VehicleService;
+import com.tesis.services.AlertService;
 import com.tesis.services.imp.UserServiceImp;
 import com.tesis.services.imp.DevicesServiceImp;
 import com.tesis.services.imp.TrackingServiceImp;
 import com.tesis.services.imp.VehicleServiceImp;
+import com.tesis.services.imp.AlertServiceImp;
 import org.jooq.Configuration;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DefaultConfiguration;
@@ -45,6 +47,7 @@ public class ConfigModule extends AbstractModule {
         bind(DevicesService.class).to(DevicesServiceImp.class);
         bind(UserService.class).to(UserServiceImp.class);
         bind(VehicleService.class).to(VehicleServiceImp.class);
+        bind(AlertService.class).to(AlertServiceImp.class);
     }
 
     @Provides

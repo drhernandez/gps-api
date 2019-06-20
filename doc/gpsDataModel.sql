@@ -1,5 +1,6 @@
 drop table TRACKINGS;
 drop table VEHICLES;
+drop table SPEED_ALERTS;
 drop table DEVICES;
 drop table USERS;
 
@@ -28,6 +29,7 @@ create table DEVICES(
 	software_version varchar(45)
 );
 
+
 create table VEHICLES(
 	id serial primary key not null,
 	deleted_at timestamp,
@@ -55,3 +57,13 @@ create table TRACKINGS(
 );
 
 ALTER TABLE public.trackings ALTER COLUMN id TYPE int8 USING id::int8;
+
+
+create table SPEED_ALERTS(
+	id serial primary key not null, 
+	active boolean not null,
+	speed real,
+	device_id bigint references DEVICES(id) on delete cascade unique
+);
+
+ALTER TABLE public.speed_alerts ALTER COLUMN id TYPE int8 USING id::int8;

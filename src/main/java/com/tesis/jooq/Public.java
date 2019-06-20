@@ -5,6 +5,7 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.Devices;
+import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
@@ -34,7 +35,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -950256301;
+    private static final long serialVersionUID = 2076552136;
 
     /**
      * The reference instance of <code>public</code>
@@ -45,6 +46,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.devices</code>.
      */
     public final Devices DEVICES = com.tesis.jooq.tables.Devices.DEVICES;
+
+    /**
+     * The table <code>public.speed_alerts</code>.
+     */
+    public final SpeedAlerts SPEED_ALERTS = com.tesis.jooq.tables.SpeedAlerts.SPEED_ALERTS;
 
     /**
      * The table <code>public.trackings</code>.
@@ -86,6 +92,7 @@ public class Public extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
+            Sequences.SPEED_ALERTS_ID_SEQ,
             Sequences.TRACKINGS_ID_SEQ,
             Sequences.USERS_ID_SEQ,
             Sequences.VEHICLES_ID_SEQ,
@@ -102,6 +109,7 @@ public class Public extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             Devices.DEVICES,
+            SpeedAlerts.SPEED_ALERTS,
             Trackings.TRACKINGS,
             Users.USERS,
             Vehicles.VEHICLES);
