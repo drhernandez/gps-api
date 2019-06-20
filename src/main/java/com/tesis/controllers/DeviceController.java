@@ -78,6 +78,11 @@ public class DeviceController {
 
         ResponseDTO<Devices> responseDTO = devicesService.updateDevice(deviceID, Vehicle);
 
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 
@@ -94,6 +99,12 @@ public class DeviceController {
         }
         ResponseDTO responseDTO = devicesService.deleteDevice(deviceID);
         response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 }

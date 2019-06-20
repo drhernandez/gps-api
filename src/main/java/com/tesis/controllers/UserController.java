@@ -92,6 +92,11 @@ public class UserController {
 
         ResponseDTO<Users> responseDTO = userService.updateUser(userID, user);
 
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 
@@ -108,6 +113,12 @@ public class UserController {
         }
         ResponseDTO responseDTO = userService.deleteUser(userID);
         response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 
@@ -124,6 +135,12 @@ public class UserController {
         }
         ResponseDTO responseDTO = vehicleService.getVehiclesByUserID(userID);
         response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 }

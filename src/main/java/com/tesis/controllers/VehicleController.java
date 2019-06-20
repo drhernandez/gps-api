@@ -92,6 +92,11 @@ public class VehicleController {
 
         ResponseDTO<Vehicles> responseDTO = vehicleService.updateVehicle(VehicleID, Vehicle);
 
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 
@@ -108,6 +113,12 @@ public class VehicleController {
         }
         ResponseDTO responseDTO = vehicleService.deleteVehicle(VehicleID);
         response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 
@@ -125,6 +136,12 @@ public class VehicleController {
 
         ResponseDTO responseDTO = trackingService.getTrackingsByVehicleID(vehicleID);
         response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 
@@ -142,6 +159,12 @@ public class VehicleController {
 
         ResponseDTO responseDTO = trackingService.getLocationByVehicleID(vehicleID);
         response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
         return responseDTO.getModelAsJson();
     }
 }
