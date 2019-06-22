@@ -25,13 +25,13 @@ public class SpeedAlertDaoExt extends  SpeedAlertsDao{
                 .map(mapper());
     }
 
-    public void deleteSpeedAlert(Long deviceID){
+    public void deleteSpeedAlert(Long speedAlertID){
 
         DSL.using(configuration()).transaction(t -> {
 
             t.dsl().update(SpeedAlerts.SPEED_ALERTS)
                    .set(SpeedAlerts.SPEED_ALERTS.ACTIVE, false)
-                   .where(SpeedAlerts.SPEED_ALERTS.DEVICE_ID.eq(deviceID))
+                   .where(SpeedAlerts.SPEED_ALERTS.ID.eq(speedAlertID))
                    .execute();
         });
     }

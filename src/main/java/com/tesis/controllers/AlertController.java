@@ -39,19 +39,19 @@ public class AlertController {
         return responseDTO.getModelAsJson();
     }
 
-    public Object getSpeedAlertBySpeedAlertID(Request request, Response response) throws ApiException{
-        String param = request.params("speed_alert_id");
+    public Object getSpeedAlertByDeviceID(Request request, Response response) throws ApiException{
+        String param = request.params("device_id");
         Long deviceID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getSpeedAlertByDeviceID]");
         }
 
         try {
             deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getSpeedAlertByDeviceID]");
         }
-        ResponseDTO<SpeedAlerts> responseDTO = alertService.getDeciveBySpeedAlertID(deviceID);
+        ResponseDTO<SpeedAlerts> responseDTO = alertService.getSpeedAlertByDeviceID(deviceID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -62,21 +62,21 @@ public class AlertController {
 
     public Object updateSpeedAlert(Request request, Response response) throws ApiException{
         String param = request.params("speed_alert_id");
-        Long deviceID;
+        Long speedAlertID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.getSpeedAlertBySpeedAlertID]");
         }
 
         try {
-            deviceID = Long.valueOf(param);
+            speedAlertID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.getSpeedAlertBySpeedAlertID]");
         }
 
-        SpeedAlerts Vehicle = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
+        SpeedAlerts speedAlerts = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
         //Add validations
 
-        ResponseDTO<SpeedAlerts> responseDTO = alertService.updateSpeedAlert(deviceID, Vehicle);
+        ResponseDTO<SpeedAlerts> responseDTO = alertService.updateSpeedAlert(speedAlertID, speedAlerts);
 
         if (responseDTO.error != null) {
             response.status(500);
@@ -88,16 +88,16 @@ public class AlertController {
 
     public Object deleteSpeedAlert(Request request, Response response) throws ApiException{
         String param = request.params("speed_alert_id");
-        Long deviceID;
+        Long speedAlertID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.deleteSpeedAlert]");
         }
         try {
-            deviceID = Long.valueOf(param);
+            speedAlertID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.deleteSpeedAlert]");
         }
-        ResponseDTO responseDTO = alertService.deleteSpeedAlert(deviceID);
+        ResponseDTO responseDTO = alertService.deleteSpeedAlert(speedAlertID);
         response.status(200);
 
         if (responseDTO.error != null) {

@@ -40,8 +40,8 @@ public class AlertServiceImp implements AlertService {
         return new ResponseDTO(speedAlertsDao.findAllActives(), null);
     }
 
-    public ResponseDTO<SpeedAlerts> getDeciveBySpeedAlertID(Long speedAlertID) {
-        return new ResponseDTO<SpeedAlerts>(speedAlertsDao.fetchOneById(speedAlertID), null);
+    public ResponseDTO<SpeedAlerts> getSpeedAlertByDeviceID(Long deviceID) {
+        return new ResponseDTO<SpeedAlerts>(speedAlertsDao.fetchOneByDeviceId(deviceID), null);
     }
 
     @Override
@@ -63,12 +63,12 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<SpeedAlerts> deleteSpeedAlert(Long deviceId) {
+    public ResponseDTO<SpeedAlerts> deleteSpeedAlert(Long speedAlertID) {
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
         try {
-            speedAlertsDao.deleteSpeedAlert(deviceId);
+            speedAlertsDao.deleteSpeedAlert(speedAlertID);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar el speedAlert %s", deviceId));
+            logger.error(String.format("No se pudo eliminar el speedAlert %s", speedAlertID));
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el speedAlert.");
         }
         return responseDTO;
