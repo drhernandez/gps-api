@@ -5,7 +5,6 @@ import com.google.inject.Singleton;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.VehicleDaoExt;
-import com.tesis.jooq.tables.daos.TrackingsDao;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.VehicleService;
@@ -38,7 +37,8 @@ public class VehicleServiceImp implements VehicleService {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
 
         try {
-            vehiclesDao.insert(vehicle);
+            //vehiclesDao.insert(vehicle);
+            vehiclesDao.createVehicle(vehicle);
             responseDTO.model = vehicle;
         } catch (Exception e) {
             logger.error(String.format("No se pudo guardar el vehiculo %s", vehicle.toString()));
