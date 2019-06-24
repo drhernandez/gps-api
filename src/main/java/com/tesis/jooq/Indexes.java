@@ -5,6 +5,7 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.Devices;
+import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
@@ -35,6 +36,8 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index DEVICES_PKEY = Indexes0.DEVICES_PKEY;
+    public static final Index MOVEMENT_ALERTS_DEVICE_ID_KEY = Indexes0.MOVEMENT_ALERTS_DEVICE_ID_KEY;
+    public static final Index MOVEMENT_ALERTS_PKEY = Indexes0.MOVEMENT_ALERTS_PKEY;
     public static final Index SPEED_ALERTS_DEVICE_ID_KEY = Indexes0.SPEED_ALERTS_DEVICE_ID_KEY;
     public static final Index SPEED_ALERTS_PKEY = Indexes0.SPEED_ALERTS_PKEY;
     public static final Index TRACKINGS_PKEY = Indexes0.TRACKINGS_PKEY;
@@ -47,6 +50,8 @@ public class Indexes {
 
     private static class Indexes0 {
         public static Index DEVICES_PKEY = Internal.createIndex("devices_pkey", Devices.DEVICES, new OrderField[] { Devices.DEVICES.ID }, true);
+        public static Index MOVEMENT_ALERTS_DEVICE_ID_KEY = Internal.createIndex("movement_alerts_device_id_key", MovementAlerts.MOVEMENT_ALERTS, new OrderField[] { MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID }, true);
+        public static Index MOVEMENT_ALERTS_PKEY = Internal.createIndex("movement_alerts_pkey", MovementAlerts.MOVEMENT_ALERTS, new OrderField[] { MovementAlerts.MOVEMENT_ALERTS.ID }, true);
         public static Index SPEED_ALERTS_DEVICE_ID_KEY = Internal.createIndex("speed_alerts_device_id_key", SpeedAlerts.SPEED_ALERTS, new OrderField[] { SpeedAlerts.SPEED_ALERTS.DEVICE_ID }, true);
         public static Index SPEED_ALERTS_PKEY = Internal.createIndex("speed_alerts_pkey", SpeedAlerts.SPEED_ALERTS, new OrderField[] { SpeedAlerts.SPEED_ALERTS.ID }, true);
         public static Index TRACKINGS_PKEY = Internal.createIndex("trackings_pkey", Trackings.TRACKINGS, new OrderField[] { Trackings.TRACKINGS.ID }, true);

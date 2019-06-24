@@ -2,12 +2,9 @@ package com.tesis.daos;
 
 import javax.inject.Inject;
 
-import com.tesis.jooq.tables.SpeedAlerts;
-import com.tesis.jooq.tables.Trackings;
+import com.tesis.jooq.tables.*;
 import org.jooq.Configuration;
 import com.tesis.jooq.tables.daos.VehiclesDao;
-import com.tesis.jooq.tables.Vehicles;
-import com.tesis.jooq.tables.Devices;
 
 import java.sql.Timestamp;
 import java.time.Clock;
@@ -52,6 +49,17 @@ public class VehicleDaoExt extends VehiclesDao {
                             false,
                             vehicle.getDeviceId(),
                             DEFAULT_SPEED_ALERT)
+                    .execute();
+
+            t.dsl().insertInto(MovementAlerts.MOVEMENT_ALERTS,
+                        MovementAlerts.MOVEMENT_ALERTS.ACTIVE,
+                        MovementAlerts.MOVEMENT_ALERTS.LAT,
+                        MovementAlerts.MOVEMENT_ALERTS.LNG,
+                        MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID)
+                    .values(false,
+                            null,
+                            null,
+                            vehicle.getDeviceId())
                     .execute();
         });
 
