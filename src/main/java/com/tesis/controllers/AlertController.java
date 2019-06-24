@@ -2,6 +2,7 @@ package com.tesis.controllers;
 
 import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
+import com.tesis.jooq.tables.pojos.MovementAlerts;
 import com.tesis.jooq.tables.pojos.SpeedAlerts;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.AlertService;
@@ -18,8 +19,8 @@ public class AlertController {
     AlertService alertService;
 
     public Object createSpeedAlert(Request request, Response response) throws ApiException {
-        SpeedAlerts device = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
-        ResponseDTO<SpeedAlerts> responseDTO = alertService.createSpeedAlert(device);
+        SpeedAlerts speedAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
+        ResponseDTO<SpeedAlerts> responseDTO = alertService.createSpeedAlert(speedAlert);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -87,17 +88,17 @@ public class AlertController {
     }
 
     public Object deleteSpeedAlert(Request request, Response response) throws ApiException{
-        String param = request.params("speed_alert_id");
-        Long speedAlertID;
+        String param = request.params("device_id");
+        Long deviceID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.deleteSpeedAlert]");
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedAlert]");
         }
         try {
-            speedAlertID = Long.valueOf(param);
+            deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.deleteSpeedAlert]");
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedAlert]");
         }
-        ResponseDTO responseDTO = alertService.deleteSpeedAlert(speedAlertID);
+        ResponseDTO responseDTO = alertService.deleteSpeedAlert(deviceID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -107,4 +108,18 @@ public class AlertController {
 
         return responseDTO.getModelAsJson();
     }
+
+
+    public Object createMovementAlert(Request request, Response response) throws ApiException {
+        MovementAlerts movementAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlerts.class);
+        ResponseDTO<MovementAlerts> responseDTO = alertService.createMovementAlert(movementAlert);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+
 }

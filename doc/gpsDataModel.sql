@@ -1,6 +1,7 @@
 drop table TRACKINGS;
 drop table VEHICLES;
 drop table SPEED_ALERTS;
+drop table MOVEMENT_ALERTS;
 drop table DEVICES;
 drop table USERS;
 
@@ -67,3 +68,15 @@ create table SPEED_ALERTS(
 );
 
 ALTER TABLE public.speed_alerts ALTER COLUMN id TYPE int8 USING id::int8;
+
+
+create table MOVEMENT_ALERTS(
+	id serial primary key not null, 
+	active boolean not null,
+	lat real,
+	lng real,
+	device_id bigint references DEVICES(id) on delete cascade unique
+);
+
+ALTER TABLE public.movement_alerts ALTER COLUMN id TYPE int8 USING id::int8;
+

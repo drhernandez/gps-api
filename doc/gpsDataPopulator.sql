@@ -3,6 +3,7 @@ delete from VEHICLES;
 delete from DEVICES;
 delete from USERS;
 delete from SPEED_ALERTS;
+delete from MOVEMENT_ALERTS;
 
 insert into USERS values (10, null, null, 'jose_buendia', 'JoseBuendia1', 'José Arcadio', 'Buendia', '2037374105',
 							'5ta Avenida de Macondo 1', '2034-203401', 'jose_buendia@gmail.com');
@@ -16,6 +17,8 @@ insert into VEHICLES values (10, null, null, 10, 00001, 'Ford Fiesta', 'AA 383 T
 insert into VEHICLES values (11, null, null, 11, 00002, 'Toyota Corolla', 'AD 257 TO', '2019');
 
 insert into SPEED_ALERTS (active, speed, device_id) values (false, 60, 00001);
+
+insert into MOVEMENT_ALERTS (active, lat, lng, device_id) values (false, -31.422068, -64.186497, 00001);
 
 insert into TRACKINGS (device_id, lat, lng, speed, sat, hdop, time)
         values (00001, -31.422108, -64.186429, 10.0, 4 , 246, '10-09-2018 20:51:09.000-03:00');

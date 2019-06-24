@@ -1,5 +1,6 @@
 package com.tesis.services;
 
+import com.tesis.jooq.tables.pojos.MovementAlerts;
 import com.tesis.jooq.tables.pojos.SpeedAlerts;
 import com.tesis.models.ResponseDTO;
 
@@ -11,4 +12,10 @@ public interface AlertService {
     ResponseDTO<SpeedAlerts> getSpeedAlertByDeviceID(Long deviceID);
     ResponseDTO<SpeedAlerts> updateSpeedAlert(Long speedAlertID, SpeedAlerts newSpeedAlert);
     ResponseDTO<SpeedAlerts> deleteSpeedAlert(Long deviceId);
+
+    ResponseDTO<MovementAlerts> createMovementAlert(MovementAlerts movementAlert);
+    ResponseDTO<List<MovementAlerts>> getMovementAlert();
+    ResponseDTO<MovementAlerts> getMovementAlertByDeviceID(Long deviceID);
+    ResponseDTO<MovementAlerts> updateMovementAlert(Long movementAlertID, MovementAlerts newMovementAlert);
+    ResponseDTO<MovementAlerts> deleteMovementAlert(Long deviceId);
 }
