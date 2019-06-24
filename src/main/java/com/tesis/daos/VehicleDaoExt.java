@@ -79,6 +79,11 @@ public class VehicleDaoExt extends VehiclesDao {
                     .where(Devices.DEVICES.ID.eq(deviceID))
                     .execute();
 
+            t.dsl().update(SpeedAlerts.SPEED_ALERTS)
+                    .set(SpeedAlerts.SPEED_ALERTS.ACTIVE, false)
+                    .where(SpeedAlerts.SPEED_ALERTS.DEVICE_ID.eq(deviceID))
+                    .execute();
+
             t.dsl().update(Vehicles.VEHICLES)
                     .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .set(Vehicles.VEHICLES.DEVICE_ID, (Long) null)

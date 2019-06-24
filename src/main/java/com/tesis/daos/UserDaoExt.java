@@ -5,10 +5,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.tesis.jooq.tables.Devices;
-import com.tesis.jooq.tables.Trackings;
-import com.tesis.jooq.tables.Users;
-import com.tesis.jooq.tables.Vehicles;
+import com.tesis.jooq.tables.*;
 import com.tesis.jooq.tables.daos.UsersDao;
 import org.jooq.Configuration;
 import org.jooq.impl.DSL;
@@ -44,6 +41,10 @@ public class UserDaoExt extends  UsersDao{
                 tx.dsl().delete(Trackings.TRACKINGS)
                         .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
                         .execute();
+
+                tx.dsl().update(SpeedAlerts.SPEED_ALERTS)
+                        .set(SpeedAlerts.SPEED_ALERTS.ACTIVE, false)
+                        .where(SpeedAlerts.SPEED_ALERTS.DEVICE_ID.in(devicesIds)).execute();
 
                 tx.dsl().update(Devices.DEVICES)
                         .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
