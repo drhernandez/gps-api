@@ -18,6 +18,8 @@ public class AlertController {
     @Inject
     AlertService alertService;
 
+    //  ----------------  Speed Alert methods ----------------
+
     public Object createSpeedAlert(Request request, Response response) throws ApiException {
         SpeedAlerts speedAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
         ResponseDTO<SpeedAlerts> responseDTO = alertService.createSpeedAlert(speedAlert);
@@ -65,13 +67,13 @@ public class AlertController {
         String param = request.params("speed_alert_id");
         Long speedAlertID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.getSpeedAlertBySpeedAlertID]");
+            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.updateSpeedAlert]");
         }
 
         try {
             speedAlertID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.getSpeedAlertBySpeedAlertID]");
+            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.updateSpeedAlert]");
         }
 
         SpeedAlerts speedAlerts = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
@@ -105,10 +107,10 @@ public class AlertController {
             response.status(500);
             throw responseDTO.error;
         }
-
         return responseDTO.getModelAsJson();
     }
 
+//  ----------------  Movement Alert methods ----------------
 
     public Object createMovementAlert(Request request, Response response) throws ApiException {
         MovementAlerts movementAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlerts.class);
@@ -121,5 +123,83 @@ public class AlertController {
         return responseDTO.getModelAsJson();
     }
 
+    public Object getMovementAlerts(Request request, Response response) throws ApiException {
 
+        ResponseDTO<List<MovementAlerts>> responseDTO = alertService.getMovementAlert();
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object getMovementAlertByDeviceID(Request request, Response response) throws ApiException{
+        String param = request.params("device_id");
+        Long deviceID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getMovementAlertByDeviceID]");
+        }
+
+        try {
+            deviceID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getMovementAlertByDeviceID]");
+        }
+        ResponseDTO<MovementAlerts> responseDTO = alertService.getMovementAlertByDeviceID(deviceID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object updateMovementAlert(Request request, Response response) throws ApiException{
+        String param = request.params("movement_alert_id");
+        Long movementAlertID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_movement_alert_id] [method: AlertController.updateMovementAlert]");
+        }
+
+        try {
+            movementAlertID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_movement_alert_id] [method: AlertController.updateMovementAlert]");
+        }
+
+        MovementAlerts movementAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlerts.class);
+        //Add validations
+
+        ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(movementAlertID, movementAlert);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object deleteMovementAlert(Request request, Response response) throws ApiException{
+        String param = request.params("device_id");
+        Long deviceID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementAlert]");
+        }
+        try {
+            deviceID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementAlert]");
+        }
+        ResponseDTO responseDTO = alertService.deleteMovementAlert(deviceID);
+        response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
 }
