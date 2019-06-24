@@ -5,6 +5,7 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.Devices;
+import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
@@ -29,6 +30,11 @@ public class Tables {
      * The table <code>public.devices</code>.
      */
     public static final Devices DEVICES = com.tesis.jooq.tables.Devices.DEVICES;
+
+    /**
+     * The table <code>public.speed_alerts</code>.
+     */
+    public static final SpeedAlerts SPEED_ALERTS = com.tesis.jooq.tables.SpeedAlerts.SPEED_ALERTS;
 
     /**
      * The table <code>public.trackings</code>.
