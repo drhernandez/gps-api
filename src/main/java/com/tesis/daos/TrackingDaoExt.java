@@ -36,7 +36,8 @@ public class TrackingDaoExt extends TrackingsDao {
                                 record.getValue(Trackings.TRACKINGS.ID),
                                 record.getValue(Trackings.TRACKINGS.DEVICE_ID),
                                 record.getValue(Trackings.TRACKINGS.LAT),
-                                record.getValue(Trackings.TRACKINGS.LONG),
+                                record.getValue(Trackings.TRACKINGS.LNG),
+                                record.getValue(Trackings.TRACKINGS.SPEED),
                                 record.getValue(Trackings.TRACKINGS.SAT),
                                 record.getValue(Trackings.TRACKINGS.HDOP),
                                 record.getValue(Trackings.TRACKINGS.TIME))

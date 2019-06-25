@@ -80,10 +80,17 @@ public class TrackingsDao extends DAOImpl<TrackingsRecord, com.tesis.jooq.tables
     }
 
     /**
-     * Fetch records that have <code>long IN (values)</code>
+     * Fetch records that have <code>lng IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByLong(Float... values) {
-        return fetch(Trackings.TRACKINGS.LONG, values);
+    public List<com.tesis.jooq.tables.pojos.Trackings> fetchByLng(Float... values) {
+        return fetch(Trackings.TRACKINGS.LNG, values);
+    }
+
+    /**
+     * Fetch records that have <code>speed IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Trackings> fetchBySpeed(Float... values) {
+        return fetch(Trackings.TRACKINGS.SPEED, values);
     }
 
     /**

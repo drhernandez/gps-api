@@ -1,5 +1,6 @@
 package com.tesis.daos;
 
+import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.daos.DevicesDao;
@@ -37,6 +38,10 @@ public class DeviceDaoExt extends  DevicesDao{
 
             t.dsl().delete(Trackings.TRACKINGS)
                     .where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID))
+                    .execute();
+            t.dsl().update(SpeedAlerts.SPEED_ALERTS)
+                    .set(SpeedAlerts.SPEED_ALERTS.ACTIVE, false)
+                    .where(SpeedAlerts.SPEED_ALERTS.DEVICE_ID.eq(deviceID))
                     .execute();
             t.dsl().update(Devices.DEVICES)
                    .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
