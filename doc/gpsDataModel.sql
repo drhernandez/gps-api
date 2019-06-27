@@ -1,5 +1,7 @@
 drop table TRACKINGS;
 drop table VEHICLES;
+drop table SPEED_ALERTS_HISTORY;
+drop table MOVEMENT_ALERTS_HISTORY;
 drop table SPEED_ALERTS;
 drop table MOVEMENT_ALERTS;
 drop table DEVICES;
@@ -18,7 +20,6 @@ create table USERS(
 	phone varchar(45) not null,
 	email varchar(45) not null
 );
-
 ALTER TABLE public.users ALTER COLUMN id TYPE int8 USING id::int8;
 
 
@@ -41,7 +42,6 @@ create table VEHICLES(
 	plate varchar(45) not null,
 	model varchar(45)	
 );
-
 ALTER TABLE public.vehicles ALTER COLUMN id TYPE int8 USING id::int8;
 ALTER TABLE public.vehicles ALTER COLUMN user_id TYPE int8 USING user_id::int8;
 
@@ -56,7 +56,6 @@ create table TRACKINGS(
 	hdop integer not null,
 	time timestamp not null
 );
-
 ALTER TABLE public.trackings ALTER COLUMN id TYPE int8 USING id::int8;
 
 
@@ -66,7 +65,6 @@ create table SPEED_ALERTS(
 	speed real,
 	device_id bigint references DEVICES(id) on delete cascade unique
 );
-
 ALTER TABLE public.speed_alerts ALTER COLUMN id TYPE int8 USING id::int8;
 
 
@@ -77,6 +75,19 @@ create table MOVEMENT_ALERTS(
 	lng real,
 	device_id bigint references DEVICES(id) on delete cascade unique
 );
-
 ALTER TABLE public.movement_alerts ALTER COLUMN id TYPE int8 USING id::int8;
 
+
+create table SPEED_ALERTS_HISTORY(
+	time timestamp primary key not null, 
+	alert_id bigint references SPEED_ALERTS(id) on delete cascade,
+	speed real
+);
+
+
+create table MOVEMENT_ALERTS_HISTORY(
+	time timestamp primary key not null, 
+	alert_id bigint references SPEED_ALERTS(id) on delete cascade,
+	lat real,
+	lng real
+);
