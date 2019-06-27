@@ -2,13 +2,11 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.tesis.daos.DeviceDaoExt;
-import com.tesis.daos.MovementAlertDaoExt;
-import com.tesis.daos.SpeedAlertDaoExt;
-import com.tesis.daos.SpeedAlertHistoryDaoExt;
+import com.tesis.daos.*;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.MovementAlerts;
+import com.tesis.jooq.tables.pojos.MovementAlertsHistory;
 import com.tesis.jooq.tables.pojos.SpeedAlerts;
 import com.tesis.jooq.tables.pojos.SpeedAlertsHistory;
 import com.tesis.models.ResponseDTO;
@@ -29,6 +27,8 @@ public class AlertServiceImp implements AlertService {
     MovementAlertDaoExt movementAlertDao;
     @Inject
     SpeedAlertHistoryDaoExt speedAlertsHistoryDao;
+    @Inject
+    MovementAlertHistoryDaoExt movementAlertsHistoryDao;
 
     @Override
     public ResponseDTO<SpeedAlerts> createSpeedAlert(SpeedAlerts speedAlert) {
@@ -166,9 +166,39 @@ public class AlertServiceImp implements AlertService {
         ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
 
         SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceId);
-        speedAlertsHistoryDao.deleteSpeedAlert(speedAlert.getId());
+        speedAlertsHistoryDao.deleteSpeedAlertHistory(speedAlert.getId());
 
         return responseDTO;
     }
 
+    @Override
+    public ResponseDTO<MovementAlertsHistory> createMovementAlertHistory(MovementAlertsHistory movementAlertsHistory) {
+        ResponseDTO<MovementAlertsHistory> responseDTO = new ResponseDTO<>();
+
+        try {
+            movementAlertsHistoryDao.insert(movementAlertsHistory);
+            responseDTO.model = movementAlertsHistory;
+        } catch (Exception e) {
+            logger.error(String.format("No se pudo guardar el movementAlertsHistory %s", movementAlertsHistory.toString()));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el movementAlertHistory.");
+        }
+
+        return responseDTO;
+    }
+
+    @Override
+    public ResponseDTO<List<MovementAlertsHistory>> getMovementAlertHistoryByDeviceID(Long deviceID) {
+        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceID);
+        return new ResponseDTO(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()), null);
+    }
+
+    @Override
+    public ResponseDTO<MovementAlertsHistory> deleteMovementAlertHistory(Long deviceId) {
+        ResponseDTO<MovementAlertsHistory> responseDTO = new ResponseDTO<>();
+
+        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceId);
+        movementAlertsHistoryDao.deleteMovementsAlertHistory(movementAlert.getId());
+
+        return responseDTO;
+    }
 }

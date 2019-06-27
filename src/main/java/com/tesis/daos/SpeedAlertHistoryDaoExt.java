@@ -15,7 +15,7 @@ public class SpeedAlertHistoryDaoExt extends SpeedAlertsHistoryDao{
         super(configuration);
     }
 
-    public void deleteSpeedAlert(Long alertID){
+    public void deleteSpeedAlertHistory(Long alertID){
 
         DSL.using(configuration()).transaction(t -> {
 
