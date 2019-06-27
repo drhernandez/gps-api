@@ -6,7 +6,9 @@ package com.tesis.jooq;
 
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
+import com.tesis.jooq.tables.MovementAlertsHistory;
 import com.tesis.jooq.tables.SpeedAlerts;
+import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
@@ -38,9 +40,19 @@ public class Tables {
     public static final MovementAlerts MOVEMENT_ALERTS = com.tesis.jooq.tables.MovementAlerts.MOVEMENT_ALERTS;
 
     /**
+     * The table <code>public.movement_alerts_history</code>.
+     */
+    public static final MovementAlertsHistory MOVEMENT_ALERTS_HISTORY = com.tesis.jooq.tables.MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY;
+
+    /**
      * The table <code>public.speed_alerts</code>.
      */
     public static final SpeedAlerts SPEED_ALERTS = com.tesis.jooq.tables.SpeedAlerts.SPEED_ALERTS;
+
+    /**
+     * The table <code>public.speed_alerts_history</code>.
+     */
+    public static final SpeedAlertsHistory SPEED_ALERTS_HISTORY = com.tesis.jooq.tables.SpeedAlertsHistory.SPEED_ALERTS_HISTORY;
 
     /**
      * The table <code>public.trackings</code>.

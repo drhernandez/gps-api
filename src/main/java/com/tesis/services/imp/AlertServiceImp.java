@@ -2,12 +2,15 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.tesis.daos.DeviceDaoExt;
 import com.tesis.daos.MovementAlertDaoExt;
 import com.tesis.daos.SpeedAlertDaoExt;
+import com.tesis.daos.SpeedAlertHistoryDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.MovementAlerts;
 import com.tesis.jooq.tables.pojos.SpeedAlerts;
+import com.tesis.jooq.tables.pojos.SpeedAlertsHistory;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.AlertService;
 import org.slf4j.Logger;
@@ -24,6 +27,8 @@ public class AlertServiceImp implements AlertService {
     SpeedAlertDaoExt speedAlertsDao;
     @Inject
     MovementAlertDaoExt movementAlertDao;
+    @Inject
+    SpeedAlertHistoryDaoExt speedAlertsHistoryDao;
 
     @Override
     public ResponseDTO<SpeedAlerts> createSpeedAlert(SpeedAlerts speedAlert) {
@@ -134,4 +139,36 @@ public class AlertServiceImp implements AlertService {
         }
         return responseDTO;
     }
+
+    @Override
+    public ResponseDTO<SpeedAlertsHistory> createSpeedAlertHistory(SpeedAlertsHistory speedAlertsHistory) {
+        ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
+
+        try {
+            speedAlertsHistoryDao.insert(speedAlertsHistory);
+            responseDTO.model = speedAlertsHistory;
+        } catch (Exception e) {
+            logger.error(String.format("No se pudo guardar el speedAlertsHistory %s", speedAlertsHistory.toString()));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el speedAlertHistory.");
+        }
+
+        return responseDTO;
+    }
+
+    @Override
+    public ResponseDTO<List<SpeedAlertsHistory>> getSpeedAlertHistoryByDeviceID(Long deviceID) {
+        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceID);
+        return new ResponseDTO(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()), null);
+    }
+
+    @Override
+    public ResponseDTO<SpeedAlertsHistory> deleteSpeedAlertHistory(Long deviceId) {
+        ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
+
+        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceId);
+        speedAlertsHistoryDao.deleteSpeedAlert(speedAlert.getId());
+
+        return responseDTO;
+    }
+
 }
