@@ -3,7 +3,9 @@ package com.tesis.controllers;
 import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.MovementAlerts;
+import com.tesis.jooq.tables.pojos.MovementAlertsHistory;
 import com.tesis.jooq.tables.pojos.SpeedAlerts;
+import com.tesis.jooq.tables.pojos.SpeedAlertsHistory;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.AlertService;
 import com.tesis.utils.JsonUtils;
@@ -200,6 +202,119 @@ public class AlertController {
             throw responseDTO.error;
         }
 
+        return responseDTO.getModelAsJson();
+    }
+
+
+    //  ----------------  Speed Alert History methods ----------------
+    public Object createSpeedHistory(Request request, Response response) throws ApiException {
+        SpeedAlertsHistory speedAlertsHistory = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlertsHistory.class);
+        ResponseDTO<SpeedAlertsHistory> responseDTO = alertService.createSpeedAlertHistory(speedAlertsHistory);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object getSpeedHistoryByDeviceID(Request request, Response response) throws ApiException {
+        String param = request.params("device_id");
+        Long deviceID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getSpeedHistoryByDeviceID]");
+        }
+
+        try {
+            deviceID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getSpeedHistoryByDeviceID]");
+        }
+
+        ResponseDTO<List<SpeedAlertsHistory>> responseDTO = alertService.getSpeedAlertHistoryByDeviceID(deviceID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object deleteSpeedHistory(Request request, Response response) throws ApiException{
+        String param = request.params("device_id");
+        Long deviceID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedHistory]");
+        }
+        try {
+            deviceID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedHistory]");
+        }
+        ResponseDTO responseDTO = alertService.deleteSpeedAlertHistory(deviceID);
+        response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
+        return responseDTO.getModelAsJson();
+    }
+
+
+    //  ----------------  Movement Alert History methods ----------------
+
+    public Object createMovementHistory(Request request, Response response) throws ApiException {
+        MovementAlertsHistory movementAlertsHistory = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlertsHistory.class);
+        ResponseDTO<MovementAlertsHistory> responseDTO = alertService.createMovementAlertHistory(movementAlertsHistory);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object getMovementHistoryByDeviceID(Request request, Response response) throws ApiException {
+        String param = request.params("device_id");
+        Long deviceID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getMovementHistoryByDeviceID]");
+        }
+
+        try {
+            deviceID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: device_id] [method: AlertController.getMovementHistoryByDeviceID]");
+        }
+
+        ResponseDTO<List<MovementAlertsHistory>> responseDTO = alertService.getMovementAlertHistoryByDeviceID(deviceID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object deleteMovementHistory(Request request, Response response) throws ApiException{
+        String param = request.params("device_id");
+        Long deviceID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementHistory]");
+        }
+        try {
+            deviceID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementHistory]");
+        }
+        ResponseDTO responseDTO = alertService.deleteMovementAlertHistory(deviceID);
+        response.status(200);
+
+        if (responseDTO.error != null) {
+            response.status(500);
+            throw responseDTO.error;
+        }
         return responseDTO.getModelAsJson();
     }
 }

@@ -2,6 +2,8 @@ delete from TRACKINGS;
 delete from VEHICLES;
 delete from DEVICES;
 delete from USERS;
+delete from SPEED_ALERTS_HISTORY;
+delete from MOVEMENT_ALERTS_HISTORY;
 delete from SPEED_ALERTS;
 delete from MOVEMENT_ALERTS;
 
@@ -19,6 +21,10 @@ insert into VEHICLES values (11, null, null, 11, 00002, 'Toyota Corolla', 'AD 25
 insert into SPEED_ALERTS (active, speed, device_id) values (false, 60, 00001);
 
 insert into MOVEMENT_ALERTS (active, lat, lng, device_id) values (false, -31.422068, -64.186497, 00001);
+
+insert into SPEED_ALERTS_HISTORY values (NOW(), 3, 80);
+
+insert into MOVEMENT_ALERTS_HISTORY values (NOW(), 3, -31.422068, -64.186497);
 
 insert into TRACKINGS (device_id, lat, lng, speed, sat, hdop, time)
         values (00001, -31.422108, -64.186429, 10.0, 4 , 246, '10-09-2018 20:51:09.000-03:00');

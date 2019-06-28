@@ -6,7 +6,9 @@ package com.tesis.jooq;
 
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
+import com.tesis.jooq.tables.MovementAlertsHistory;
 import com.tesis.jooq.tables.SpeedAlerts;
+import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
@@ -36,7 +38,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -1839410833;
+    private static final long serialVersionUID = -1841894301;
 
     /**
      * The reference instance of <code>public</code>
@@ -54,9 +56,19 @@ public class Public extends SchemaImpl {
     public final MovementAlerts MOVEMENT_ALERTS = com.tesis.jooq.tables.MovementAlerts.MOVEMENT_ALERTS;
 
     /**
+     * The table <code>public.movement_alerts_history</code>.
+     */
+    public final MovementAlertsHistory MOVEMENT_ALERTS_HISTORY = com.tesis.jooq.tables.MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY;
+
+    /**
      * The table <code>public.speed_alerts</code>.
      */
     public final SpeedAlerts SPEED_ALERTS = com.tesis.jooq.tables.SpeedAlerts.SPEED_ALERTS;
+
+    /**
+     * The table <code>public.speed_alerts_history</code>.
+     */
+    public final SpeedAlertsHistory SPEED_ALERTS_HISTORY = com.tesis.jooq.tables.SpeedAlertsHistory.SPEED_ALERTS_HISTORY;
 
     /**
      * The table <code>public.trackings</code>.
@@ -117,7 +129,9 @@ public class Public extends SchemaImpl {
         return Arrays.<Table<?>>asList(
             Devices.DEVICES,
             MovementAlerts.MOVEMENT_ALERTS,
+            MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY,
             SpeedAlerts.SPEED_ALERTS,
+            SpeedAlertsHistory.SPEED_ALERTS_HISTORY,
             Trackings.TRACKINGS,
             Users.USERS,
             Vehicles.VEHICLES);

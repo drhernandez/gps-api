@@ -30,6 +30,14 @@ public class AlertRouter implements RouteGroup {
             Spark.get("/movements/:device_id", alertController::getMovementAlertByDeviceID);
             Spark.put("/movements/:movement_alert_id", alertController::updateMovementAlert);
             Spark.delete("/movements/:device_id", alertController::deleteMovementAlert);
+
+            Spark.post("/speeds/history", alertController::createSpeedHistory);
+            Spark.get("/speeds/:device_id/history", alertController::getSpeedHistoryByDeviceID);
+            Spark.delete("/speeds/:device_id/history", alertController::deleteSpeedHistory);
+
+            Spark.post("/movement/history", alertController::createMovementHistory);
+            Spark.get("/movement/:device_id/history", alertController::getMovementHistoryByDeviceID);
+            Spark.delete("/movement/:device_id/history", alertController::deleteMovementHistory);
         });
     }
 }
