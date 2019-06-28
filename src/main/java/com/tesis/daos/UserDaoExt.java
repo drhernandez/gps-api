@@ -38,13 +38,26 @@ public class UserDaoExt extends  UsersDao{
                 List<Long> devicesIds = tx.dsl().selectFrom(Vehicles.VEHICLES)
                         .where(Vehicles.VEHICLES.USER_ID.eq(userID)).fetch(Vehicles.VEHICLES.DEVICE_ID, Long.class);
 
+                List<Long> speedAlertIds = tx.dsl().selectFrom(SpeedAlerts.SPEED_ALERTS)
+                        .where(SpeedAlerts.SPEED_ALERTS.DEVICE_ID.in(devicesIds)).fetch(SpeedAlerts.SPEED_ALERTS.ID, Long.class);
+                List<Long> movementAlertIds = tx.dsl().selectFrom(MovementAlerts.MOVEMENT_ALERTS)
+                        .where(MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID.in(devicesIds)).fetch(MovementAlerts.MOVEMENT_ALERTS.ID, Long.class);
+
                 tx.dsl().delete(Trackings.TRACKINGS)
                         .where(Trackings.TRACKINGS.DEVICE_ID.in(devicesIds))
                         .execute();
 
+                tx.dsl().delete(SpeedAlertsHistory.SPEED_ALERTS_HISTORY)
+                        .where(SpeedAlertsHistory.SPEED_ALERTS_HISTORY.ALERT_ID.in(speedAlertIds)).execute();
+                tx.dsl().delete(MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY)
+                        .where(MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.ALERT_ID.in(movementAlertIds)).execute();
+
                 tx.dsl().update(SpeedAlerts.SPEED_ALERTS)
                         .set(SpeedAlerts.SPEED_ALERTS.ACTIVE, false)
                         .where(SpeedAlerts.SPEED_ALERTS.DEVICE_ID.in(devicesIds)).execute();
+                tx.dsl().update(MovementAlerts.MOVEMENT_ALERTS)
+                        .set(MovementAlerts.MOVEMENT_ALERTS.ACTIVE, false)
+                        .where(MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID.in(devicesIds)).execute();
 
                 tx.dsl().update(Devices.DEVICES)
                         .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
