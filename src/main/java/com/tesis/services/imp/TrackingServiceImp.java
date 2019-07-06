@@ -9,6 +9,7 @@ import com.tesis.jooq.tables.pojos.Trackings;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.TrackingService;
+import com.tesis.utils.filters.TrackingFilters;
 
 import java.util.List;
 
@@ -58,6 +59,13 @@ public class TrackingServiceImp implements TrackingService {
         ResponseDTO<Trackings> responseDTO = new ResponseDTO();
         responseDTO.model = trakingsDao.findLocationByDeviceID(vehicle.getDeviceId());
 
+        return responseDTO;
+    }
+
+    @Override
+    public ResponseDTO<List<Trackings>> trackingSearch(TrackingFilters filters) {
+        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO<>();
+        responseDTO.model = trakingsDao.findByFilters(filters);
         return responseDTO;
     }
 }
