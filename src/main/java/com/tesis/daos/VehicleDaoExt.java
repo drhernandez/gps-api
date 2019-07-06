@@ -81,6 +81,22 @@ public class VehicleDaoExt extends VehiclesDao {
             Long deviceID = t.dsl().selectFrom(Vehicles.VEHICLES)
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID)).fetchAny(Vehicles.VEHICLES.DEVICE_ID);
 
+            Long speedAlertID = t.dsl().selectFrom(SpeedAlerts.SPEED_ALERTS)
+                    .where(SpeedAlerts.SPEED_ALERTS.DEVICE_ID.eq(deviceID))
+                    .fetchAny(SpeedAlerts.SPEED_ALERTS.ID);
+
+            t.dsl().delete(SpeedAlertsHistory.SPEED_ALERTS_HISTORY)
+                    .where(SpeedAlertsHistory.SPEED_ALERTS_HISTORY.ALERT_ID.eq(speedAlertID))
+                    .execute();
+
+            Long movementAlertID = t.dsl().selectFrom(MovementAlerts.MOVEMENT_ALERTS)
+                    .where(MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID.eq(deviceID))
+                    .fetchAny(MovementAlerts.MOVEMENT_ALERTS.ID);
+
+            t.dsl().delete(MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY)
+                    .where(MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.ALERT_ID.eq(movementAlertID))
+                    .execute();
+
             t.dsl().delete(Trackings.TRACKINGS).where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID)).execute();
             t.dsl().update(Devices.DEVICES)
                     .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))

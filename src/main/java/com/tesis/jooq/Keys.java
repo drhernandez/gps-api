@@ -6,12 +6,16 @@ package com.tesis.jooq;
 
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
+import com.tesis.jooq.tables.MovementAlertsHistory;
 import com.tesis.jooq.tables.SpeedAlerts;
+import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.records.DevicesRecord;
+import com.tesis.jooq.tables.records.MovementAlertsHistoryRecord;
 import com.tesis.jooq.tables.records.MovementAlertsRecord;
+import com.tesis.jooq.tables.records.SpeedAlertsHistoryRecord;
 import com.tesis.jooq.tables.records.SpeedAlertsRecord;
 import com.tesis.jooq.tables.records.TrackingsRecord;
 import com.tesis.jooq.tables.records.UsersRecord;
@@ -56,8 +60,10 @@ public class Keys {
     public static final UniqueKey<DevicesRecord> DEVICES_PKEY = UniqueKeys0.DEVICES_PKEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = UniqueKeys0.MOVEMENT_ALERTS_PKEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = UniqueKeys0.MOVEMENT_ALERTS_DEVICE_ID_KEY;
+    public static final UniqueKey<MovementAlertsHistoryRecord> MOVEMENT_ALERTS_HISTORY_PKEY = UniqueKeys0.MOVEMENT_ALERTS_HISTORY_PKEY;
     public static final UniqueKey<SpeedAlertsRecord> SPEED_ALERTS_PKEY = UniqueKeys0.SPEED_ALERTS_PKEY;
     public static final UniqueKey<SpeedAlertsRecord> SPEED_ALERTS_DEVICE_ID_KEY = UniqueKeys0.SPEED_ALERTS_DEVICE_ID_KEY;
+    public static final UniqueKey<SpeedAlertsHistoryRecord> SPEED_ALERTS_HISTORY_PKEY = UniqueKeys0.SPEED_ALERTS_HISTORY_PKEY;
     public static final UniqueKey<TrackingsRecord> TRACKINGS_PKEY = UniqueKeys0.TRACKINGS_PKEY;
     public static final UniqueKey<UsersRecord> USERS_PKEY = UniqueKeys0.USERS_PKEY;
     public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = UniqueKeys0.VEHICLES_PKEY;
@@ -67,7 +73,9 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<MovementAlertsRecord, DevicesRecord> MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY = ForeignKeys0.MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY;
+    public static final ForeignKey<MovementAlertsHistoryRecord, SpeedAlertsRecord> MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY = ForeignKeys0.MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY;
     public static final ForeignKey<SpeedAlertsRecord, DevicesRecord> SPEED_ALERTS__SPEED_ALERTS_DEVICE_ID_FKEY = ForeignKeys0.SPEED_ALERTS__SPEED_ALERTS_DEVICE_ID_FKEY;
+    public static final ForeignKey<SpeedAlertsHistoryRecord, SpeedAlertsRecord> SPEED_ALERTS_HISTORY__SPEED_ALERTS_HISTORY_ALERT_ID_FKEY = ForeignKeys0.SPEED_ALERTS_HISTORY__SPEED_ALERTS_HISTORY_ALERT_ID_FKEY;
     public static final ForeignKey<TrackingsRecord, DevicesRecord> TRACKINGS__TRACKINGS_DEVICE_ID_FKEY = ForeignKeys0.TRACKINGS__TRACKINGS_DEVICE_ID_FKEY;
     public static final ForeignKey<VehiclesRecord, UsersRecord> VEHICLES__VEHICLES_USER_ID_FKEY = ForeignKeys0.VEHICLES__VEHICLES_USER_ID_FKEY;
     public static final ForeignKey<VehiclesRecord, DevicesRecord> VEHICLES__VEHICLES_DEVICE_ID_FKEY = ForeignKeys0.VEHICLES__VEHICLES_DEVICE_ID_FKEY;
@@ -88,8 +96,10 @@ public class Keys {
         public static final UniqueKey<DevicesRecord> DEVICES_PKEY = Internal.createUniqueKey(Devices.DEVICES, "devices_pkey", Devices.DEVICES.ID);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_pkey", MovementAlerts.MOVEMENT_ALERTS.ID);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_device_id_key", MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID);
+        public static final UniqueKey<MovementAlertsHistoryRecord> MOVEMENT_ALERTS_HISTORY_PKEY = Internal.createUniqueKey(MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY, "movement_alerts_history_pkey", MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.TIME);
         public static final UniqueKey<SpeedAlertsRecord> SPEED_ALERTS_PKEY = Internal.createUniqueKey(SpeedAlerts.SPEED_ALERTS, "speed_alerts_pkey", SpeedAlerts.SPEED_ALERTS.ID);
         public static final UniqueKey<SpeedAlertsRecord> SPEED_ALERTS_DEVICE_ID_KEY = Internal.createUniqueKey(SpeedAlerts.SPEED_ALERTS, "speed_alerts_device_id_key", SpeedAlerts.SPEED_ALERTS.DEVICE_ID);
+        public static final UniqueKey<SpeedAlertsHistoryRecord> SPEED_ALERTS_HISTORY_PKEY = Internal.createUniqueKey(SpeedAlertsHistory.SPEED_ALERTS_HISTORY, "speed_alerts_history_pkey", SpeedAlertsHistory.SPEED_ALERTS_HISTORY.TIME);
         public static final UniqueKey<TrackingsRecord> TRACKINGS_PKEY = Internal.createUniqueKey(Trackings.TRACKINGS, "trackings_pkey", Trackings.TRACKINGS.ID);
         public static final UniqueKey<UsersRecord> USERS_PKEY = Internal.createUniqueKey(Users.USERS, "users_pkey", Users.USERS.ID);
         public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = Internal.createUniqueKey(Vehicles.VEHICLES, "vehicles_pkey", Vehicles.VEHICLES.ID);
@@ -97,7 +107,9 @@ public class Keys {
 
     private static class ForeignKeys0 {
         public static final ForeignKey<MovementAlertsRecord, DevicesRecord> MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, MovementAlerts.MOVEMENT_ALERTS, "movement_alerts__movement_alerts_device_id_fkey", MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID);
+        public static final ForeignKey<MovementAlertsHistoryRecord, SpeedAlertsRecord> MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.SPEED_ALERTS_PKEY, MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY, "movement_alerts_history__movement_alerts_history_alert_id_fkey", MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.ALERT_ID);
         public static final ForeignKey<SpeedAlertsRecord, DevicesRecord> SPEED_ALERTS__SPEED_ALERTS_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, SpeedAlerts.SPEED_ALERTS, "speed_alerts__speed_alerts_device_id_fkey", SpeedAlerts.SPEED_ALERTS.DEVICE_ID);
+        public static final ForeignKey<SpeedAlertsHistoryRecord, SpeedAlertsRecord> SPEED_ALERTS_HISTORY__SPEED_ALERTS_HISTORY_ALERT_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.SPEED_ALERTS_PKEY, SpeedAlertsHistory.SPEED_ALERTS_HISTORY, "speed_alerts_history__speed_alerts_history_alert_id_fkey", SpeedAlertsHistory.SPEED_ALERTS_HISTORY.ALERT_ID);
         public static final ForeignKey<TrackingsRecord, DevicesRecord> TRACKINGS__TRACKINGS_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, Trackings.TRACKINGS, "trackings__trackings_device_id_fkey", Trackings.TRACKINGS.DEVICE_ID);
         public static final ForeignKey<VehiclesRecord, UsersRecord> VEHICLES__VEHICLES_USER_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.USERS_PKEY, Vehicles.VEHICLES, "vehicles__vehicles_user_id_fkey", Vehicles.VEHICLES.USER_ID);
         public static final ForeignKey<VehiclesRecord, DevicesRecord> VEHICLES__VEHICLES_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, Vehicles.VEHICLES, "vehicles__vehicles_device_id_fkey", Vehicles.VEHICLES.DEVICE_ID);
