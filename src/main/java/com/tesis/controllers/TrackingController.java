@@ -4,10 +4,11 @@ import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
 import com.tesis.exceptions.ParseArgsException;
 import com.tesis.jooq.tables.pojos.Trackings;
+import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.Search;
 import com.tesis.services.TrackingService;
 import com.tesis.utils.filters.TrackingFilters;
-import org.jooq.meta.derby.sys.Sys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -18,7 +19,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static com.tesis.config.Constants.MIN_LENGTH;
 
@@ -86,6 +86,7 @@ public class TrackingController {
         Integer sat, hdop;
         Timestamp timeStart, timeEnd;
         TrackingFilters filters = new TrackingFilters();
+        Pagination pagination = new Pagination();
 
 
         try {
@@ -102,11 +103,14 @@ public class TrackingController {
             timeEnd = request.queryParams("time_end") != null ? Timestamp.valueOf(request.queryParams("time_end")) : null;
             filters.setTimeEnd(timeEnd);
 
+            pagination.setPage(request.queryParams("page") != null ? Integer.valueOf(request.queryParams("page")) : null);
+            pagination.setLimit(request.queryParams("limit") != null ? Integer.valueOf(request.queryParams("limit")) : null);
+
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_params] [method: TrackingController.trackingSearch]");
         }
 
-        ResponseDTO<List<Trackings>> responseDTO = trackingService.trackingSearch(filters);
+        ResponseDTO<Search> responseDTO = trackingService.trackingSearch(filters, pagination);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;

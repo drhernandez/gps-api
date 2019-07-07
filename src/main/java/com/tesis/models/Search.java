@@ -6,12 +6,13 @@ import java.util.List;
 public class Search<T> {
 
     private List<T> data = new ArrayList<>();
-    private Paging paging;
+    private Pagination paging;
 
     public Search() {
+        paging = new Pagination();
     }
 
-    public Search(List<T> data, Paging paging) {
+    public Search(List<T> data, Pagination paging) {
         this.data = data;
         this.paging = paging;
     }
@@ -24,11 +25,11 @@ public class Search<T> {
         this.data = data;
     }
 
-    public Paging getPaging() {
+    public Pagination getPaging() {
         return paging;
     }
 
-    public void setPaging(Paging paging) {
+    public void setPaging(Pagination paging) {
         this.paging = paging;
     }
 }

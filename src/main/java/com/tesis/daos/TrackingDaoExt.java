@@ -2,11 +2,10 @@ package com.tesis.daos;
 
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.daos.TrackingsDao;
+import com.tesis.models.Pagination;
 import com.tesis.utils.filters.TrackingFilters;
 import org.jooq.Condition;
 import org.jooq.Configuration;
-import org.jooq.SelectConditionStep;
-import org.jooq.True;
 import org.jooq.impl.DSL;
 
 import javax.inject.Inject;
@@ -51,7 +50,7 @@ public class TrackingDaoExt extends TrackingsDao {
         }
     }
 
-    public List<com.tesis.jooq.tables.pojos.Trackings> findByFilters(TrackingFilters filters){
+    public List<com.tesis.jooq.tables.pojos.Trackings> findByFilters(TrackingFilters filters, Pagination pagination){
 
         Condition searchCondition = DSL.trueCondition();
 
@@ -68,11 +67,25 @@ public class TrackingDaoExt extends TrackingsDao {
         if (filters.getTimeEnd() != null)
             searchCondition = searchCondition.and(Trackings.TRACKINGS.TIME.le(filters.getTimeEnd()));
 
+        int count = DSL.using(configuration())
+                .fetchCount(DSL.selectFrom(Trackings.TRACKINGS).where(searchCondition));
 
-        return DSL.using(configuration())
-                .selectFrom(Trackings.TRACKINGS)
-                .where(searchCondition)
-                .fetch()
-                .map(mapper());
+        pagination.setTotal(count);
+
+        if (pagination.getLimit() == null || pagination.getPage() == null)
+            return DSL.using(configuration())
+                    .selectFrom(Trackings.TRACKINGS)
+                    .where(searchCondition)
+                    .fetch()
+                    .map(mapper());
+
+        else
+            return DSL.using(configuration())
+                    .selectFrom(Trackings.TRACKINGS)
+                    .where(searchCondition)
+                    .limit(pagination.getLimit())
+                    .offset((pagination.getPage()-1)*pagination.getLimit())
+                    .fetch()
+                    .map(mapper());
     }
 }

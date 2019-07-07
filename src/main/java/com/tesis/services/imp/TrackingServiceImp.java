@@ -4,10 +4,11 @@ import com.google.inject.Inject;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.TrackingDaoExt;
-import com.tesis.jooq.tables.daos.VehiclesDao;
 import com.tesis.jooq.tables.pojos.Trackings;
 import com.tesis.jooq.tables.pojos.Vehicles;
+import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.Search;
 import com.tesis.services.TrackingService;
 import com.tesis.utils.filters.TrackingFilters;
 
@@ -63,9 +64,9 @@ public class TrackingServiceImp implements TrackingService {
     }
 
     @Override
-    public ResponseDTO<List<Trackings>> trackingSearch(TrackingFilters filters) {
-        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO<>();
-        responseDTO.model = trakingsDao.findByFilters(filters);
+    public ResponseDTO<Search> trackingSearch(TrackingFilters filters, Pagination pagination) {
+        ResponseDTO<Search> responseDTO = new ResponseDTO<>();
+        responseDTO.model = new Search<>(trakingsDao.findByFilters(filters, pagination), pagination);
         return responseDTO;
     }
 }
