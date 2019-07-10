@@ -2,6 +2,9 @@ package com.tesis.daos;
 
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.daos.TrackingsDao;
+import com.tesis.models.Pagination;
+import com.tesis.utils.filters.TrackingFilters;
+import org.jooq.Condition;
 import org.jooq.Configuration;
 import org.jooq.impl.DSL;
 
@@ -45,5 +48,44 @@ public class TrackingDaoExt extends TrackingsDao {
         }catch (Exception e){
             return null;
         }
+    }
+
+    public List<com.tesis.jooq.tables.pojos.Trackings> findByFilters(TrackingFilters filters, Pagination pagination){
+
+        Condition searchCondition = DSL.trueCondition();
+
+        if (filters.getDeviceId() != null)
+            searchCondition = searchCondition.and(Trackings.TRACKINGS.DEVICE_ID.eq(filters.getDeviceId()));
+        if (filters.getSpeed() != null)
+            searchCondition = searchCondition.and(Trackings.TRACKINGS.SPEED.eq(filters.getSpeed()));
+        if (filters.getSat() != null)
+            searchCondition = searchCondition.and(Trackings.TRACKINGS.SAT.eq(filters.getSat()));
+        if (filters.getHdop() != null)
+            searchCondition = searchCondition.and(Trackings.TRACKINGS.HDOP.eq(filters.getHdop()));
+        if (filters.getTimeStart() != null)
+            searchCondition = searchCondition.and(Trackings.TRACKINGS.TIME.ge(filters.getTimeStart()));
+        if (filters.getTimeEnd() != null)
+            searchCondition = searchCondition.and(Trackings.TRACKINGS.TIME.le(filters.getTimeEnd()));
+
+        int count = DSL.using(configuration())
+                .fetchCount(DSL.selectFrom(Trackings.TRACKINGS).where(searchCondition));
+
+        pagination.setTotal(count);
+
+        if (pagination.getLimit() == null || pagination.getPage() == null)
+            return DSL.using(configuration())
+                    .selectFrom(Trackings.TRACKINGS)
+                    .where(searchCondition)
+                    .fetch()
+                    .map(mapper());
+
+        else
+            return DSL.using(configuration())
+                    .selectFrom(Trackings.TRACKINGS)
+                    .where(searchCondition)
+                    .limit(pagination.getLimit())
+                    .offset((pagination.getPage()-1)*pagination.getLimit())
+                    .fetch()
+                    .map(mapper());
     }
 }
