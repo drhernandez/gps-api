@@ -29,7 +29,9 @@ public class VehicleRouter implements RouteGroup {
             Spark.get("/:vehicle_id/location", vehicleController::getLocationByVehicleID);
 
             Spark.get("/:vehicle_id/alerts/speed", vehicleController::getSpeedAlertByVehicleID);
+            Spark.get("/:vehicle_id/alerts/speed/history", vehicleController::getSpeedHistoryByVehicleID);
             Spark.get("/:vehicle_id/alerts/movement", vehicleController::getMovementAlertByVehicleID);
+            Spark.get("/:vehicle_id/alerts/movement/history", vehicleController::getMovementHistoryByVehicleID);
 
         });
     }

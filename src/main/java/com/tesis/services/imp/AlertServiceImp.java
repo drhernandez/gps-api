@@ -157,8 +157,9 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<List<SpeedAlertsHistory>> getSpeedAlertHistoryByDeviceID(Long deviceID) {
-        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceID);
+    public ResponseDTO<List<SpeedAlertsHistory>> getSpeedHistoryByVehicleID(Long vehicleID) {
+        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId());
         return new ResponseDTO(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()), null);
     }
 
@@ -188,8 +189,9 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<List<MovementAlertsHistory>> getMovementAlertHistoryByDeviceID(Long deviceID) {
-        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceID);
+    public ResponseDTO<List<MovementAlertsHistory>> getMovementHistoryByVehicleID(Long vehicleID) {
+        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId());
         return new ResponseDTO(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()), null);
     }
 

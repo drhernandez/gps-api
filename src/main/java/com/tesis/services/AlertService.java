@@ -22,11 +22,11 @@ public interface AlertService {
     ResponseDTO<MovementAlerts> deleteMovementAlert(Long deviceId);
 
     ResponseDTO<SpeedAlertsHistory> createSpeedAlertHistory(SpeedAlertsHistory speedAlertsHistory);
-    ResponseDTO<List<SpeedAlertsHistory>> getSpeedAlertHistoryByDeviceID(Long deviceID);
+    ResponseDTO<List<SpeedAlertsHistory>> getSpeedHistoryByVehicleID(Long vehicleID);
     ResponseDTO<SpeedAlertsHistory> deleteSpeedAlertHistory(Long deviceId);
 
     ResponseDTO<MovementAlertsHistory> createMovementAlertHistory(MovementAlertsHistory speedAlertsHistory);
-    ResponseDTO<List<MovementAlertsHistory>> getMovementAlertHistoryByDeviceID(Long deviceID);
+    ResponseDTO<List<MovementAlertsHistory>> getMovementHistoryByVehicleID(Long vehicleID);
     ResponseDTO<MovementAlertsHistory> deleteMovementAlertHistory(Long deviceId);
 
 }
