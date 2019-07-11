@@ -2,8 +2,11 @@ package com.tesis.controllers;
 
 import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
+import com.tesis.jooq.tables.pojos.MovementAlerts;
+import com.tesis.jooq.tables.pojos.SpeedAlerts;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
+import com.tesis.services.AlertService;
 import com.tesis.services.TrackingService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
@@ -24,6 +27,8 @@ public class VehicleController {
     VehicleService vehicleService;
     @Inject
     TrackingService trackingService;
+    @Inject
+    AlertService alertService;
 
     public Object getVehicles(Request request, Response response) throws ApiException {
 
@@ -167,4 +172,47 @@ public class VehicleController {
 
         return responseDTO.getModelAsJson();
     }
+
+    public Object getSpeedAlertByVehicleID(Request request, Response response) throws ApiException{
+        String param = request.params("vehicle_id");
+        Long vehicleID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedAlertByVehicleID]");
+        }
+
+        try {
+            vehicleID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedAlertByVehicleID]");
+        }
+        ResponseDTO<SpeedAlerts> responseDTO = alertService.getSpeedAlertByVehicleID(vehicleID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object getMovementAlertByVehicleID(Request request, Response response) throws ApiException{
+        String param = request.params("vehicle_id");
+        Long vehicleID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementAlertByVehicleID]");
+        }
+
+        try {
+            vehicleID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementAlertByVehicleID]");
+        }
+        ResponseDTO<MovementAlerts> responseDTO = alertService.getMovementAlertByVehicleID(vehicleID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
 }
