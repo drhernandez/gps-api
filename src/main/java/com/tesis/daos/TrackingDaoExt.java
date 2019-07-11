@@ -72,20 +72,12 @@ public class TrackingDaoExt extends TrackingsDao {
 
         pagination.setTotal(count);
 
-        if (pagination.getLimit() == null || pagination.getPage() == null)
-            return DSL.using(configuration())
-                    .selectFrom(Trackings.TRACKINGS)
-                    .where(searchCondition)
-                    .fetch()
-                    .map(mapper());
-
-        else
-            return DSL.using(configuration())
-                    .selectFrom(Trackings.TRACKINGS)
-                    .where(searchCondition)
-                    .limit(pagination.getLimit())
-                    .offset((pagination.getPage()-1)*pagination.getLimit())
-                    .fetch()
-                    .map(mapper());
+        return DSL.using(configuration())
+                .selectFrom(Trackings.TRACKINGS)
+                .where(searchCondition)
+                .limit(pagination.getLimit())
+                .offset((pagination.getPage()-1)*pagination.getLimit())
+                .fetch()
+                .map(mapper());
     }
 }

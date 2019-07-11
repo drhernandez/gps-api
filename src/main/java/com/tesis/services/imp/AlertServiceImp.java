@@ -5,10 +5,7 @@ import com.google.inject.Singleton;
 import com.tesis.daos.*;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
-import com.tesis.jooq.tables.pojos.MovementAlerts;
-import com.tesis.jooq.tables.pojos.MovementAlertsHistory;
-import com.tesis.jooq.tables.pojos.SpeedAlerts;
-import com.tesis.jooq.tables.pojos.SpeedAlertsHistory;
+import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.AlertService;
 import org.slf4j.Logger;
@@ -21,6 +18,8 @@ public class AlertServiceImp implements AlertService {
 
     Logger logger = LoggerFactory.getLogger(AlertServiceImp.class);
 
+    @Inject
+    VehicleDaoExt vehicleDaoExt;
     @Inject
     SpeedAlertDaoExt speedAlertsDao;
     @Inject
@@ -49,8 +48,9 @@ public class AlertServiceImp implements AlertService {
         return new ResponseDTO(speedAlertsDao.findAllActives(), null);
     }
 
-    public ResponseDTO<SpeedAlerts> getSpeedAlertByDeviceID(Long deviceID) {
-        return new ResponseDTO<SpeedAlerts>(speedAlertsDao.fetchOneByDeviceId(deviceID), null);
+    public ResponseDTO<SpeedAlerts> getSpeedAlertByVehicleID(Long vehicleID) {
+        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        return new ResponseDTO<SpeedAlerts>(speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId()), null);
     }
 
     @Override
@@ -105,8 +105,9 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<MovementAlerts> getMovementAlertByDeviceID(Long deviceID) {
-        return new ResponseDTO<MovementAlerts>(movementAlertDao.fetchOneByDeviceId(deviceID), null);
+    public ResponseDTO<MovementAlerts> getMovementAlertByVehicleID(Long vehicleID) {
+        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        return new ResponseDTO<MovementAlerts>(movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId()), null);
     }
 
     @Override
@@ -156,8 +157,9 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<List<SpeedAlertsHistory>> getSpeedAlertHistoryByDeviceID(Long deviceID) {
-        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceID);
+    public ResponseDTO<List<SpeedAlertsHistory>> getSpeedHistoryByVehicleID(Long vehicleID) {
+        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId());
         return new ResponseDTO(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()), null);
     }
 
@@ -187,8 +189,9 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<List<MovementAlertsHistory>> getMovementAlertHistoryByDeviceID(Long deviceID) {
-        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceID);
+    public ResponseDTO<List<MovementAlertsHistory>> getMovementHistoryByVehicleID(Long vehicleID) {
+        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId());
         return new ResponseDTO(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()), null);
     }
 

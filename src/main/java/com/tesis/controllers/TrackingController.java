@@ -103,8 +103,8 @@ public class TrackingController {
             timeEnd = request.queryParams("time_end") != null ? Timestamp.valueOf(request.queryParams("time_end")) : null;
             filters.setTimeEnd(timeEnd);
 
-            pagination.setPage(request.queryParams("page") != null ? Integer.valueOf(request.queryParams("page")) : null);
-            pagination.setLimit(request.queryParams("limit") != null ? Integer.valueOf(request.queryParams("limit")) : null);
+            pagination.setPage(request.queryParams("page") != null ? Integer.valueOf(request.queryParams("page")) : 1);
+            pagination.setLimit(request.queryParams("limit") != null ? Integer.valueOf(request.queryParams("limit")) : 10);
 
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_params] [method: TrackingController.trackingSearch]");
