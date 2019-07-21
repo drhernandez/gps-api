@@ -12,9 +12,9 @@ SoftwareSerial gsm_gprs(7, 8);
 // Offset hours from gps time (UTC)
 const int offset = -3;   // UTC-3
 
-// Array size
+// Weft size
 const int SIZE = 9;
-const char EXAMPLE[61] = "00004,-31.4109,-64.1897,4,246,10-09-2018T20:51:09:000-03:00;";
+const char EXAMPLE[66] = "00004,-31.4109,-64.1897,0.00,4,246,10-09-2018T20:51:09:000-03:00;";
 char DEVICE_ID[6] = "00002";
 const int MEMORY_SIZE = (strlen(EXAMPLE)) * SIZE * sizeof(char) + 1;
 
@@ -22,7 +22,7 @@ time_t prevDisplay = 0; // when the digital clock was displayed
 
 void setup() {
   Serial.begin(9600);
-  gsm_gprs.begin(19200);   // Setting the baud rate of GSM Module
+  gsm_gprs.begin(19200);
   delay(1000);
   Serial.write("iniciando\n");
   init_gprs_module();
@@ -34,8 +34,6 @@ void loop() {
   bool newData = false;
   buildWeft();
   Serial.write("finishhhh\n");
-  delay(500);
-
 }
 
 void init_gprs_module() {
@@ -91,7 +89,7 @@ void send_http_post(char *coordinate_data) {
 }
 
 
-void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[], char *coordinate_data) {
+void parseCoordinates(float flat, float flon, float speed, int sat, int hdop, char device_id[], char *coordinate_data) {
   char value[9];
   char sz[30];
   strcat(coordinate_data, device_id);
@@ -100,6 +98,9 @@ void parseCoordinates(float flat, float flon, int sat, int hdop, char device_id[
   strcat(coordinate_data, value);
   strcat(coordinate_data, ",");
   dtostrf(flon, 8, 4, value);
+  strcat(coordinate_data, value);
+  strcat(coordinate_data, ",");
+  dtostrf(speed, 4, 2, value);
   strcat(coordinate_data, value);
   strcat(coordinate_data, ",");
   itoa(sat, value, 10);
@@ -138,7 +139,7 @@ void buildWeft() {
       for (unsigned long start = millis(); millis() - start < 1000;) {
         while (softSerial.available()) {
           char c = softSerial.read();
-          Serial.write(c); // uncomment this line to see the GPS data
+          //Serial.write(c); // uncomment this line to see the GPS data
           if (gps.encode(c)) // validating the sentence
             newData = true;
         }
@@ -161,8 +162,8 @@ void buildWeft() {
           prevDisplay = now();
         }
       }
-      logData(flat, flon);
-      parseCoordinates(flat, flon, gps.satellites(), gps.hdop(), DEVICE_ID, coordinate_data);
+      //logData(flat, flon);
+      parseCoordinates(flat, flon, gps.f_speed_kmph(), gps.satellites(), gps.hdop(), DEVICE_ID, coordinate_data);
      }
     }
 
@@ -184,7 +185,7 @@ void logData(float flat, float flon) {
   Serial.print(" HDOP=");
   Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
   Serial.print(" TIME=");
-  // digital clock display of the time
+
   char sz[30];
   sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00",
           day(), month(), year(), hour(), minute(), second());
