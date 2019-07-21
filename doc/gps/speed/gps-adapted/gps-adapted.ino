@@ -57,7 +57,8 @@ void init_gprs_module() {
   printSerialData();
 }
 
-void send_http_post(char *coordinate_data) { 
+void send_http_post(char *coordinate_data) {
+  /*
   gsm_gprs.println("AT+HTTPINIT");
   delay(100);
   printSerialData();
@@ -83,7 +84,7 @@ void send_http_post(char *coordinate_data) {
   delay(100);
   printSerialData();
   delay(5000);
- 
+  */
   Serial.println(coordinate_data);
 }
 
