@@ -21,6 +21,8 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DefaultConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import spark.RouteGroup;
 
 import java.sql.Connection;
@@ -63,6 +65,11 @@ public class ConfigModule extends AbstractModule {
         server.setRouter(router);
 
         return server;
+    }
+
+    @Provides
+    public PasswordEncoder getPasswordEncoderImplementation(){
+        return new BCryptPasswordEncoder(10);
     }
 
     @Provides @Singleton

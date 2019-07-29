@@ -10,6 +10,7 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Timestamp;
 import java.time.Clock;
@@ -23,6 +24,9 @@ public class UserServiceImp implements UserService {
 
     @Inject
     UserDaoExt usersDao;
+
+    @Inject
+    PasswordEncoder passwordEncoder;
 
     public ResponseDTO<List<Users>> getUsers() {
         return new ResponseDTO(usersDao.findAllActives(), null);
@@ -38,6 +42,7 @@ public class UserServiceImp implements UserService {
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
 
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             usersDao.insert(user);
             responseDTO.model = user;
         } catch (Exception e) {

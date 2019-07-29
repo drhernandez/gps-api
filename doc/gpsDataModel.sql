@@ -12,7 +12,7 @@ create table USERS(
 	deleted_at timestamp,
 	last_updated timestamp,
 	user_name varchar(45) not null,
-	password varchar(45) not null,
+	password varchar(90) not null,
 	name varchar(45) not null,
 	last_name varchar(45) not null,
 	dni varchar(45) not null,
