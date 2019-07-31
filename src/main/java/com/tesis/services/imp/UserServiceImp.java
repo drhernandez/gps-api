@@ -28,6 +28,12 @@ public class UserServiceImp implements UserService {
     @Inject
     PasswordEncoder passwordEncoder;
 
+    public Boolean checkCredentials(String username, String pass){
+        Users user = usersDao.fetchByUserName(username).get(0);
+
+        return passwordEncoder.matches(pass, user.getPassword());
+    }
+
     public ResponseDTO<List<Users>> getUsers() {
         return new ResponseDTO(usersDao.findAllActives(), null);
     }

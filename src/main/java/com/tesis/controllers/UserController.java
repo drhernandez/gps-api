@@ -19,11 +19,29 @@ public class UserController {
 
     private static Logger logger = LoggerFactory.getLogger(TrackingController.class);
 
-
     @Inject
     UserService userService;
     @Inject
     VehicleService vehicleService;
+
+
+    public Object userLogin(Request request, Response response) throws ApiException {
+        String userName = request.queryParams("user_name");
+        String pass = request.queryParams("pass");
+
+        if (StringUtils.isBlank(userName) || StringUtils.isBlank(pass)) {
+            throw new ApiException("invalid_data", "[reason: invalid_credentials] [method: UserController.userLogin]");
+        }
+
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        if(userService.checkCredentials(userName, pass))
+            response.status(200);
+        else
+            response.status(404);
+
+        return responseDTO.getModelAsJson();
+    }
 
     public Object getUsers(Request request, Response response) throws ApiException {
 

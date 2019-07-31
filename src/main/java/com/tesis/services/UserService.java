@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
+    Boolean checkCredentials(String userName, String pass);
     ResponseDTO<List<Users>> getUsers();
     ResponseDTO<Users> getUsersByUserID(Long userID);
     ResponseDTO<Users> createUser(Users user);
