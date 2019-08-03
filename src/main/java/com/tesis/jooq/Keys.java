@@ -66,6 +66,7 @@ public class Keys {
     public static final UniqueKey<SpeedAlertsHistoryRecord> SPEED_ALERTS_HISTORY_PKEY = UniqueKeys0.SPEED_ALERTS_HISTORY_PKEY;
     public static final UniqueKey<TrackingsRecord> TRACKINGS_PKEY = UniqueKeys0.TRACKINGS_PKEY;
     public static final UniqueKey<UsersRecord> USERS_PKEY = UniqueKeys0.USERS_PKEY;
+    public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = UniqueKeys0.USERS_EMAIL_KEY;
     public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = UniqueKeys0.VEHICLES_PKEY;
 
     // -------------------------------------------------------------------------
@@ -102,6 +103,7 @@ public class Keys {
         public static final UniqueKey<SpeedAlertsHistoryRecord> SPEED_ALERTS_HISTORY_PKEY = Internal.createUniqueKey(SpeedAlertsHistory.SPEED_ALERTS_HISTORY, "speed_alerts_history_pkey", SpeedAlertsHistory.SPEED_ALERTS_HISTORY.TIME);
         public static final UniqueKey<TrackingsRecord> TRACKINGS_PKEY = Internal.createUniqueKey(Trackings.TRACKINGS, "trackings_pkey", Trackings.TRACKINGS.ID);
         public static final UniqueKey<UsersRecord> USERS_PKEY = Internal.createUniqueKey(Users.USERS, "users_pkey", Users.USERS.ID);
+        public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = Internal.createUniqueKey(Users.USERS, "users_email_key", Users.USERS.EMAIL);
         public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = Internal.createUniqueKey(Vehicles.VEHICLES, "vehicles_pkey", Vehicles.VEHICLES.ID);
     }
 

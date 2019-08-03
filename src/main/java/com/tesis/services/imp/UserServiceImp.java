@@ -29,7 +29,7 @@ public class UserServiceImp implements UserService {
     PasswordEncoder passwordEncoder;
 
     public Boolean checkCredentials(String username, String pass){
-        Users user = usersDao.fetchByUserName(username).get(0);
+        Users user = usersDao.fetchOneByEmail(username);
 
         return passwordEncoder.matches(pass, user.getPassword());
     }
@@ -65,7 +65,6 @@ public class UserServiceImp implements UserService {
         Users user = usersDao.fetchOneById(userID);
         user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
         user.setDeletedAt(null);
-        user.setUserName(newData.getUserName());
         user.setPassword(newData.getPassword());
         user.setName(newData.getName());
         user.setLastName(newData.getLastName());
