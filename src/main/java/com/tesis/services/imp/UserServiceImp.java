@@ -6,6 +6,7 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.jooq.tables.pojos.Users;
+import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 import org.slf4j.Logger;
@@ -28,10 +29,12 @@ public class UserServiceImp implements UserService {
     @Inject
     PasswordEncoder passwordEncoder;
 
-    public Boolean checkCredentials(String username, String pass){
-        Users user = usersDao.fetchOneByEmail(username);
+    public Boolean checkCredentials(CredentialsDTO credentialsDTO){
+        Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
+        if (user == null)
+            return false;
 
-        return passwordEncoder.matches(pass, user.getPassword());
+        return passwordEncoder.matches(credentialsDTO.getPassword(), user.getPassword());
     }
 
     public ResponseDTO<List<Users>> getUsers() {
