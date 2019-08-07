@@ -4,6 +4,7 @@
 package com.tesis.jooq;
 
 
+import com.tesis.jooq.tables.AccessTokens;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
@@ -12,6 +13,7 @@ import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
+import com.tesis.jooq.tables.records.AccessTokensRecord;
 import com.tesis.jooq.tables.records.DevicesRecord;
 import com.tesis.jooq.tables.records.MovementAlertsHistoryRecord;
 import com.tesis.jooq.tables.records.MovementAlertsRecord;
@@ -57,6 +59,7 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<AccessTokensRecord> ACCESS_TOKENS_PKEY = UniqueKeys0.ACCESS_TOKENS_PKEY;
     public static final UniqueKey<DevicesRecord> DEVICES_PKEY = UniqueKeys0.DEVICES_PKEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = UniqueKeys0.MOVEMENT_ALERTS_PKEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = UniqueKeys0.MOVEMENT_ALERTS_DEVICE_ID_KEY;
@@ -73,6 +76,7 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<AccessTokensRecord, UsersRecord> ACCESS_TOKENS__ACCESS_TOKENS_ID_FKEY = ForeignKeys0.ACCESS_TOKENS__ACCESS_TOKENS_ID_FKEY;
     public static final ForeignKey<MovementAlertsRecord, DevicesRecord> MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY = ForeignKeys0.MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY;
     public static final ForeignKey<MovementAlertsHistoryRecord, SpeedAlertsRecord> MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY = ForeignKeys0.MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY;
     public static final ForeignKey<SpeedAlertsRecord, DevicesRecord> SPEED_ALERTS__SPEED_ALERTS_DEVICE_ID_FKEY = ForeignKeys0.SPEED_ALERTS__SPEED_ALERTS_DEVICE_ID_FKEY;
@@ -94,6 +98,7 @@ public class Keys {
     }
 
     private static class UniqueKeys0 {
+        public static final UniqueKey<AccessTokensRecord> ACCESS_TOKENS_PKEY = Internal.createUniqueKey(AccessTokens.ACCESS_TOKENS, "access_tokens_pkey", AccessTokens.ACCESS_TOKENS.ID);
         public static final UniqueKey<DevicesRecord> DEVICES_PKEY = Internal.createUniqueKey(Devices.DEVICES, "devices_pkey", Devices.DEVICES.ID);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_pkey", MovementAlerts.MOVEMENT_ALERTS.ID);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_device_id_key", MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID);
@@ -108,6 +113,7 @@ public class Keys {
     }
 
     private static class ForeignKeys0 {
+        public static final ForeignKey<AccessTokensRecord, UsersRecord> ACCESS_TOKENS__ACCESS_TOKENS_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.USERS_PKEY, AccessTokens.ACCESS_TOKENS, "access_tokens__access_tokens_id_fkey", AccessTokens.ACCESS_TOKENS.ID);
         public static final ForeignKey<MovementAlertsRecord, DevicesRecord> MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, MovementAlerts.MOVEMENT_ALERTS, "movement_alerts__movement_alerts_device_id_fkey", MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID);
         public static final ForeignKey<MovementAlertsHistoryRecord, SpeedAlertsRecord> MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.SPEED_ALERTS_PKEY, MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY, "movement_alerts_history__movement_alerts_history_alert_id_fkey", MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.ALERT_ID);
         public static final ForeignKey<SpeedAlertsRecord, DevicesRecord> SPEED_ALERTS__SPEED_ALERTS_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, SpeedAlerts.SPEED_ALERTS, "speed_alerts__speed_alerts_device_id_fkey", SpeedAlerts.SPEED_ALERTS.DEVICE_ID);
