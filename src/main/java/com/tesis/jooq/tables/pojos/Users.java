@@ -23,19 +23,18 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users implements Serializable {
 
-    private static final long serialVersionUID = 1292202733;
+    private static final long serialVersionUID = 1549498601;
 
     private Long      id;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
-    private String    userName;
+    private String    email;
     private String    password;
     private String    name;
     private String    lastName;
     private String    dni;
     private String    address;
     private String    phone;
-    private String    email;
 
     public Users() {}
 
@@ -43,40 +42,37 @@ public class Users implements Serializable {
         this.id = value.id;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
-        this.userName = value.userName;
+        this.email = value.email;
         this.password = value.password;
         this.name = value.name;
         this.lastName = value.lastName;
         this.dni = value.dni;
         this.address = value.address;
         this.phone = value.phone;
-        this.email = value.email;
     }
 
     public Users(
         Long      id,
         Timestamp deletedAt,
         Timestamp lastUpdated,
-        String    userName,
+        String    email,
         String    password,
         String    name,
         String    lastName,
         String    dni,
         String    address,
-        String    phone,
-        String    email
+        String    phone
     ) {
         this.id = id;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
-        this.userName = userName;
+        this.email = email;
         this.password = password;
         this.name = name;
         this.lastName = lastName;
         this.dni = dni;
         this.address = address;
         this.phone = phone;
-        this.email = email;
     }
 
     public Long getId() {
@@ -103,12 +99,12 @@ public class Users implements Serializable {
         this.lastUpdated = lastUpdated;
     }
 
-    public String getUserName() {
-        return this.userName;
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -159,14 +155,6 @@ public class Users implements Serializable {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Users (");
@@ -174,14 +162,13 @@ public class Users implements Serializable {
         sb.append(id);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
-        sb.append(", ").append(userName);
+        sb.append(", ").append(email);
         sb.append(", ").append(password);
         sb.append(", ").append(name);
         sb.append(", ").append(lastName);
         sb.append(", ").append(dni);
         sb.append(", ").append(address);
         sb.append(", ").append(phone);
-        sb.append(", ").append(email);
 
         sb.append(")");
         return sb.toString();

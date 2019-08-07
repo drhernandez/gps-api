@@ -80,10 +80,17 @@ public class UsersDao extends DAOImpl<UsersRecord, com.tesis.jooq.tables.pojos.U
     }
 
     /**
-     * Fetch records that have <code>user_name IN (values)</code>
+     * Fetch records that have <code>email IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Users> fetchByUserName(String... values) {
-        return fetch(Users.USERS.USER_NAME, values);
+    public List<com.tesis.jooq.tables.pojos.Users> fetchByEmail(String... values) {
+        return fetch(Users.USERS.EMAIL, values);
+    }
+
+    /**
+     * Fetch a unique record that has <code>email = value</code>
+     */
+    public com.tesis.jooq.tables.pojos.Users fetchOneByEmail(String value) {
+        return fetchOne(Users.USERS.EMAIL, value);
     }
 
     /**
@@ -126,12 +133,5 @@ public class UsersDao extends DAOImpl<UsersRecord, com.tesis.jooq.tables.pojos.U
      */
     public List<com.tesis.jooq.tables.pojos.Users> fetchByPhone(String... values) {
         return fetch(Users.USERS.PHONE, values);
-    }
-
-    /**
-     * Fetch records that have <code>email IN (values)</code>
-     */
-    public List<com.tesis.jooq.tables.pojos.Users> fetchByEmail(String... values) {
-        return fetch(Users.USERS.EMAIL, values);
     }
 }

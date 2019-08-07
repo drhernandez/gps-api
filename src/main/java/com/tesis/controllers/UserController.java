@@ -3,6 +3,7 @@ package com.tesis.controllers;
 import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Users;
+import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 import com.tesis.services.VehicleService;
@@ -19,11 +20,25 @@ public class UserController {
 
     private static Logger logger = LoggerFactory.getLogger(TrackingController.class);
 
-
     @Inject
     UserService userService;
     @Inject
     VehicleService vehicleService;
+
+
+    public Object userLogin(Request request, Response response) throws ApiException {
+        CredentialsDTO credentialsDTO = JsonUtils.INSTANCE.GSON().fromJson(request.body(), CredentialsDTO.class);
+        //Agregar validaciones
+
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        if(userService.checkCredentials(credentialsDTO))
+            response.status(200);
+        else
+            response.status(401);
+
+        return responseDTO.getModelAsJson();
+    }
 
     public Object getUsers(Request request, Response response) throws ApiException {
 

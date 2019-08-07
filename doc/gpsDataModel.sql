@@ -11,14 +11,13 @@ create table USERS(
 	id serial primary key not null,
 	deleted_at timestamp,
 	last_updated timestamp,
-	user_name varchar(45) not null,
-	password varchar(45) not null,
+	email varchar(45) unique not null,
+	password varchar(90) not null,
 	name varchar(45) not null,
 	last_name varchar(45) not null,
 	dni varchar(45) not null,
 	address varchar(45) not null,
-	phone varchar(45) not null,
-	email varchar(45) not null
+	phone varchar(45) not null
 );
 ALTER TABLE public.users ALTER COLUMN id TYPE int8 USING id::int8;
 

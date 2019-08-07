@@ -26,6 +26,8 @@ public class UsersRouter implements RouteGroup {
             Spark.delete("/:user_id", userController::deleteUser);
 
             Spark.get("/:user_id/vehicles", userController::getVehiclesByUserID);
+
+            Spark.post("/login", userController::userLogin);
         });
     }
 }

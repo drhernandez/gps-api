@@ -41,6 +41,7 @@ public class Indexes {
     public static final Index SPEED_ALERTS_DEVICE_ID_KEY = Indexes0.SPEED_ALERTS_DEVICE_ID_KEY;
     public static final Index SPEED_ALERTS_PKEY = Indexes0.SPEED_ALERTS_PKEY;
     public static final Index TRACKINGS_PKEY = Indexes0.TRACKINGS_PKEY;
+    public static final Index USERS_EMAIL_KEY = Indexes0.USERS_EMAIL_KEY;
     public static final Index USERS_PKEY = Indexes0.USERS_PKEY;
     public static final Index VEHICLES_PKEY = Indexes0.VEHICLES_PKEY;
 
@@ -55,6 +56,7 @@ public class Indexes {
         public static Index SPEED_ALERTS_DEVICE_ID_KEY = Internal.createIndex("speed_alerts_device_id_key", SpeedAlerts.SPEED_ALERTS, new OrderField[] { SpeedAlerts.SPEED_ALERTS.DEVICE_ID }, true);
         public static Index SPEED_ALERTS_PKEY = Internal.createIndex("speed_alerts_pkey", SpeedAlerts.SPEED_ALERTS, new OrderField[] { SpeedAlerts.SPEED_ALERTS.ID }, true);
         public static Index TRACKINGS_PKEY = Internal.createIndex("trackings_pkey", Trackings.TRACKINGS, new OrderField[] { Trackings.TRACKINGS.ID }, true);
+        public static Index USERS_EMAIL_KEY = Internal.createIndex("users_email_key", Users.USERS, new OrderField[] { Users.USERS.EMAIL }, true);
         public static Index USERS_PKEY = Internal.createIndex("users_pkey", Users.USERS, new OrderField[] { Users.USERS.ID }, true);
         public static Index VEHICLES_PKEY = Internal.createIndex("vehicles_pkey", Vehicles.VEHICLES, new OrderField[] { Vehicles.VEHICLES.ID }, true);
     }
