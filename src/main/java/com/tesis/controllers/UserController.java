@@ -32,8 +32,11 @@ public class UserController {
 
         ResponseDTO responseDTO = new ResponseDTO();
 
-        if(userService.checkCredentials(credentialsDTO))
+        if(userService.checkCredentials(credentialsDTO)){
             response.status(200);
+            if(userService.checkToken(credentialsDTO))
+                response.status(200);
+        }
         else
             response.status(401);
 

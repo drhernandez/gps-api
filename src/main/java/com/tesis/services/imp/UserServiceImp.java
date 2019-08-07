@@ -5,10 +5,14 @@ import com.google.inject.Singleton;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
+import com.tesis.daos.AccessTokenDaoExt;
+import com.tesis.jooq.tables.pojos.AccessTokens;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,12 +33,30 @@ public class UserServiceImp implements UserService {
     @Inject
     PasswordEncoder passwordEncoder;
 
+    @Inject
+    AccessTokenDaoExt accessTokensDao;
+
     public Boolean checkCredentials(CredentialsDTO credentialsDTO){
         Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
         if (user == null)
             return false;
 
         return passwordEncoder.matches(credentialsDTO.getPassword(), user.getPassword());
+    }
+
+    public Boolean checkToken(CredentialsDTO credentialsDTO){
+        Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
+        AccessTokens token = accessTokensDao.fetchOneById(user.getId());
+
+        if(token != null)
+            return true; // return token
+
+        else {
+            JwtBuilder jwts = Jwts.builder().setHeaderParam("type", "access-token");
+
+        }
+
+        return false;
     }
 
     public ResponseDTO<List<Users>> getUsers() {
