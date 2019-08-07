@@ -6,10 +6,12 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.jooq.tables.pojos.Users;
+import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Timestamp;
 import java.time.Clock;
@@ -23,6 +25,17 @@ public class UserServiceImp implements UserService {
 
     @Inject
     UserDaoExt usersDao;
+
+    @Inject
+    PasswordEncoder passwordEncoder;
+
+    public Boolean checkCredentials(CredentialsDTO credentialsDTO){
+        Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
+        if (user == null)
+            return false;
+
+        return passwordEncoder.matches(credentialsDTO.getPassword(), user.getPassword());
+    }
 
     public ResponseDTO<List<Users>> getUsers() {
         return new ResponseDTO(usersDao.findAllActives(), null);
@@ -38,6 +51,7 @@ public class UserServiceImp implements UserService {
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
 
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             usersDao.insert(user);
             responseDTO.model = user;
         } catch (Exception e) {
@@ -54,7 +68,6 @@ public class UserServiceImp implements UserService {
         Users user = usersDao.fetchOneById(userID);
         user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
         user.setDeletedAt(null);
-        user.setUserName(newData.getUserName());
         user.setPassword(newData.getPassword());
         user.setName(newData.getName());
         user.setLastName(newData.getLastName());

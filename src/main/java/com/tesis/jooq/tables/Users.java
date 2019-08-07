@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users extends TableImpl<UsersRecord> {
 
-    private static final long serialVersionUID = 1689336541;
+    private static final long serialVersionUID = -637459966;
 
     /**
      * The reference instance of <code>public.users</code>
@@ -73,14 +73,14 @@ public class Users extends TableImpl<UsersRecord> {
     public final TableField<UsersRecord, Timestamp> LAST_UPDATED = createField("last_updated", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
-     * The column <code>public.users.user_name</code>.
+     * The column <code>public.users.email</code>.
      */
-    public final TableField<UsersRecord, String> USER_NAME = createField("user_name", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
+    public final TableField<UsersRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
 
     /**
      * The column <code>public.users.password</code>.
      */
-    public final TableField<UsersRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
+    public final TableField<UsersRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR(90).nullable(false), this, "");
 
     /**
      * The column <code>public.users.name</code>.
@@ -106,11 +106,6 @@ public class Users extends TableImpl<UsersRecord> {
      * The column <code>public.users.phone</code>.
      */
     public final TableField<UsersRecord, String> PHONE = createField("phone", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
-
-    /**
-     * The column <code>public.users.email</code>.
-     */
-    public final TableField<UsersRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
 
     /**
      * Create a <code>public.users</code> table reference
@@ -158,7 +153,7 @@ public class Users extends TableImpl<UsersRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.USERS_PKEY);
+        return Arrays.<Index>asList(Indexes.USERS_EMAIL_KEY, Indexes.USERS_PKEY);
     }
 
     /**
@@ -182,7 +177,7 @@ public class Users extends TableImpl<UsersRecord> {
      */
     @Override
     public List<UniqueKey<UsersRecord>> getKeys() {
-        return Arrays.<UniqueKey<UsersRecord>>asList(Keys.USERS_PKEY);
+        return Arrays.<UniqueKey<UsersRecord>>asList(Keys.USERS_PKEY, Keys.USERS_EMAIL_KEY);
     }
 
     /**

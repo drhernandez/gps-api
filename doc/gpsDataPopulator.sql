@@ -7,10 +7,10 @@ delete from MOVEMENT_ALERTS_HISTORY;
 delete from SPEED_ALERTS;
 delete from MOVEMENT_ALERTS;
 
-insert into USERS values (10, null, null, 'jose_buendia', 'JoseBuendia1', 'José Arcadio', 'Buendia', '2037374105',
-							'5ta Avenida de Macondo 1', '2034-203401', 'jose_buendia@gmail.com');
-insert into USERS values (11, null, null, 'ursula_iguaran', 'UrsulaIguaran2', 'Úrsula', 'Iguarán', '2387875106',
-							'5ta Avenida de Macondo 1', '2034-203402', 'ursula_iguaran@gmail.com');
+insert into USERS values (10, null, null, 'jose_buendia@gmail.com', 'jose_buendia', 'José Arcadio', 'Buendia', '2037374105',
+							'5ta Avenida de Macondo 1', '2034-203401');
+insert into USERS values (11, null, null, 'ursula_iguaran@gmail.com', 'ursula_iguaran', 'Úrsula', 'Iguarán', '2387875106',
+							'5ta Avenida de Macondo 1', '2034-203402');
 					
 insert into DEVICES values (00001, null, null, 'ARDUINO GENUINO/UNO', '1.0');
 insert into DEVICES values (00002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
@@ -22,9 +22,9 @@ insert into SPEED_ALERTS (active, speed, device_id) values (false, 60, 00001);
 
 insert into MOVEMENT_ALERTS (active, lat, lng, device_id) values (false, -31.422068, -64.186497, 00001);
 
-insert into SPEED_ALERTS_HISTORY values (NOW(), 3, 80);
+insert into SPEED_ALERTS_HISTORY values (NOW(), 2, 80);
 
-insert into MOVEMENT_ALERTS_HISTORY values (NOW(), 3, -31.422068, -64.186497);
+insert into MOVEMENT_ALERTS_HISTORY values (NOW(), 2, -31.422068, -64.186497);
 
 insert into TRACKINGS (device_id, lat, lng, speed, sat, hdop, time)
         values (00001, -31.422108, -64.186429, 10.0, 4 , 246, '10-09-2018 20:51:09.000-03:00');

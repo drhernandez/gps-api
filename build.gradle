@@ -19,6 +19,7 @@ dependencies {
     compile "com.sparkjava:spark-core:2.7.2"
     compile group: 'com.google.inject', name: 'guice', version:'4.2.0'
     compile group: 'com.netflix.archaius', name: 'archaius-core', version: '0.6.0'
+    compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.2.RELEASE'
     compile "org.jooq:jooq:3.11.9"
     compile "org.jooq:jooq-meta:3.11.9"
     compile "org.jooq:jooq-codegen:3.11.9"
