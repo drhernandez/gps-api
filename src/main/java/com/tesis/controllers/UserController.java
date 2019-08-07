@@ -35,7 +35,7 @@ public class UserController {
         if(userService.checkCredentials(credentialsDTO))
             response.status(200);
         else
-            response.status(404);
+            response.status(401);
 
         return responseDTO.getModelAsJson();
     }
