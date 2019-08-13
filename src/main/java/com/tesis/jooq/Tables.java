@@ -4,6 +4,7 @@
 package com.tesis.jooq;
 
 
+import com.tesis.jooq.tables.AccessTokens;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
@@ -28,6 +29,11 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>public.access_tokens</code>.
+     */
+    public static final AccessTokens ACCESS_TOKENS = com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS;
 
     /**
      * The table <code>public.devices</code>.

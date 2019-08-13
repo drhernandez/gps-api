@@ -20,6 +20,11 @@ dependencies {
     compile group: 'com.google.inject', name: 'guice', version:'4.2.0'
     compile group: 'com.netflix.archaius', name: 'archaius-core', version: '0.6.0'
     compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.1.2.RELEASE'
+    compile 'io.jsonwebtoken:jjwt-api:0.10.7'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.10.7',
+            // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+            //'org.bouncycastle:bcprov-jdk15on:1.60',
+            'io.jsonwebtoken:jjwt-jackson:0.10.7'
     compile "org.jooq:jooq:3.11.9"
     compile "org.jooq:jooq-meta:3.11.9"
     compile "org.jooq:jooq-codegen:3.11.9"
