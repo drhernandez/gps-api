@@ -11,9 +11,7 @@ import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,34 +55,25 @@ public class UserServiceImp implements UserService {
         Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
         AccessTokens token = accessTokensDao.fetchOneById(user.getId());
 
-        if(token != null)
-            responseDTO.setModel(token);
-
-        else {
-
-            LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
-
-            JwtBuilder jwts = Jwts.builder().setHeaderParam("type", "access-token")
-                    .setSubject("User")
-                    .setExpiration(Date.from(expirationDate.atZone(ZoneId.systemDefault()).toInstant()))
-                    .setIssuedAt(new Date())
-
-                    .claim("userId",user.getId())
-                    .claim("userName", user.getName())
-                    .claim("userLastName", user.getLastName())
-                    .claim("userEmail", user.getEmail());
-
-            byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
-            Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
-
+        if(token != null) {
             try {
-                AccessTokens newToken = new AccessTokens(user.getId(), jwts.signWith(signingKey, SignatureAlgorithm.HS256).compact());
-                accessTokensDao.insert(newToken);
-                responseDTO.setModel(newToken);
-            } catch (Exception e) {
-                logger.error(String.format("No se pudo crear el access token para el usuario %s", user.toString()));
-                responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el access token.");
+                validateJWT(token.getToken());
+                responseDTO.setModel(token);
+                return responseDTO;
+            } catch (JwtException jwte) {
+                accessTokensDao.delete(token);
+                logger.info("Sesión expirada. Usuario %s. Creando nuevo token...", user.toString());
             }
+        }
+
+        try {
+            AccessTokens newToken = createJWT(user);
+            accessTokensDao.insert(newToken);
+            logger.info("Sesión creada para el usuario %s", user.toString());
+            responseDTO.setModel(newToken);
+        } catch (Exception e) {
+            logger.error(String.format("No se pudo crear el access token para el usuario %s", user.toString()));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el access token.");
         }
 
         return responseDTO;
@@ -145,5 +134,33 @@ public class UserServiceImp implements UserService {
 
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
         return responseDTO;
+    }
+
+    public static AccessTokens createJWT(Users user) throws JwtException {
+//        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime expirationDate = LocalDateTime.now().plusSeconds(10);
+
+        JwtBuilder jwts = Jwts.builder().setHeaderParam("type", "access-token")
+                .setSubject("User")
+                .setExpiration(Date.from(expirationDate.atZone(ZoneId.systemDefault()).toInstant()))
+                .setIssuedAt(new Date())
+
+                .claim("userId",user.getId())
+                .claim("userName", user.getName())
+                .claim("userLastName", user.getLastName())
+                .claim("userEmail", user.getEmail());
+
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
+
+        return new AccessTokens(user.getId(), jwts.signWith(signingKey, SignatureAlgorithm.HS256).compact());
+    }
+
+    public static Claims validateJWT(String jwt) throws JwtException {
+
+        Claims claims = Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
+                .parseClaimsJws(jwt).getBody();
+        return claims;
     }
 }
