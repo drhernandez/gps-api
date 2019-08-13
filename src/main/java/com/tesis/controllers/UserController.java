@@ -1,6 +1,7 @@
 package com.tesis.controllers;
 
 import com.google.inject.Inject;
+import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.CredentialsDTO;
@@ -33,12 +34,10 @@ public class UserController {
         ResponseDTO responseDTO = new ResponseDTO();
 
         if(userService.checkCredentials(credentialsDTO)){
-            response.status(200);
-            if(userService.checkToken(credentialsDTO))
-                response.status(200);
+            responseDTO = userService.checkToken(credentialsDTO);
         }
         else
-            response.status(401);
+            responseDTO.error = new ApiException("401", "Unautoeized", 401);
 
         return responseDTO.getModelAsJson();
     }
