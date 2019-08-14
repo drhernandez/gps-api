@@ -14,6 +14,7 @@ public enum ErrorCodes {
     shipment_already_in_hub,
     shipment_status,
     close_inbound,
+    unauthorized,
     //Outbounds
     error_zone_id;
 }

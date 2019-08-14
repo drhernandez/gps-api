@@ -52,7 +52,7 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     private static class Indexes0 {
-        public static Index ACCESS_TOKENS_PKEY = Internal.createIndex("access_tokens_pkey", AccessTokens.ACCESS_TOKENS, new OrderField[] { AccessTokens.ACCESS_TOKENS.ID }, true);
+        public static Index ACCESS_TOKENS_PKEY = Internal.createIndex("access_tokens_pkey", AccessTokens.ACCESS_TOKENS, new OrderField[] { AccessTokens.ACCESS_TOKENS.USER_ID }, true);
         public static Index DEVICES_PKEY = Internal.createIndex("devices_pkey", Devices.DEVICES, new OrderField[] { Devices.DEVICES.ID }, true);
         public static Index MOVEMENT_ALERTS_DEVICE_ID_KEY = Internal.createIndex("movement_alerts_device_id_key", MovementAlerts.MOVEMENT_ALERTS, new OrderField[] { MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID }, true);
         public static Index MOVEMENT_ALERTS_PKEY = Internal.createIndex("movement_alerts_pkey", MovementAlerts.MOVEMENT_ALERTS, new OrderField[] { MovementAlerts.MOVEMENT_ALERTS.ID }, true);

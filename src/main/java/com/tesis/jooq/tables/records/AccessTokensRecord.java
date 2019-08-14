@@ -28,19 +28,19 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> implements Record2<Long, String> {
 
-    private static final long serialVersionUID = 395587329;
+    private static final long serialVersionUID = -1990053808;
 
     /**
-     * Setter for <code>public.access_tokens.id</code>.
+     * Setter for <code>public.access_tokens.user_id</code>.
      */
-    public void setId(Long value) {
+    public void setUserId(Long value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>public.access_tokens.id</code>.
+     * Getter for <code>public.access_tokens.user_id</code>.
      */
-    public Long getId() {
+    public Long getUserId() {
         return (Long) get(0);
     }
 
@@ -95,7 +95,7 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      */
     @Override
     public Field<Long> field1() {
-        return AccessTokens.ACCESS_TOKENS.ID;
+        return AccessTokens.ACCESS_TOKENS.USER_ID;
     }
 
     /**
@@ -111,7 +111,7 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      */
     @Override
     public Long component1() {
-        return getId();
+        return getUserId();
     }
 
     /**
@@ -127,7 +127,7 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      */
     @Override
     public Long value1() {
-        return getId();
+        return getUserId();
     }
 
     /**
@@ -143,7 +143,7 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
      */
     @Override
     public AccessTokensRecord value1(Long value) {
-        setId(value);
+        setUserId(value);
         return this;
     }
 
@@ -180,10 +180,10 @@ public class AccessTokensRecord extends UpdatableRecordImpl<AccessTokensRecord> 
     /**
      * Create a detached, initialised AccessTokensRecord
      */
-    public AccessTokensRecord(Long id, String token) {
+    public AccessTokensRecord(Long userId, String token) {
         super(AccessTokens.ACCESS_TOKENS);
 
-        set(0, id);
+        set(0, userId);
         set(1, token);
     }
 }

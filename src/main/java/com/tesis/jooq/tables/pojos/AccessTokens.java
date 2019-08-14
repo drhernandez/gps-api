@@ -22,32 +22,32 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokens implements Serializable {
 
-    private static final long serialVersionUID = 50393379;
+    private static final long serialVersionUID = -885361108;
 
-    private Long   id;
+    private Long   userId;
     private String token;
 
     public AccessTokens() {}
 
     public AccessTokens(AccessTokens value) {
-        this.id = value.id;
+        this.userId = value.userId;
         this.token = value.token;
     }
 
     public AccessTokens(
-        Long   id,
+        Long   userId,
         String token
     ) {
-        this.id = id;
+        this.userId = userId;
         this.token = token;
     }
 
-    public Long getId() {
-        return this.id;
+    public Long getUserId() {
+        return this.userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getToken() {
@@ -62,7 +62,7 @@ public class AccessTokens implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder("AccessTokens (");
 
-        sb.append(id);
+        sb.append(userId);
         sb.append(", ").append(token);
 
         sb.append(")");
