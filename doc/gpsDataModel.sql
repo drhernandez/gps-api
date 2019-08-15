@@ -24,7 +24,7 @@ ALTER TABLE public.users ALTER COLUMN id TYPE int8 USING id::int8;
 
 
 create table ACCESS_TOKENS(
-	id bigint references USERS(id) primary key not null,
+	user_id bigint references USERS(id) primary key not null,
 	token varchar
 );
 

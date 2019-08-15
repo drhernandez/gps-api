@@ -40,7 +40,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class AccessTokens extends TableImpl<AccessTokensRecord> {
 
-    private static final long serialVersionUID = -43006457;
+    private static final long serialVersionUID = -718848369;
 
     /**
      * The reference instance of <code>public.access_tokens</code>
@@ -56,9 +56,9 @@ public class AccessTokens extends TableImpl<AccessTokensRecord> {
     }
 
     /**
-     * The column <code>public.access_tokens.id</code>.
+     * The column <code>public.access_tokens.user_id</code>.
      */
-    public final TableField<AccessTokensRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<AccessTokensRecord, Long> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.access_tokens.token</code>.
@@ -135,11 +135,11 @@ public class AccessTokens extends TableImpl<AccessTokensRecord> {
      */
     @Override
     public List<ForeignKey<AccessTokensRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<AccessTokensRecord, ?>>asList(Keys.ACCESS_TOKENS__ACCESS_TOKENS_ID_FKEY);
+        return Arrays.<ForeignKey<AccessTokensRecord, ?>>asList(Keys.ACCESS_TOKENS__ACCESS_TOKENS_USER_ID_FKEY);
     }
 
     public Users users() {
-        return new Users(this, Keys.ACCESS_TOKENS__ACCESS_TOKENS_ID_FKEY);
+        return new Users(this, Keys.ACCESS_TOKENS__ACCESS_TOKENS_USER_ID_FKEY);
     }
 
     /**

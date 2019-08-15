@@ -47,21 +47,21 @@ public class AccessTokensDao extends DAOImpl<AccessTokensRecord, com.tesis.jooq.
      */
     @Override
     protected Long getId(com.tesis.jooq.tables.pojos.AccessTokens object) {
-        return object.getId();
+        return object.getUserId();
     }
 
     /**
-     * Fetch records that have <code>id IN (values)</code>
+     * Fetch records that have <code>user_id IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.AccessTokens> fetchById(Long... values) {
-        return fetch(AccessTokens.ACCESS_TOKENS.ID, values);
+    public List<com.tesis.jooq.tables.pojos.AccessTokens> fetchByUserId(Long... values) {
+        return fetch(AccessTokens.ACCESS_TOKENS.USER_ID, values);
     }
 
     /**
-     * Fetch a unique record that has <code>id = value</code>
+     * Fetch a unique record that has <code>user_id = value</code>
      */
-    public com.tesis.jooq.tables.pojos.AccessTokens fetchOneById(Long value) {
-        return fetchOne(AccessTokens.ACCESS_TOKENS.ID, value);
+    public com.tesis.jooq.tables.pojos.AccessTokens fetchOneByUserId(Long value) {
+        return fetchOne(AccessTokens.ACCESS_TOKENS.USER_ID, value);
     }
 
     /**
