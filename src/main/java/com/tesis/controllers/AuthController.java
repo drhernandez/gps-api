@@ -27,12 +27,36 @@ public class AuthController {
 
         ResponseDTO responseDTO = new ResponseDTO();
 
-        if(authService.checkUserCredentials(credentialsDTO)){
+        if (authService.checkUserCredentials(credentialsDTO)) {
+            response.status(HttpStatus.OK_200);
             responseDTO = authService.checkAccessToken(credentialsDTO);
         }
-        else
+        else {
+            response.status(HttpStatus.UNAUTHORIZED_401);
             responseDTO.error = new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
+        }
 
-        return responseDTO.getModelAsJson();
+        return responseDTO;
+    }
+
+    public Object checkAccess(Request request, Response response){
+        String accessTocken = request.headers("Authorization");
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (accessTocken != null) {
+            accessTocken = accessTocken.split(" ")[1];
+            try {
+                authService.validateAccessToken(accessTocken);
+                response.status(HttpStatus.OK_200);
+                return responseDTO.getModelAsJson();
+            } catch (Exception e){
+                logger.error("Authorization fail");
+                response.status(HttpStatus.UNAUTHORIZED_401);
+                responseDTO.error = new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
+            }
+        }
+        else
+            response.status(HttpStatus.BAD_REQUEST_400);
+
+        return responseDTO;
     }
 }

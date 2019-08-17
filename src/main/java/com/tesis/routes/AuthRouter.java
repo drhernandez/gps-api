@@ -20,7 +20,7 @@ public class AuthRouter implements RouteGroup {
         logger.info("Loading auth routes...");
         Spark.path("/auth", () -> {
             Spark.post("/login", authController::login);
-
+            Spark.get("/check", authController::checkAccess);
         });
     }
 }
