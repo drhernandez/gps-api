@@ -36,10 +36,13 @@ public class AuthController {
             responseDTO.error = new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
         }
 
-        return responseDTO;
+        if (responseDTO.error != null)
+            throw responseDTO.error;
+
+        return responseDTO.getModelAsJson();
     }
 
-    public Object checkAccess(Request request, Response response){
+    public Object checkAccess(Request request, Response response) throws ApiException {
         String accessTocken = request.headers("Authorization");
         ResponseDTO responseDTO = new ResponseDTO();
         if (accessTocken != null) {
@@ -49,7 +52,7 @@ public class AuthController {
                 response.status(HttpStatus.OK_200);
                 return responseDTO.getModelAsJson();
             } catch (Exception e){
-                logger.error("Authorization fail");
+                logger.error("Authorization fail, Reason: " + e.getMessage());
                 response.status(HttpStatus.UNAUTHORIZED_401);
                 responseDTO.error = new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
             }
@@ -57,6 +60,9 @@ public class AuthController {
         else
             response.status(HttpStatus.BAD_REQUEST_400);
 
-        return responseDTO;
+        if (responseDTO.error != null)
+            throw responseDTO.error;
+
+        return responseDTO.getModelAsJson();
     }
 }

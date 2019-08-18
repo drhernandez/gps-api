@@ -2,7 +2,6 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.tesis.config.Constants;
 import com.tesis.daos.AccessTokenDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
@@ -91,16 +90,15 @@ public class AuthServiceImp implements AuthService {
                 .claim("userLastName", user.getLastName())
                 .claim("userEmail", user.getEmail());
 
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(Constants.SECRET_KEY);
-        Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(System.getenv("ACCESS_JWT_KEY"));
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
 
-        return new AccessTokens(user.getId(), jwts.signWith(signingKey, SignatureAlgorithm.HS256).compact());
+        return new AccessTokens(user.getId(), jwts.signWith(signingKey, SignatureAlgorithm.HS512).compact());
     }
 
     public Claims validateAccessToken(String jwt) throws JwtException {
-
         return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(Constants.SECRET_KEY))
+                .setSigningKey(DatatypeConverter.parseBase64Binary(System.getenv("ACCESS_JWT_KEY")))
                 .parseClaimsJws(jwt).getBody();
     }
 }
