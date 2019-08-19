@@ -57,8 +57,10 @@ public class AuthController {
                 responseDTO.error = new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
             }
         }
-        else
+        else {
             response.status(HttpStatus.BAD_REQUEST_400);
+            responseDTO.error = new ApiException("400", "Auth info is required" , HttpStatus.BAD_REQUEST_400);
+        }
 
         if (responseDTO.error != null)
             throw responseDTO.error;
