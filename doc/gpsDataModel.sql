@@ -5,29 +5,36 @@ drop table MOVEMENT_ALERTS_HISTORY;
 drop table SPEED_ALERTS;
 drop table MOVEMENT_ALERTS;
 drop table DEVICES;
+drop table ACCESS_TOKENS;
 drop table USERS;
 
 create table USERS(
 	id serial primary key not null,
 	deleted_at timestamp,
 	last_updated timestamp,
-	email varchar(45) unique not null,
-	password varchar(90) not null,
-	name varchar(45) not null,
-	last_name varchar(45) not null,
-	dni varchar(45) not null,
-	address varchar(45) not null,
-	phone varchar(45) not null
+	email varchar unique not null,
+	password varchar not null,
+	name varchar not null,
+	last_name varchar not null,
+	dni varchar not null,
+	address varchar not null,
+	phone varchar not null
 );
 ALTER TABLE public.users ALTER COLUMN id TYPE int8 USING id::int8;
+
+
+create table ACCESS_TOKENS(
+	user_id bigint references USERS(id) primary key not null,
+	token varchar
+);
 
 
 create table DEVICES(
 	id bigint primary key not null,
 	deleted_at timestamp,
 	last_updated timestamp,
-	model varchar(45) not null,
-	software_version varchar(45)
+	model varchar not null,
+	software_version varchar
 );
 
 
@@ -37,9 +44,9 @@ create table VEHICLES(
 	last_updated timestamp,
 	user_id serial references USERS(id) on delete restrict not null,
 	device_id bigint references DEVICES(id) on delete restrict not null,
-	type varchar(45),
-	plate varchar(45) not null,
-	model varchar(45)	
+	type varchar,
+	plate varchar not null,
+	model varchar	
 );
 ALTER TABLE public.vehicles ALTER COLUMN id TYPE int8 USING id::int8;
 ALTER TABLE public.vehicles ALTER COLUMN user_id TYPE int8 USING user_id::int8;

@@ -6,16 +6,8 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.tesis.routes.*;
 import com.tesis.server.Server;
-import com.tesis.services.DevicesService;
-import com.tesis.services.TrackingService;
-import com.tesis.services.UserService;
-import com.tesis.services.VehicleService;
-import com.tesis.services.AlertService;
-import com.tesis.services.imp.UserServiceImp;
-import com.tesis.services.imp.DevicesServiceImp;
-import com.tesis.services.imp.TrackingServiceImp;
-import com.tesis.services.imp.VehicleServiceImp;
-import com.tesis.services.imp.AlertServiceImp;
+import com.tesis.services.*;
+import com.tesis.services.imp.*;
 import org.jooq.Configuration;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DefaultConfiguration;
@@ -42,6 +34,7 @@ public class ConfigModule extends AbstractModule {
         bind(RouteGroup.class).annotatedWith(Names.named("devices-router")).to(DevicesRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("tracking-router")).to(TrackingRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("user-router")).to(UsersRouter.class);
+        bind(RouteGroup.class).annotatedWith(Names.named("auth-router")).to(AuthRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("vehicle-router")).to(VehicleRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("alert-router")).to(AlertRouter.class);
 
@@ -49,6 +42,7 @@ public class ConfigModule extends AbstractModule {
         bind(TrackingService.class).to(TrackingServiceImp.class);
         bind(DevicesService.class).to(DevicesServiceImp.class);
         bind(UserService.class).to(UserServiceImp.class);
+        bind(AuthService.class).to(AuthServiceImp.class);
         bind(VehicleService.class).to(VehicleServiceImp.class);
         bind(AlertService.class).to(AlertServiceImp.class);
     }

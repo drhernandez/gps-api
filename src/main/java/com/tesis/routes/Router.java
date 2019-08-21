@@ -2,8 +2,12 @@ package com.tesis.routes;
 
 import com.google.common.net.MediaType;
 import com.google.inject.*;
+import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.exceptions.ExceptionUtils;
+import com.tesis.models.ResponseDTO;
+import com.tesis.services.AuthService;
+import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.RouteGroup;
@@ -15,6 +19,7 @@ import java.util.List;
 
 import static com.tesis.enums.ErrorCodes.internal_error;
 import static com.tesis.enums.ErrorCodes.route_not_found;
+import static spark.Spark.halt;
 
 public class Router {
 
@@ -23,14 +28,32 @@ public class Router {
     @Inject
     Injector injector;
 
+    @Inject
+    AuthService authService;
+
     public void init() {
 
         // Find all routers binded to the RouterGroup interface and load the routes for each router
         List<Binding<RouteGroup>> routerBindings = injector.findBindingsByType(TypeLiteral.get(RouteGroup.class));
         routerBindings.stream().map(binding -> injector.getInstance(binding.getKey())).forEach(RouteGroup::addRoutes);
 
-        // Validar el device_id
-//        Spark.before();
+        // Validación de accessToken
+        Spark.before((request, response) -> {
+            if (!request.url().contains("auth")) {
+                String accessTocken = request.headers("Authorization");
+                if (accessTocken != null) {
+                    accessTocken = accessTocken.split(" ")[1];
+                    try {
+                        authService.validateAccessToken(accessTocken);
+                    } catch (Exception e){
+                        logger.info("Authorization fail, Reason: " + e.getMessage());
+                        halt(401, "Unauthorized");
+                    }
+                }
+                else
+                    halt(400, "Auth info is required");
+            }
+        });
 
         Spark.notFound((request, response) -> {
             response.header("Content-Type", MediaType.JSON_UTF_8.toString());

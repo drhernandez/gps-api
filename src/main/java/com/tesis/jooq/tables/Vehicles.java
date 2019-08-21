@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles extends TableImpl<VehiclesRecord> {
 
-    private static final long serialVersionUID = -1215731001;
+    private static final long serialVersionUID = 1809689383;
 
     /**
      * The reference instance of <code>public.vehicles</code>
@@ -85,17 +85,17 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
     /**
      * The column <code>public.vehicles.type</code>.
      */
-    public final TableField<VehiclesRecord, String> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
+    public final TableField<VehiclesRecord, String> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
     /**
      * The column <code>public.vehicles.plate</code>.
      */
-    public final TableField<VehiclesRecord, String> PLATE = createField("plate", org.jooq.impl.SQLDataType.VARCHAR(45).nullable(false), this, "");
+    public final TableField<VehiclesRecord, String> PLATE = createField("plate", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
 
     /**
      * The column <code>public.vehicles.model</code>.
      */
-    public final TableField<VehiclesRecord, String> MODEL = createField("model", org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
+    public final TableField<VehiclesRecord, String> MODEL = createField("model", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
     /**
      * Create a <code>public.vehicles</code> table reference

@@ -4,6 +4,7 @@
 package com.tesis.jooq;
 
 
+import com.tesis.jooq.tables.AccessTokens;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
@@ -38,12 +39,17 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -1841894301;
+    private static final long serialVersionUID = 1033645259;
 
     /**
      * The reference instance of <code>public</code>
      */
     public static final Public PUBLIC = new Public();
+
+    /**
+     * The table <code>public.access_tokens</code>.
+     */
+    public final AccessTokens ACCESS_TOKENS = com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS;
 
     /**
      * The table <code>public.devices</code>.
@@ -127,6 +133,7 @@ public class Public extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            AccessTokens.ACCESS_TOKENS,
             Devices.DEVICES,
             MovementAlerts.MOVEMENT_ALERTS,
             MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY,
