@@ -7,6 +7,7 @@ package com.tesis.jooq.tables.daos;
 import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.records.SpeedAlertsRecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -90,5 +91,26 @@ public class SpeedAlertsDao extends DAOImpl<SpeedAlertsRecord, com.tesis.jooq.ta
      */
     public com.tesis.jooq.tables.pojos.SpeedAlerts fetchOneByDeviceId(Long value) {
         return fetchOne(SpeedAlerts.SPEED_ALERTS.DEVICE_ID, value);
+    }
+
+    /**
+     * Fetch records that have <code>created_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.SpeedAlerts> fetchByCreatedAt(Timestamp... values) {
+        return fetch(SpeedAlerts.SPEED_ALERTS.CREATED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>updated_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.SpeedAlerts> fetchByUpdatedAt(Timestamp... values) {
+        return fetch(SpeedAlerts.SPEED_ALERTS.UPDATED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>activated_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.SpeedAlerts> fetchByActivatedAt(Timestamp... values) {
+        return fetch(SpeedAlerts.SPEED_ALERTS.ACTIVATED_AT, values);
     }
 }

@@ -9,6 +9,7 @@ import com.tesis.jooq.Keys;
 import com.tesis.jooq.Public;
 import com.tesis.jooq.tables.records.SpeedAlertsRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SpeedAlerts extends TableImpl<SpeedAlertsRecord> {
 
-    private static final long serialVersionUID = -1817820252;
+    private static final long serialVersionUID = 1983556681;
 
     /**
      * The reference instance of <code>public.speed_alerts</code>
@@ -75,6 +76,21 @@ public class SpeedAlerts extends TableImpl<SpeedAlertsRecord> {
      * The column <code>public.speed_alerts.device_id</code>.
      */
     public final TableField<SpeedAlertsRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>public.speed_alerts.created_at</code>.
+     */
+    public final TableField<SpeedAlertsRecord, Timestamp> CREATED_AT = createField("created_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+
+    /**
+     * The column <code>public.speed_alerts.updated_at</code>.
+     */
+    public final TableField<SpeedAlertsRecord, Timestamp> UPDATED_AT = createField("updated_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>public.speed_alerts.activated_at</code>.
+     */
+    public final TableField<SpeedAlertsRecord, Timestamp> ACTIVATED_AT = createField("activated_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * Create a <code>public.speed_alerts</code> table reference

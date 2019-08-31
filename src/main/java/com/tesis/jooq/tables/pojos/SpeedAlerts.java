@@ -5,6 +5,7 @@ package com.tesis.jooq.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -22,12 +23,15 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SpeedAlerts implements Serializable {
 
-    private static final long serialVersionUID = -2020685968;
+    private static final long serialVersionUID = 965692939;
 
-    private Long    id;
-    private Boolean active;
-    private Float   speed;
-    private Long    deviceId;
+    private Long      id;
+    private Boolean   active;
+    private Float     speed;
+    private Long      deviceId;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Timestamp activatedAt;
 
     public SpeedAlerts() {}
 
@@ -36,18 +40,27 @@ public class SpeedAlerts implements Serializable {
         this.active = value.active;
         this.speed = value.speed;
         this.deviceId = value.deviceId;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+        this.activatedAt = value.activatedAt;
     }
 
     public SpeedAlerts(
-        Long    id,
-        Boolean active,
-        Float   speed,
-        Long    deviceId
+        Long      id,
+        Boolean   active,
+        Float     speed,
+        Long      deviceId,
+        Timestamp createdAt,
+        Timestamp updatedAt,
+        Timestamp activatedAt
     ) {
         this.id = id;
         this.active = active;
         this.speed = speed;
         this.deviceId = deviceId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.activatedAt = activatedAt;
     }
 
     public Long getId() {
@@ -82,6 +95,30 @@ public class SpeedAlerts implements Serializable {
         this.deviceId = deviceId;
     }
 
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Timestamp getActivatedAt() {
+        return this.activatedAt;
+    }
+
+    public void setActivatedAt(Timestamp activatedAt) {
+        this.activatedAt = activatedAt;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("SpeedAlerts (");
@@ -90,6 +127,9 @@ public class SpeedAlerts implements Serializable {
         sb.append(", ").append(active);
         sb.append(", ").append(speed);
         sb.append(", ").append(deviceId);
+        sb.append(", ").append(createdAt);
+        sb.append(", ").append(updatedAt);
+        sb.append(", ").append(activatedAt);
 
         sb.append(")");
         return sb.toString();

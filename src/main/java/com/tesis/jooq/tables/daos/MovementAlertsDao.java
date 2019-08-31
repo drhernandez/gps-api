@@ -7,6 +7,7 @@ package com.tesis.jooq.tables.daos;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.records.MovementAlertsRecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -97,5 +98,26 @@ public class MovementAlertsDao extends DAOImpl<MovementAlertsRecord, com.tesis.j
      */
     public com.tesis.jooq.tables.pojos.MovementAlerts fetchOneByDeviceId(Long value) {
         return fetchOne(MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID, value);
+    }
+
+    /**
+     * Fetch records that have <code>created_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.MovementAlerts> fetchByCreatedAt(Timestamp... values) {
+        return fetch(MovementAlerts.MOVEMENT_ALERTS.CREATED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>updated_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.MovementAlerts> fetchByUpdatedAt(Timestamp... values) {
+        return fetch(MovementAlerts.MOVEMENT_ALERTS.UPDATED_AT, values);
+    }
+
+    /**
+     * Fetch records that have <code>activated_at IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.MovementAlerts> fetchByActivatedAt(Timestamp... values) {
+        return fetch(MovementAlerts.MOVEMENT_ALERTS.ACTIVATED_AT, values);
     }
 }

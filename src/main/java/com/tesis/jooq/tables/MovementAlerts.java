@@ -9,6 +9,7 @@ import com.tesis.jooq.Keys;
 import com.tesis.jooq.Public;
 import com.tesis.jooq.tables.records.MovementAlertsRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MovementAlerts extends TableImpl<MovementAlertsRecord> {
 
-    private static final long serialVersionUID = -1879415291;
+    private static final long serialVersionUID = -641856022;
 
     /**
      * The reference instance of <code>public.movement_alerts</code>
@@ -80,6 +81,21 @@ public class MovementAlerts extends TableImpl<MovementAlertsRecord> {
      * The column <code>public.movement_alerts.device_id</code>.
      */
     public final TableField<MovementAlertsRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT, this, "");
+
+    /**
+     * The column <code>public.movement_alerts.created_at</code>.
+     */
+    public final TableField<MovementAlertsRecord, Timestamp> CREATED_AT = createField("created_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+
+    /**
+     * The column <code>public.movement_alerts.updated_at</code>.
+     */
+    public final TableField<MovementAlertsRecord, Timestamp> UPDATED_AT = createField("updated_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
+
+    /**
+     * The column <code>public.movement_alerts.activated_at</code>.
+     */
+    public final TableField<MovementAlertsRecord, Timestamp> ACTIVATED_AT = createField("activated_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
 
     /**
      * Create a <code>public.movement_alerts</code> table reference
