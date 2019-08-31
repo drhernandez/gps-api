@@ -11,6 +11,9 @@ import com.tesis.services.AlertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Singleton
@@ -34,6 +37,9 @@ public class AlertServiceImp implements AlertService {
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
 
         try {
+            speedAlert.setCreatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+            speedAlert.setUpdatedAt(null);
+            speedAlert.setActivatedAt(null);
             speedAlertsDao.insert(speedAlert);
             responseDTO.model = speedAlert;
         } catch (Exception e) {
@@ -86,7 +92,9 @@ public class AlertServiceImp implements AlertService {
     @Override
     public ResponseDTO<MovementAlerts> createMovementAlert(MovementAlerts movementAlert) {
         ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
-
+        movementAlert.setCreatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+        movementAlert.setUpdatedAt(null);
+        movementAlert.setActivatedAt(null);
         try {
             movementAlertDao.insert(movementAlert);
             responseDTO.model = movementAlert;
