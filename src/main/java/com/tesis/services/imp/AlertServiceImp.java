@@ -66,6 +66,9 @@ public class AlertServiceImp implements AlertService {
         speedAlert.setActive(newSpeedAlert.getActive());
         speedAlert.setSpeed(newSpeedAlert.getSpeed());
         speedAlert.setDeviceId(newSpeedAlert.getDeviceId());
+        speedAlert.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+        if(newSpeedAlert.getActive())
+            speedAlert.setActivatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
 
         try {
             speedAlertsDao.update(speedAlert);
@@ -126,6 +129,9 @@ public class AlertServiceImp implements AlertService {
         momovementAlert.setLat(newMovementAlert.getLat());
         momovementAlert.setLng(newMovementAlert.getLng());
         momovementAlert.setDeviceId(newMovementAlert.getDeviceId());
+        momovementAlert.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+        if(newMovementAlert.getActive())
+            momovementAlert.setActivatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
 
         try {
             movementAlertDao.update(momovementAlert);
