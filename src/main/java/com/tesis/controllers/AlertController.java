@@ -231,4 +231,17 @@ public class AlertController {
         }
         return responseDTO.getModelAsJson();
     }
+
+    public void sendAlarm(String alertType){
+        switch (alertType){
+            case "SPEED":
+                System.out.println("Locura.. te pasaste de speed loco!!");
+                break;
+            case "MOVEMENT":
+                System.out.println("Locura.. tambien te estan llevando el auto gil!!");
+                break;
+            default:
+                System.out.println("Wachin.. guarda con el auto que algo está pasando");
+        }
+    }
 }

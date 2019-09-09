@@ -32,6 +32,9 @@ public class AlertServiceImp implements AlertService {
     @Inject
     MovementAlertHistoryDaoExt movementAlertsHistoryDao;
 
+
+    //  ----------------  Speed Alert methods ----------------
+
     @Override
     public ResponseDTO<SpeedAlerts> createSpeedAlert(SpeedAlerts speedAlert) {
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
@@ -91,6 +94,12 @@ public class AlertServiceImp implements AlertService {
         }
         return responseDTO;
     }
+
+    public SpeedAlerts getSpeedIfActive(Long devideId){
+        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(devideId);
+        return speedAlert.getActive() ? speedAlert : null;
+    }
+
 
     @Override
     public ResponseDTO<MovementAlerts> createMovementAlert(MovementAlerts movementAlert) {
@@ -153,6 +162,12 @@ public class AlertServiceImp implements AlertService {
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el speedAlert.");
         }
         return responseDTO;
+    }
+
+
+    public MovementAlerts getMovementIfActive(Long devideId){
+        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(devideId);
+        return movementAlert.getActive() ? movementAlert : null;
     }
 
     @Override
