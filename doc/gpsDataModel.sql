@@ -69,7 +69,10 @@ create table SPEED_ALERTS(
 	id serial primary key not null, 
 	active boolean not null,
 	speed real,
-	device_id bigint references DEVICES(id) on delete cascade unique
+	device_id bigint references DEVICES(id) on delete cascade unique,
+	created_at timestamp not null,
+	updated_at timestamp,
+	activated_at timestamp
 );
 ALTER TABLE public.speed_alerts ALTER COLUMN id TYPE int8 USING id::int8;
 
@@ -79,7 +82,10 @@ create table MOVEMENT_ALERTS(
 	active boolean not null,
 	lat real,
 	lng real,
-	device_id bigint references DEVICES(id) on delete cascade unique
+	device_id bigint references DEVICES(id) on delete cascade unique,
+	created_at timestamp not null,
+	updated_at timestamp,
+	activated_at timestamp
 );
 ALTER TABLE public.movement_alerts ALTER COLUMN id TYPE int8 USING id::int8;
 
@@ -93,7 +99,7 @@ create table SPEED_ALERTS_HISTORY(
 
 create table MOVEMENT_ALERTS_HISTORY(
 	time timestamp primary key not null, 
-	alert_id bigint references SPEED_ALERTS(id) on delete cascade,
+	alert_id bigint references MOVEMENT_ALERTS(id) on delete cascade,
 	lat real,
 	lng real
 );

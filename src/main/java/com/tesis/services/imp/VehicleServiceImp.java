@@ -37,7 +37,6 @@ public class VehicleServiceImp implements VehicleService {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
 
         try {
-            //vehiclesDao.insert(vehicle);
             vehiclesDao.createVehicle(vehicle);
             responseDTO.model = vehicle;
         } catch (Exception e) {

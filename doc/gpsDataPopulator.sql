@@ -18,13 +18,15 @@ insert into DEVICES values (00002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
 insert into VEHICLES values (10, null, null, 10, 00001, 'Ford Fiesta', 'AA 383 TI', '2018');
 insert into VEHICLES values (11, null, null, 11, 00002, 'Toyota Corolla', 'AD 257 TO', '2019');
 
-insert into SPEED_ALERTS (active, speed, device_id) values (false, 60, 00001);
+insert into SPEED_ALERTS (active, speed, device_id, created_at, updated_at, activated_at) 
+	values (false, 60, 00001, NOW(), null, NOW());
 
-insert into MOVEMENT_ALERTS (active, lat, lng, device_id) values (false, -31.422068, -64.186497, 00001);
+insert into MOVEMENT_ALERTS (active, lat, lng, device_id, created_at, updated_at, activated_at) 
+	values (false, -31.422068, -64.186497, 00001, NOW(), null, NOW());
 
-insert into SPEED_ALERTS_HISTORY values (NOW(), 2, 80);
+insert into SPEED_ALERTS_HISTORY values (NOW(), 1, 80);
 
-insert into MOVEMENT_ALERTS_HISTORY values (NOW(), 2, -31.422068, -64.186497);
+insert into MOVEMENT_ALERTS_HISTORY values (NOW(), 1, -31.422068, -64.186497);
 
 insert into TRACKINGS (device_id, lat, lng, speed, sat, hdop, time)
         values (00001, -31.422108, -64.186429, 10.0, 4 , 246, '10-09-2018 20:51:09.000-03:00');
