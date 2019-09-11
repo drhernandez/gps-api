@@ -36,20 +36,20 @@ public class TrackingController {
             throw new ApiException("invalid_data", "[reason: invalid_body] [method: TrackingController.saveTracking]");
         }
 
-        List<Trackings> trackings = new ArrayList<>();
-        Arrays.asList(body.split(";")).forEach(t -> {
-            String[] args = t.split(",");
-            if (args.length >= MIN_LENGTH) {
-                try {
-                    Trackings traking = new Trackings(args);
-                    trackings.add(traking);
-                } catch (ParseArgsException e) {
-                    logger.error(e.getMessage());
-                }
-            }
-        });
+//        List<Trackings> trackings = new ArrayList<>();
+//        Arrays.asList(body.split(";")).forEach(t -> {
+//            String[] args = t.split(",");
+//            if (args.length >= MIN_LENGTH) {
+//                try {
+//                    Trackings traking = new Trackings(args);
+//                    trackings.add(traking);
+//                } catch (ParseArgsException e) {
+//                    logger.error(e.getMessage());
+//                }
+//            }
+//        });
 
-        ResponseDTO responseDTO = trackingService.saveTracking(trackings);
+        ResponseDTO responseDTO = trackingService.saveTracking(getTrackingFromWeft(body));
         if (responseDTO.error != null) {
             throw responseDTO.error;
         }
@@ -117,5 +117,21 @@ public class TrackingController {
         }
 
         return responseDTO.getModelAsJson();
+    }
+
+    public List<Trackings> getTrackingFromWeft(String weft){
+        List<Trackings> trackings = new ArrayList<>();
+        Arrays.asList(weft.split(";")).forEach(t -> {
+            String[] args = t.split(",");
+            if (args.length >= MIN_LENGTH) {
+                try {
+                    Trackings traking = new Trackings(args);
+                    trackings.add(traking);
+                } catch (ParseArgsException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        });
+        return trackings;
     }
 }

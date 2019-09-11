@@ -39,7 +39,7 @@ public class Router {
 
         // Validación de accessToken
         Spark.before((request, response) -> {
-            if (!request.url().contains("auth")) {
+            if (!request.url().contains("auth") && !(request.url().contains("users") && request.requestMethod().equals("POST"))) {
                 String accessTocken = request.headers("Authorization");
                 if (accessTocken != null) {
                     accessTocken = accessTocken.split(" ")[1];

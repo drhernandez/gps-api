@@ -1,6 +1,7 @@
 package com.tesis.controllers;
 
 import com.google.inject.Inject;
+import com.tesis.Till;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.MovementAlerts;
 import com.tesis.jooq.tables.pojos.MovementAlertsHistory;
@@ -230,5 +231,33 @@ public class AlertController {
             throw responseDTO.error;
         }
         return responseDTO.getModelAsJson();
+    }
+
+    public void sendAlarm(String alertType){
+        switch (alertType){
+            case "SPEED":
+                System.out.println("Locura.. te pasaste de speed loco!!");
+                break;
+            case "MOVEMENT":
+                System.out.println("Locura.. tambien te estan llevando el auto gil!!");
+                break;
+            default:
+                System.out.println("Wachin.. guarda con el auto que algo está pasando");
+        }
+    }
+
+    public Object sendSMS(Request request, Response response){
+        try {
+            Till.send(
+                    "https://platform.tillmobile.com/api/send",
+                    "ff93cf9df324474d88c11e70472f4c",
+                    "5819e8e98176a0549235ed602c003954f3f01c3c",
+                    "{\"phone\":[\"+5493515495416\"], \"text\":\"Hello Till from Java!\"}"
+            );
+        } catch(Exception e) {
+            System.out.println(e.toString());
+            response.status(403);
+        }
+        return new ResponseDTO();
     }
 }

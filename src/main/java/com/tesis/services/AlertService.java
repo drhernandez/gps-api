@@ -14,12 +14,14 @@ public interface AlertService {
     ResponseDTO<SpeedAlerts> getSpeedAlertByVehicleID(Long vehicleID);
     ResponseDTO<SpeedAlerts> updateSpeedAlert(Long speedAlertID, SpeedAlerts newSpeedAlert);
     ResponseDTO<SpeedAlerts> deleteSpeedAlert(Long deviceId);
+    SpeedAlerts getSpeedIfActive(Long deviceId);
 
     ResponseDTO<MovementAlerts> createMovementAlert(MovementAlerts movementAlert);
     ResponseDTO<List<MovementAlerts>> getMovementAlert();
     ResponseDTO<MovementAlerts> getMovementAlertByVehicleID(Long vehicleID);
     ResponseDTO<MovementAlerts> updateMovementAlert(Long movementAlertID, MovementAlerts newMovementAlert);
     ResponseDTO<MovementAlerts> deleteMovementAlert(Long deviceId);
+    MovementAlerts getMovementIfActive(Long deviceId);
 
     ResponseDTO<SpeedAlertsHistory> createSpeedAlertHistory(SpeedAlertsHistory speedAlertsHistory);
     ResponseDTO<List<SpeedAlertsHistory>> getSpeedHistoryByVehicleID(Long vehicleID);

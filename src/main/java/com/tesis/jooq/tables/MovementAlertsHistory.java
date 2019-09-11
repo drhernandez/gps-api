@@ -39,7 +39,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MovementAlertsHistory extends TableImpl<MovementAlertsHistoryRecord> {
 
-    private static final long serialVersionUID = -653093394;
+    private static final long serialVersionUID = 1645493192;
 
     /**
      * The reference instance of <code>public.movement_alerts_history</code>
@@ -139,8 +139,8 @@ public class MovementAlertsHistory extends TableImpl<MovementAlertsHistoryRecord
         return Arrays.<ForeignKey<MovementAlertsHistoryRecord, ?>>asList(Keys.MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY);
     }
 
-    public SpeedAlerts speedAlerts() {
-        return new SpeedAlerts(this, Keys.MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY);
+    public MovementAlerts movementAlerts() {
+        return new MovementAlerts(this, Keys.MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY);
     }
 
     /**

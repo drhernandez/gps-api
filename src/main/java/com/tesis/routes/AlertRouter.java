@@ -34,6 +34,8 @@ public class AlertRouter implements RouteGroup {
 
             Spark.post("/movement/history", alertController::createMovementHistory);
             Spark.delete("/movement/:device_id/history", alertController::deleteMovementHistory);
+
+            Spark.post("/send/:phone_number", alertController::sendSMS);
         });
     }
 }

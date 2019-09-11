@@ -5,6 +5,7 @@ package com.tesis.jooq.tables.pojos;
 
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.annotation.Generated;
 
@@ -22,13 +23,16 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MovementAlerts implements Serializable {
 
-    private static final long serialVersionUID = 219932141;
+    private static final long serialVersionUID = -101387138;
 
-    private Long    id;
-    private Boolean active;
-    private Float   lat;
-    private Float   lng;
-    private Long    deviceId;
+    private Long      id;
+    private Boolean   active;
+    private Float     lat;
+    private Float     lng;
+    private Long      deviceId;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+    private Timestamp activatedAt;
 
     public MovementAlerts() {}
 
@@ -38,20 +42,29 @@ public class MovementAlerts implements Serializable {
         this.lat = value.lat;
         this.lng = value.lng;
         this.deviceId = value.deviceId;
+        this.createdAt = value.createdAt;
+        this.updatedAt = value.updatedAt;
+        this.activatedAt = value.activatedAt;
     }
 
     public MovementAlerts(
-        Long    id,
-        Boolean active,
-        Float   lat,
-        Float   lng,
-        Long    deviceId
+        Long      id,
+        Boolean   active,
+        Float     lat,
+        Float     lng,
+        Long      deviceId,
+        Timestamp createdAt,
+        Timestamp updatedAt,
+        Timestamp activatedAt
     ) {
         this.id = id;
         this.active = active;
         this.lat = lat;
         this.lng = lng;
         this.deviceId = deviceId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.activatedAt = activatedAt;
     }
 
     public Long getId() {
@@ -94,6 +107,30 @@ public class MovementAlerts implements Serializable {
         this.deviceId = deviceId;
     }
 
+    public Timestamp getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Timestamp getActivatedAt() {
+        return this.activatedAt;
+    }
+
+    public void setActivatedAt(Timestamp activatedAt) {
+        this.activatedAt = activatedAt;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("MovementAlerts (");
@@ -103,6 +140,9 @@ public class MovementAlerts implements Serializable {
         sb.append(", ").append(lat);
         sb.append(", ").append(lng);
         sb.append(", ").append(deviceId);
+        sb.append(", ").append(createdAt);
+        sb.append(", ").append(updatedAt);
+        sb.append(", ").append(activatedAt);
 
         sb.append(")");
         return sb.toString();
