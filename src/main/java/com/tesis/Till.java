@@ -1,11 +1,9 @@
 package com.tesis;
 
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.HttpURLConnection;
-import java.io.OutputStream;
-import java.io.InputStream;
-import java.io.BufferedInputStream;
 
 public class Till {
     public static String send(String endpoint, String username, String api_key, String json) throws Exception {
@@ -40,10 +38,14 @@ public class Till {
                 byte[] contents = new byte[1024];
                 int bytesRead = 0;
                 StringBuffer outStr = new StringBuffer();
-                while((bytesRead = in.read(contents)) != -1) {
+                while ((bytesRead = in.read(contents)) != -1) {
                     outStr.append(new String(contents, 0, bytesRead));
                 }
                 return outStr.toString();
+            } catch (Exception e){
+                System.out.println("Code: " + http.getResponseCode() + " Message: " + http.getResponseMessage());
+                http.disconnect();
+                throw e;
             } finally {
                 if(in != null) {
                     in.close();
