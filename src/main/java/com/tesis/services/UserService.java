@@ -9,6 +9,7 @@ public interface UserService {
 
     ResponseDTO<List<Users>> getUsers();
     ResponseDTO<Users> getUsersByUserID(Long userID);
+    ResponseDTO<Users> getUsersByDeviceId(Long deviceID);
     ResponseDTO<Users> createUser(Users user);
     ResponseDTO<Users> updateUser(Long userID, Users user);
     ResponseDTO<Users> deleteUser(Long userID);

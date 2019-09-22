@@ -1,25 +1,40 @@
 package com.tesis.controllers;
 
 import com.google.inject.Inject;
-import com.tesis.Till;
+import com.mashape.unirest.http.*;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tesis.exceptions.ApiException;
-import com.tesis.jooq.tables.pojos.MovementAlerts;
-import com.tesis.jooq.tables.pojos.MovementAlertsHistory;
-import com.tesis.jooq.tables.pojos.SpeedAlerts;
-import com.tesis.jooq.tables.pojos.SpeedAlertsHistory;
+import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.SMSRequest;
+import com.tesis.models.SMSResponse;
+import com.tesis.routes.Router;
 import com.tesis.services.AlertService;
+import com.tesis.services.UserService;
 import com.tesis.utils.JsonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+
+import static com.tesis.config.Constants.DEFAULT_TEXT_MOVEMENT_ALERT;
+import static com.tesis.config.Constants.DEFAULT_TEXT_SPEED_ALERT;
+import static com.tesis.enums.ErrorCodes.invalid_data;
 
 public class AlertController {
 
+    private static final Logger logger = LoggerFactory.getLogger(Router.class);
+
+
     @Inject
     AlertService alertService;
+
+    @Inject
+    UserService userService;
 
     //  ----------------  Speed Alert methods ----------------
 
@@ -166,6 +181,7 @@ public class AlertController {
 
 
     //  ----------------  Speed Alert History methods ----------------
+
     public Object createSpeedHistory(Request request, Response response) throws ApiException {
         SpeedAlertsHistory speedAlertsHistory = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlertsHistory.class);
         ResponseDTO<SpeedAlertsHistory> responseDTO = alertService.createSpeedAlertHistory(speedAlertsHistory);
@@ -233,30 +249,71 @@ public class AlertController {
         return responseDTO.getModelAsJson();
     }
 
-    public void sendAlarm(String alertType){
-        switch (alertType){
-            case "SPEED":
-                System.out.println("Locura.. te pasaste de speed loco!!");
-                break;
-            case "MOVEMENT":
-                System.out.println("Locura.. tambien te estan llevando el auto gil!!");
-                break;
-            default:
-                System.out.println("Wachin.. guarda con el auto que algo está pasando");
+
+    //  ----------------  SMSC Api methods ----------------
+
+    public void sendAlarm(Long deviceId, String alertType){
+        Users user = userService.getUsersByDeviceId(deviceId).getModel();
+
+        try {
+            String result = Unirest.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
+                    "&apikey=" + System.getenv("SMSC_API_KEY") +
+                    "&cmd=enviar&num=" + user.getPhone() +
+                    "&msj=" + (alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT))
+
+                    .asJson()
+                    .getBody()
+                    .toString();
+
+            SMSResponse resp = JsonUtils.INSTANCE.GSON().fromJson(result, SMSResponse.class);
+
+            switch (resp.getCode()){
+                case "200":
+                    break;
+                case "403":
+                    logger.error(resp.getMessage());
+                    throw new ApiException(invalid_data.name(),
+                            String.format("invalid phone number: %s", user.getPhone()),
+                            HttpServletResponse.SC_NOT_FOUND);
+            }
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
         }
+
     }
 
-    public Object sendSMS(Request request, Response response){
-        String phoneNumber = request.params("phone_number");
+    public Object sendSMS(Request request, Response response) throws ApiException, UnirestException {
+        SMSRequest smsRequest = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SMSRequest.class);
+
         try {
-            Till.send(
-                    "https://platform.tillmobile.com/api/send",
-                    "ff93cf9df324474d88c11e70472f4c",
-                    "5819e8e98176a0549235ed602c003954f3f01c3c",
-                    "{\"phone\":[\"" + phoneNumber + "\"], \"text\":\"Hello Till from Java!\"}"
-            );
-        } catch(Exception e) {
-            System.out.println(e.toString());
+
+            String result = Unirest.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
+                    "&apikey=" + System.getenv("SMSC_API_KEY") +
+                    "&cmd=enviar&num=" + smsRequest.getReceptor() +
+                    "&msj=Test%20de%20alerta%20de%20texto%20GPS-TESIS")
+
+                    .asJson()
+                    .getBody()
+                    .toString();
+
+            SMSResponse resp = JsonUtils.INSTANCE.GSON().fromJson(result, SMSResponse.class);
+
+            switch (resp.getCode()){
+                case "200":
+                    return new ResponseDTO();
+                case "403":
+                    logger.error(resp.getMessage());
+                    throw new ApiException(invalid_data.name(),
+                            String.format("invalid phone number: %s", smsRequest.getReceptor()),
+                            HttpServletResponse.SC_NOT_FOUND);
+            }
+
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw e;
+
         }
         return new ResponseDTO();
     }

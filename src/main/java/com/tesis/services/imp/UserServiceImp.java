@@ -2,10 +2,12 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.jooq.tables.pojos.Users;
+import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.UserService;
 
@@ -26,6 +28,9 @@ public class UserServiceImp implements UserService {
     UserDaoExt usersDao;
 
     @Inject
+    VehicleDaoExt vehicleDao;
+
+    @Inject
     PasswordEncoder passwordEncoder;
 
     public ResponseDTO<List<Users>> getUsers() {
@@ -34,6 +39,12 @@ public class UserServiceImp implements UserService {
 
     public ResponseDTO<Users> getUsersByUserID(Long userID) {
         ResponseDTO<Users> responseDTO = new ResponseDTO(usersDao.fetchOneById(userID), null);
+        return responseDTO;
+    }
+
+    public ResponseDTO<Users> getUsersByDeviceId(Long deviceId) {
+        Vehicles vehicle = vehicleDao.fetchOne(com.tesis.jooq.tables.Vehicles.VEHICLES.DEVICE_ID, deviceId);
+        ResponseDTO<Users> responseDTO = new ResponseDTO(usersDao.fetchOneById(vehicle.getUserId()), null);
         return responseDTO;
     }
 

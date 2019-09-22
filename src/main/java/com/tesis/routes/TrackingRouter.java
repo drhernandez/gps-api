@@ -50,7 +50,7 @@ public class TrackingRouter implements RouteGroup {
                                     trackingsList.get(i).getTime(),
                                     speedAlert.getId(),
                                     trackingsList.get(i).getSpeed()));
-                            alertController.sendAlarm("SPEED");
+                            alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"SPEED");
                             break;
                         }
                     }
@@ -68,7 +68,7 @@ public class TrackingRouter implements RouteGroup {
                                     trackingsList.get(i).getLat(),
                                     trackingsList.get(i).getLng()
                             ));
-                            alertController.sendAlarm("MOVEMENT");
+                            alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"MOVEMENT");
                             break;
                         }
                     }
