@@ -16,6 +16,7 @@ import java.util.List;
 
 import static com.tesis.config.Constants.DEFAULT_MOVEMENT_ALERT_KM;
 import static com.tesis.config.Constants.EARTH_RADIUS_KM;
+import static spark.Spark.halt;
 
 public class TrackingRouter implements RouteGroup {
 
@@ -50,7 +51,11 @@ public class TrackingRouter implements RouteGroup {
                                     trackingsList.get(i).getTime(),
                                     speedAlert.getId(),
                                     trackingsList.get(i).getSpeed()));
-                            alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"SPEED");
+                            try {
+                                alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"SPEED");
+                            } catch (Exception e) {
+                                halt(500, e.getMessage());
+                            }
                             break;
                         }
                     }
@@ -68,7 +73,11 @@ public class TrackingRouter implements RouteGroup {
                                     trackingsList.get(i).getLat(),
                                     trackingsList.get(i).getLng()
                             ));
-                            alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"MOVEMENT");
+                            try {
+                                alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"MOVEMENT");
+                            } catch (Exception e) {
+                                halt(500, e.getMessage());
+                            }
                             break;
                         }
                     }
@@ -80,10 +89,10 @@ public class TrackingRouter implements RouteGroup {
 
     public boolean checkDistance(Trackings tracking, MovementAlerts alert){
 
-        double lng1 = Math.toRadians(tracking.getLat());
-        double lng2 = Math.toRadians(tracking.getLng());
-        double lat1 = Math.toRadians(alert.getLat());
-        double lat2 = Math.toRadians(alert.getLng());
+        double lat1 = Math.toRadians(tracking.getLat());
+        double lng1 = Math.toRadians(tracking.getLng());
+        double lat2 = Math.toRadians(alert.getLat());
+        double lng2 = Math.toRadians(alert.getLng());
 
         // Haversine equation
         double a = Math.pow(Math.sin((lat2 - lat1) / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((lng2 - lng1) / 2),2);
@@ -93,4 +102,10 @@ public class TrackingRouter implements RouteGroup {
     }
 }
 
-//00001,-31.4109,-64.1897,10.0,8,246,10-09-2019T20:51:09:000-03:00;00001,-31.4109,-64.1897,10.0,8,246,10-09-2019T20:51:09:000-03:00;00001,-31.4109,-64.1897,10.0,8,246,10-09-2019T20:51:09:000-03:00;00001,-31.4109,-64.1897,10.0,8,246,10-09-2019T20:51:09:000-03:00;00001,-31.4109,-64.1897,10.0,8,246,10-09-2019T20:51:09:000-03:00
+
+//movement alert
+//00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00
+
+
+//speed alert
+//00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00

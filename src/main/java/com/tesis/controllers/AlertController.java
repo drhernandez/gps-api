@@ -3,6 +3,7 @@ package com.tesis.controllers;
 import com.google.inject.Inject;
 import com.mashape.unirest.http.*;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.ResponseDTO;
@@ -252,7 +253,7 @@ public class AlertController {
 
     //  ----------------  SMSC Api methods ----------------
 
-    public void sendAlarm(Long deviceId, String alertType){
+    public void sendAlarm(Long deviceId, String alertType) throws ApiException {
         Users user = userService.getUsersByDeviceId(deviceId).getModel();
 
         try {
@@ -279,6 +280,7 @@ public class AlertController {
 
         } catch (Exception e) {
             logger.error(e.getMessage());
+            throw new ApiException(ErrorCodes.internal_error.toString(), "Error al enviar el mensaje de alerta.");
         }
 
     }

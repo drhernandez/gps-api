@@ -6,7 +6,7 @@ public class Constants {
     public static final int MIN_LENGTH = 6;
 
     public static final float DEFAULT_SPEED_ALERT = 60;
-    public static final double DEFAULT_MOVEMENT_ALERT_KM = 0.01;
+    public static final double DEFAULT_MOVEMENT_ALERT_KM = 0.02; // 20 mts
     public static final String DEFAULT_TEXT_SPEED_ALERT = "ALERTA%20DE%20VELOCIDAD!!%20se%20ha%20sobrepasado%20el%20límite%20de%20la%20alerta%20de%20velocidad.";
     public static final String DEFAULT_TEXT_MOVEMENT_ALERT = "ALERTA%20DE%20MOVIMIENTO!!%20se%20ha%20desplazado%20el%20vehiculo%20durante%20una%20alerta.";
 
