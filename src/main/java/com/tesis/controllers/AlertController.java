@@ -276,6 +276,11 @@ public class AlertController {
                     throw new ApiException(invalid_data.name(),
                             String.format("invalid phone number: %s", user.getPhone()),
                             HttpServletResponse.SC_NOT_FOUND);
+                case "405":
+                    logger.error(resp.getMessage());
+                    throw new ApiException(invalid_data.name(),
+                            "no messages available",
+                            HttpServletResponse.SC_NOT_FOUND);
             }
 
         } catch (Exception e) {
@@ -308,6 +313,11 @@ public class AlertController {
                     logger.error(resp.getMessage());
                     throw new ApiException(invalid_data.name(),
                             String.format("invalid phone number: %s", smsRequest.getReceptor()),
+                            HttpServletResponse.SC_NOT_FOUND);
+                case "405":
+                    logger.error(resp.getMessage());
+                    throw new ApiException(invalid_data.name(),
+                            "no messages available",
                             HttpServletResponse.SC_NOT_FOUND);
             }
 
