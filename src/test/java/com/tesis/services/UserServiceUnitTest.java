@@ -64,7 +64,7 @@ public class UserServiceUnitTest extends UnitTestConfigs {
     }
 
     @Test
-    public void getUsersByUserID_ok(){
+    public void getUsersByUserIDTest_ok(){
         Users user = mock(Users.class);
         user.setName("Diego");
 
@@ -75,13 +75,19 @@ public class UserServiceUnitTest extends UnitTestConfigs {
     }
 
     @Test
-    public void getUsersByUserID_error(){
+    public void getUsersByUserIDTest_error(){
         Mockito.when(usersDao.fetchOneById(any())).thenReturn(null);
         ResponseDTO<Users> responseDTO = userService.getUsersByUserID(new Random().nextLong());
 
         assertEquals(responseDTO.getModel(), null);
     }
 
-
+//    public void updateUserTest_ok(){
+//        Users user = mock(Users.class);
+//        user.setName("Diego");
+//
+//    }
+//
+//    public void updateUserTest_error(){}
 
 }
