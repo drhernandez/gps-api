@@ -50,17 +50,18 @@ public class DevicesServiceImp implements DevicesService {
     @Override
     public ResponseDTO<Devices> updateDevice(Long deviceID, Devices newDevice) {
         ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
-        Devices device = devicesDao.fetchOneById(deviceID);
-        device.setDeletedAt(null);
-        device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
-        device.setModel(newDevice.getModel());
-        device.setSoftwareVersion(newDevice.getSoftwareVersion());
-
         try {
+
+            Devices device = devicesDao.fetchOneById(deviceID);
+            device.setDeletedAt(null);
+            device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+            device.setModel(newDevice.getModel());
+            device.setSoftwareVersion(newDevice.getSoftwareVersion());
+
             devicesDao.update(device);
             responseDTO.model = device;
         } catch (Exception e){
-            logger.error(String.format("No se pudo modificar el device %s", device.toString()));
+            logger.error("No se pudo modificar el device");
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el device.");
         }
         return responseDTO;

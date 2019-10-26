@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Null;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Random;
@@ -72,18 +71,18 @@ public class VehicleServiceUnitTest extends UnitTestConfigs {
         Mockito.when(vehicleDao.fetchOneById(any())).thenReturn(null);
         ResponseDTO<Vehicles> responseDTO = vehicleService.getVehiclesByVehicleID(new Random().nextLong());
 
-        assertEquals(responseDTO.getModel(), null);
+        assertNull(responseDTO.getModel());
     }
 
     @Test
     public void updateVehicleTest_ok(){
         Vehicles vehicle = mock(Vehicles.class);
+        vehicle.setPlate("ABC-123");
 
         Mockito.when(vehicleDao.fetchOneById(any())).thenReturn(vehicle);
         ResponseDTO<Vehicles> responseDTO = vehicleService.updateVehicle(new Random().nextLong(), vehicle);
 
         assertEquals(responseDTO.getModel().getPlate(), vehicle.getPlate());
-        vehicle.setPlate("ABC-123");
     }
 
     @Test
