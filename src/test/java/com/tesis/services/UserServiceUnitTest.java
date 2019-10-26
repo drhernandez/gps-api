@@ -2,7 +2,6 @@ package com.tesis.services;
 
 import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.UserDaoExt;
-import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
@@ -30,9 +29,6 @@ public class UserServiceUnitTest extends UnitTestConfigs {
 
     @Mock
     UserDaoExt usersDao;
-
-    @Mock
-    VehicleDaoExt vehicleDao;
 
     @Mock
     PasswordEncoder passwordEncoder;
