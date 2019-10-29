@@ -13,4 +13,6 @@ public class Constants {
     public static final double EARTH_RADIUS_KM = 6371;
     public static final double EARTH_RADIUS_MILES = 3958.8;
 
+    public static final String JWT_KEY = "q3t6w9z$C&F)J@NcRfUjWnZr4u7x!A%D*G-KaPdSgVkYp2s5v8y/B?E(H+MbQeThWmZq4t6w9z$C&F)J@NcRfUjXn2r5u8x!A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQ";
+
 }

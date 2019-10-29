@@ -13,15 +13,20 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.services.AuthService;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+
+import static com.tesis.config.Constants.JWT_KEY;
 
 
 @Singleton
@@ -77,8 +82,8 @@ public class AuthServiceImp implements AuthService {
     }
 
 
-    public AccessTokens createAccessToken(Users user) throws JwtException {
-        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
+    private AccessTokens createAccessToken(Users user) throws JwtException {
+        LocalDateTime expirationDate = LocalDateTime.now().plusYears(200);
 
         JwtBuilder jwts = Jwts.builder().setHeaderParam("type", "access-token")
                 .setSubject("User")
@@ -90,15 +95,19 @@ public class AuthServiceImp implements AuthService {
                 .claim("userLastName", user.getLastName())
                 .claim("userEmail", user.getEmail());
 
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(System.getenv("ACCESS_JWT_KEY"));
-        Key signingKey = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
+        Key signingKey = getSigningKey();
 
         return new AccessTokens(user.getId(), jwts.signWith(signingKey, SignatureAlgorithm.HS512).compact());
     }
 
-    public Claims validateAccessToken(String jwt) throws JwtException {
-        return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(System.getenv("ACCESS_JWT_KEY")))
-                .parseClaimsJws(jwt).getBody();
+    @Override
+    public void validateAccessToken(String jwt) {
+        Key signingKey = getSigningKey();
+        Jwts.parser().setSigningKey(signingKey).parse(jwt);
+    }
+
+    private Key getSigningKey() {
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(JWT_KEY);
+        return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
     }
 }
