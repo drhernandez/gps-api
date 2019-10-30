@@ -13,12 +13,10 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.services.AuthService;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
@@ -69,7 +67,7 @@ public class AuthServiceImp implements AuthService {
         }
 
         try {
-            AccessTokens newToken = createAccessToken(user);
+            AccessTokens newToken = generateAccessToken(user);
             accessTokensDao.insert(newToken);
             logger.info("Sesión creada para el usuario %s", user.toString());
             responseDTO.setModel(newToken);
@@ -82,8 +80,8 @@ public class AuthServiceImp implements AuthService {
     }
 
 
-    private AccessTokens createAccessToken(Users user) throws JwtException {
-        LocalDateTime expirationDate = LocalDateTime.now().plusYears(200);
+    private AccessTokens generateAccessToken(Users user) throws JwtException {
+        LocalDateTime expirationDate = LocalDateTime.now().plusDays(1);
 
         JwtBuilder jwts = Jwts.builder().setHeaderParam("type", "access-token")
                 .setSubject("User")
