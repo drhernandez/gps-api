@@ -1,9 +1,8 @@
 package com.tesis.services;
 
+import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.TrackingDaoExt;
 import com.tesis.daos.VehicleDaoExt;
-import com.tesis.enums.ErrorCodes;
-import com.tesis.jooq.tables.daos.TrackingsDao;
 import com.tesis.jooq.tables.pojos.Trackings;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.Pagination;
@@ -22,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TrackingServiceUnitTest {
+public class TrackingServiceUnitTest extends UnitTestConfigs {
 
     @Mock
     VehicleDaoExt vehiclesDao;
@@ -118,11 +117,9 @@ public class TrackingServiceUnitTest {
         trackingsList.add(Mockito.mock(Trackings.class));
         Pagination pag = Mockito.mock(Pagination.class);
 
-        Mockito.when(trackingsDao.findByFilters(mock(TrackingFilters.class), pag)).thenReturn(trackingsList);
+        Mockito.when(trackingsDao.findByFilters(any(TrackingFilters.class), any(Pagination.class))).thenReturn(trackingsList);
+        ResponseDTO responseDTO = trackingService.trackingSearch(Mockito.mock(TrackingFilters.class), pag);
 
-        
+        assertNotNull(responseDTO.getModel());
     }
-    @Test
-    public void trackingSearchTest_error(){}
-
 }

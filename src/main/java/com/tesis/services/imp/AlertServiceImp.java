@@ -22,7 +22,7 @@ public class AlertServiceImp implements AlertService {
     Logger logger = LoggerFactory.getLogger(AlertServiceImp.class);
 
     @Inject
-    VehicleDaoExt vehicleDaoExt;
+    VehicleDaoExt vehicleDao;
     @Inject
     SpeedAlertDaoExt speedAlertsDao;
     @Inject
@@ -58,8 +58,12 @@ public class AlertServiceImp implements AlertService {
     }
 
     public ResponseDTO<SpeedAlerts> getSpeedAlertByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
-        return new ResponseDTO<SpeedAlerts>(speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId()), null);
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
+        ResponseDTO<SpeedAlerts> responseDTO =  new ResponseDTO<>();
+        if(vehicle != null) {
+            responseDTO.setModel(speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId()));
+        }
+        return responseDTO;
     }
 
     @Override
@@ -100,6 +104,7 @@ public class AlertServiceImp implements AlertService {
         return speedAlert.getActive() ? speedAlert : null;
     }
 
+    //  ----------------  Movement Alert methods ----------------
 
     @Override
     public ResponseDTO<MovementAlerts> createMovementAlert(MovementAlerts movementAlert) {
@@ -126,8 +131,11 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<MovementAlerts> getMovementAlertByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
-        return new ResponseDTO<MovementAlerts>(movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId()), null);
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
+        ResponseDTO<MovementAlerts> responseDTO =  new ResponseDTO<>();
+        if(vehicle != null)
+            responseDTO.setModel(movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId()));
+        return responseDTO;
     }
 
     @Override
@@ -147,7 +155,7 @@ public class AlertServiceImp implements AlertService {
             responseDTO.model = momovementAlert;
         } catch (Exception e){
             logger.error(String.format("No se pudo modificar el momovementAlert %s", momovementAlert.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el momovementAlert.");
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el movementAlert.");
         }
         return responseDTO;
     }
@@ -159,7 +167,7 @@ public class AlertServiceImp implements AlertService {
             movementAlertDao.deleteMovementAlert(deviceId);
         }catch (Exception e) {
             logger.error(String.format("No se pudo eliminar el speedAlert %s", deviceId));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el speedAlert.");
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el movementAlert.");
         }
         return responseDTO;
     }
@@ -187,7 +195,7 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<List<SpeedAlertsHistory>> getSpeedHistoryByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
         SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId());
         return new ResponseDTO(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()), null);
     }
@@ -219,7 +227,7 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<List<MovementAlertsHistory>> getMovementHistoryByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
         MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId());
         return new ResponseDTO(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()), null);
     }

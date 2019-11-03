@@ -1,5 +1,6 @@
 package com.tesis.services;
 
+import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.AccessTokenDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.jooq.tables.pojos.AccessTokens;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.times;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class AuthServiceUniteTest {
+public class AuthServiceUniteTest extends UnitTestConfigs {
 
     @Mock
     PasswordEncoder passwordEncoder;
