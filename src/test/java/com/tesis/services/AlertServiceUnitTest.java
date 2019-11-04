@@ -3,11 +3,7 @@ package com.tesis.services;
 import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.*;
 import com.tesis.enums.ErrorCodes;
-import com.tesis.jooq.tables.daos.MovementAlertsDao;
-import com.tesis.jooq.tables.pojos.MovementAlerts;
-import com.tesis.jooq.tables.pojos.SpeedAlerts;
-import com.tesis.jooq.tables.pojos.SpeedAlertsHistory;
-import com.tesis.jooq.tables.pojos.Vehicles;
+import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.imp.AlertServiceImp;
 import org.jooq.exception.DataAccessException;
@@ -113,7 +109,7 @@ public class AlertServiceUnitTest extends UnitTestConfigs {
         speedAlert.setId(1L);
 
         Mockito.when(vehicleDao.fetchOneById(any(Long.class))).thenReturn(null);
-        Mockito.when(speedAlertsDao.fetchOneByDeviceId(any(Long.class))).thenReturn(speedAlert);
+//        Mockito.when(speedAlertsDao.fetchOneByDeviceId(any(Long.class))).thenReturn(speedAlert);
 
         ResponseDTO<SpeedAlerts> responseDTO = alertService.getSpeedAlertByVehicleID(1L);
 
@@ -227,7 +223,7 @@ public class AlertServiceUnitTest extends UnitTestConfigs {
         movementAlerts.setId(1L);
 
         Mockito.when(vehicleDao.fetchOneById(any(Long.class))).thenReturn(null);
-        Mockito.when(movementAlertDao.fetchOneByDeviceId(any(Long.class))).thenReturn(movementAlerts);
+//        Mockito.when(movementAlertDao.fetchOneByDeviceId(any(Long.class))).thenReturn(movementAlerts);
 
         ResponseDTO<MovementAlerts> responseDTO = alertService.getMovementAlertByVehicleID(1L);
 
@@ -319,5 +315,106 @@ public class AlertServiceUnitTest extends UnitTestConfigs {
     }
 
     @Test
-    public void getSpeedHistoryByVehicleIDTest_error(){}
+    public void getSpeedHistoryByVehicleIDTest_error(){
+
+        Mockito.when(vehicleDao.fetchOneById(any(Long.class))).thenReturn(null);
+        ResponseDTO<List<SpeedAlertsHistory>> responseDTO = alertService.getSpeedHistoryByVehicleID(1L);
+
+        assertEquals(responseDTO.getModel().size(), 0);
+    }
+
+    @Test
+    public void deleteSpeedAlertHistoryTest_ok(){
+
+        SpeedAlerts speedAlerts = new SpeedAlerts();
+        speedAlerts.setId(1L);
+        speedAlerts.setDeviceId(1L);
+
+        Mockito.when(speedAlertsDao.fetchOneByDeviceId(any(Long.class))).thenReturn(speedAlerts);
+        ResponseDTO<SpeedAlertsHistory> responseDTO = alertService.deleteSpeedAlertHistory(1L);
+        assertNull(responseDTO.getModel());
+    }
+
+    @Test
+    public void deleteSpeedAlertHistoryTest_error(){
+//        Mockito.doThrow(DataAccessException.class).when(speedAlertsHistoryDao).deleteSpeedAlertHistory(any(Long.class));
+        ResponseDTO<SpeedAlertsHistory> responseDTO = alertService.deleteSpeedAlertHistory(1L);
+
+        assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
+        assertEquals(responseDTO.getError().getMessage(), "Error al eliminar los speedAlertHistory.");
+    }
+
+    @Test
+    public void createMovementAlertHistoryTest_ok(){
+        MovementAlertsHistory movementAlertsHistory = new MovementAlertsHistory();
+        movementAlertsHistory.setLat(10F);
+        movementAlertsHistory.setLng(10F);
+
+        ResponseDTO<MovementAlertsHistory> responseDTO = alertService.createMovementAlertHistory(movementAlertsHistory);
+        assertEquals(responseDTO.getModel().getLat(), movementAlertsHistory.getLat());
+        assertEquals(responseDTO.getModel().getLng(), movementAlertsHistory.getLng());
+    }
+
+    @Test
+    public void createMovementAlertHistoryTest_error(){
+        MovementAlertsHistory movementAlertHistory = new MovementAlertsHistory();
+        movementAlertHistory.setLat(10F);
+        movementAlertHistory.setLng(10F);
+
+        Mockito.doThrow(DataAccessException.class).when(movementAlertsHistoryDao).insert(any(MovementAlertsHistory.class));
+        ResponseDTO<MovementAlertsHistory> responseDTO = alertService.createMovementAlertHistory(movementAlertHistory);
+
+        assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
+        assertEquals(responseDTO.getError().getMessage(), "Error al guardar el movementAlertHistory.");
+    }
+
+    @Test
+    public void getMovementHistoryByVehicleIDTest_ok(){
+        List<MovementAlertsHistory> movementAlertHistoryList = new ArrayList<>();
+        movementAlertHistoryList.add(Mockito.mock(MovementAlertsHistory.class));
+
+        MovementAlerts movementAlerts = new MovementAlerts();
+        movementAlerts.setId(1L);
+        movementAlerts.setDeviceId(1L);
+
+        Vehicles vehicle = new Vehicles();
+        vehicle.setId(1L);
+        vehicle.setDeviceId(1L);
+
+        Mockito.when(vehicleDao.fetchOneById(any(Long.class))).thenReturn(vehicle);
+        Mockito.when(movementAlertDao.fetchOneByDeviceId(any(Long.class))).thenReturn(movementAlerts);
+        Mockito.when(movementAlertsHistoryDao.fetchByAlertId(any(Long.class))).thenReturn(movementAlertHistoryList);
+
+        ResponseDTO<List<MovementAlertsHistory>> responseDTO = alertService.getMovementHistoryByVehicleID(1L);
+
+        assertEquals(responseDTO.getModel().size(), movementAlertHistoryList.size());
+    }
+    @Test
+    public void getMovementHistoryByVehicleIDTest_error(){
+        Mockito.when(vehicleDao.fetchOneById(any(Long.class))).thenReturn(null);
+        ResponseDTO<List<MovementAlertsHistory>> responseDTO = alertService.getMovementHistoryByVehicleID(1L);
+
+        assertEquals(responseDTO.getModel().size(), 0);
+    }
+
+    @Test
+    public void deleteMovementAlertHistoryTest_ok(){
+        MovementAlerts movementAlert = new MovementAlerts();
+        movementAlert.setId(1L);
+        movementAlert.setDeviceId(1L);
+
+        Mockito.when(movementAlertDao.fetchOneByDeviceId(any(Long.class))).thenReturn(movementAlert);
+        ResponseDTO<MovementAlertsHistory> responseDTO = alertService.deleteMovementAlertHistory(1L);
+        assertNull(responseDTO.getModel());
+
+    }
+
+    @Test
+    public void deleteMovementAlertHistoryTest_error(){
+//        Mockito.doThrow(DataAccessException.class).when(movementAlertsHistoryDao).deleteMovementsAlertHistory(any(Long.class));
+        ResponseDTO<MovementAlertsHistory> responseDTO = alertService.deleteMovementAlertHistory(1L);
+
+        assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
+        assertEquals(responseDTO.getError().getMessage(), "Error al eliminar los movementAlertHistory.");
+    }
 }

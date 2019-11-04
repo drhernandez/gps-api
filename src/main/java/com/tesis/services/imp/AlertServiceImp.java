@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Singleton
@@ -195,18 +196,28 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<List<SpeedAlertsHistory>> getSpeedHistoryByVehicleID(Long vehicleID) {
+        ResponseDTO<List<SpeedAlertsHistory>> responseDTO = new ResponseDTO<>();
+        responseDTO.setModel(Collections.emptyList());
         Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
-        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId());
-        return new ResponseDTO(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()), null);
+        if (vehicle != null){
+            SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId());
+            if(speedAlert != null)
+                responseDTO.setModel(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()));
+        }
+        return responseDTO;
     }
 
     @Override
     public ResponseDTO<SpeedAlertsHistory> deleteSpeedAlertHistory(Long deviceId) {
         ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
 
-        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceId);
-        speedAlertsHistoryDao.deleteSpeedAlertHistory(speedAlert.getId());
-
+        try {
+            SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceId);
+            speedAlertsHistoryDao.deleteSpeedAlertHistory(speedAlert.getId());
+        } catch (Exception e){
+            logger.error(String.format("No se pudo eliminar los speedAlertsHistory del device  %s", deviceId));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los speedAlertHistory.");
+        }
         return responseDTO;
     }
 
@@ -227,17 +238,28 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<List<MovementAlertsHistory>> getMovementHistoryByVehicleID(Long vehicleID) {
+        ResponseDTO<List<MovementAlertsHistory>> responseDTO = new ResponseDTO<>();
+        responseDTO.setModel(Collections.emptyList());
         Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
-        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId());
-        return new ResponseDTO(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()), null);
+        if (vehicle != null){
+            MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId());
+            if (movementAlert != null)
+                responseDTO.setModel(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()));
+        }
+        return responseDTO;
     }
 
     @Override
     public ResponseDTO<MovementAlertsHistory> deleteMovementAlertHistory(Long deviceId) {
         ResponseDTO<MovementAlertsHistory> responseDTO = new ResponseDTO<>();
 
-        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceId);
-        movementAlertsHistoryDao.deleteMovementsAlertHistory(movementAlert.getId());
+        try {
+            MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceId);
+            movementAlertsHistoryDao.deleteMovementsAlertHistory(movementAlert.getId());
+        } catch (Exception e){
+            logger.error(String.format("No se pudo eliminar los speedAlertsHistory del device  %s", deviceId));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los movementAlertHistory.");
+        }
 
         return responseDTO;
     }
