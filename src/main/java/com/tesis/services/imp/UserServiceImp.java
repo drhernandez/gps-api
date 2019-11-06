@@ -67,21 +67,21 @@ public class UserServiceImp implements UserService {
     @Override
     public ResponseDTO<Users> updateUser(Long userID, Users newData) {
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
-        Users user = usersDao.fetchOneById(userID);
-        user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
-        user.setDeletedAt(null);
-        user.setPassword(newData.getPassword());
-        user.setName(newData.getName());
-        user.setLastName(newData.getLastName());
-        user.setDni(newData.getDni());
-        user.setAddress(newData.getAddress());
-        user.setPhone(newData.getPhone());
-        user.setEmail(newData.getEmail());
         try {
+            Users user = usersDao.fetchOneById(userID);
+            user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+            user.setDeletedAt(null);
+            user.setPassword(newData.getPassword());
+            user.setName(newData.getName());
+            user.setLastName(newData.getLastName());
+            user.setDni(newData.getDni());
+            user.setAddress(newData.getAddress());
+            user.setPhone(newData.getPhone());
+            user.setEmail(newData.getEmail());
             usersDao.update(user);
             responseDTO.model = user;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo modificar el usuario %s", user.toString()));
+            logger.error("No se pudo modificar el usuario");
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el usuario.");
         }
         return responseDTO;
@@ -89,10 +89,13 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ResponseDTO<Users> deleteUser(Long userID) {
-
-        usersDao.deleteUserCascade(userID);
-
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
+        try {
+            usersDao.deleteUserCascade(userID);
+        }catch (Exception e){
+            logger.error("No se pudo modificar el usuario. Motivo: " + e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el usuario.");
+        }
         return responseDTO;
     }
 }

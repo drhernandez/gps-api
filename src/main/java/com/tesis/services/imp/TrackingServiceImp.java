@@ -45,7 +45,6 @@ public class TrackingServiceImp implements TrackingService {
     }
 
     public ResponseDTO<List<Trackings>> getTrackingsByVehicleID(Long vehicleID) {
-
         Vehicles vehicle = vehiclesDao.fetchOneById(vehicleID);
 
         ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO();
@@ -58,8 +57,9 @@ public class TrackingServiceImp implements TrackingService {
         Vehicles vehicle = vehiclesDao.fetchOneById(vehicleID);
 
         ResponseDTO<Trackings> responseDTO = new ResponseDTO();
-        responseDTO.model = trakingsDao.findLocationByDeviceID(vehicle.getDeviceId());
-
+        if (vehicle != null){
+            responseDTO.model = trakingsDao.findLocationByDeviceID(vehicle.getDeviceId());
+        }
         return responseDTO;
     }
 

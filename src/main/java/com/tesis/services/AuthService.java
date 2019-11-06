@@ -10,7 +10,8 @@ import io.jsonwebtoken.Claims;
 public interface AuthService {
 
     Boolean checkUserCredentials(CredentialsDTO credentialsDTO);
-    ResponseDTO<AccessTokens> checkAccessToken(CredentialsDTO credentialsDTO);
-    AccessTokens createAccessToken(Users user);
-    Claims validateAccessToken(String jwt);
+    ResponseDTO<AccessTokens> checkAccessToken(CredentialsDTO credentialsDTO);//TODO renombrar
+    void validateAccessToken(String jwt);
+
+    //ResponseDTO<AccessTokens> createAccessToken(CredentialsDTO credentialsDTO);
 }
