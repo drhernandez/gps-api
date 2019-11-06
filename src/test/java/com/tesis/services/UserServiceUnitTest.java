@@ -2,11 +2,11 @@ package com.tesis.services;
 
 import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.UserDaoExt;
-import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.imp.UserServiceImp;
+import org.jooq.exception.DataAccessException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,9 +29,6 @@ public class UserServiceUnitTest extends UnitTestConfigs {
 
     @Mock
     UserDaoExt usersDao;
-
-    @Mock
-    VehicleDaoExt vehicleDao;
 
     @Mock
     PasswordEncoder passwordEncoder;
@@ -82,12 +81,42 @@ public class UserServiceUnitTest extends UnitTestConfigs {
         assertEquals(responseDTO.getModel(), null);
     }
 
-//    public void updateUserTest_ok(){
-//        Users user = mock(Users.class);
-//        user.setName("Diego");
-//
-//    }
-//
-//    public void updateUserTest_error(){}
+    @Test
+    public void updateUserTest_ok(){
+        Users user = mock(Users.class);
+        user.setName("Diego");
+
+        Mockito.when(usersDao.fetchOneById(any())).thenReturn(user);
+        ResponseDTO<Users> responseDTO = userService.updateUser(new Random().nextLong(), user);
+
+        assertEquals(responseDTO.getModel().getName(), user.getName());
+    }
+    @Test
+    public void updateUserTest_error(){
+        Users user = mock(Users.class);
+        user.setName("Diego");
+
+        Mockito.when(usersDao.fetchOneById(any())).thenThrow(DataAccessException.class);
+        ResponseDTO<Users> responseDTO = userService.updateUser(new Random().nextLong(), user);
+
+        assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
+        assertEquals(responseDTO.getError().getMessage(), "Error al modificar el usuario.");
+    }
+
+    @Test
+    public void deleteUser_ok(){
+        ResponseDTO<Users> responseDTO = userService.deleteUser(new Random().nextLong());
+        assertNull(responseDTO.getModel());
+    }
+
+    @Test
+    public void deleteUser_error(){
+        doThrow(DataAccessException.class).when(usersDao).deleteUserCascade(any());
+        ResponseDTO<Users> responseDTO = userService.deleteUser(new Random().nextLong());
+
+        assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
+        assertEquals(responseDTO.getError().getMessage(), "Error al eliminar el usuario.");
+
+    }
 
 }

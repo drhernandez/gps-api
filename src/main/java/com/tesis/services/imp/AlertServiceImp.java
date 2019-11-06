@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Singleton
@@ -22,7 +23,7 @@ public class AlertServiceImp implements AlertService {
     Logger logger = LoggerFactory.getLogger(AlertServiceImp.class);
 
     @Inject
-    VehicleDaoExt vehicleDaoExt;
+    VehicleDaoExt vehicleDao;
     @Inject
     SpeedAlertDaoExt speedAlertsDao;
     @Inject
@@ -58,8 +59,12 @@ public class AlertServiceImp implements AlertService {
     }
 
     public ResponseDTO<SpeedAlerts> getSpeedAlertByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
-        return new ResponseDTO<SpeedAlerts>(speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId()), null);
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
+        ResponseDTO<SpeedAlerts> responseDTO =  new ResponseDTO<>();
+        if(vehicle != null) {
+            responseDTO.setModel(speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId()));
+        }
+        return responseDTO;
     }
 
     @Override
@@ -100,6 +105,7 @@ public class AlertServiceImp implements AlertService {
         return speedAlert.getActive() ? speedAlert : null;
     }
 
+    //  ----------------  Movement Alert methods ----------------
 
     @Override
     public ResponseDTO<MovementAlerts> createMovementAlert(MovementAlerts movementAlert) {
@@ -126,8 +132,11 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<MovementAlerts> getMovementAlertByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
-        return new ResponseDTO<MovementAlerts>(movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId()), null);
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
+        ResponseDTO<MovementAlerts> responseDTO =  new ResponseDTO<>();
+        if(vehicle != null)
+            responseDTO.setModel(movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId()));
+        return responseDTO;
     }
 
     @Override
@@ -147,7 +156,7 @@ public class AlertServiceImp implements AlertService {
             responseDTO.model = momovementAlert;
         } catch (Exception e){
             logger.error(String.format("No se pudo modificar el momovementAlert %s", momovementAlert.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el momovementAlert.");
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el movementAlert.");
         }
         return responseDTO;
     }
@@ -159,7 +168,7 @@ public class AlertServiceImp implements AlertService {
             movementAlertDao.deleteMovementAlert(deviceId);
         }catch (Exception e) {
             logger.error(String.format("No se pudo eliminar el speedAlert %s", deviceId));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el speedAlert.");
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el movementAlert.");
         }
         return responseDTO;
     }
@@ -187,18 +196,28 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<List<SpeedAlertsHistory>> getSpeedHistoryByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
-        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId());
-        return new ResponseDTO(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()), null);
+        ResponseDTO<List<SpeedAlertsHistory>> responseDTO = new ResponseDTO<>();
+        responseDTO.setModel(Collections.emptyList());
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
+        if (vehicle != null){
+            SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(vehicle.getDeviceId());
+            if(speedAlert != null)
+                responseDTO.setModel(speedAlertsHistoryDao.fetchByAlertId(speedAlert.getId()));
+        }
+        return responseDTO;
     }
 
     @Override
     public ResponseDTO<SpeedAlertsHistory> deleteSpeedAlertHistory(Long deviceId) {
         ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
 
-        SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceId);
-        speedAlertsHistoryDao.deleteSpeedAlertHistory(speedAlert.getId());
-
+        try {
+            SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceId);
+            speedAlertsHistoryDao.deleteSpeedAlertHistory(speedAlert.getId());
+        } catch (Exception e){
+            logger.error(String.format("No se pudo eliminar los speedAlertsHistory del device  %s", deviceId));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los speedAlertHistory.");
+        }
         return responseDTO;
     }
 
@@ -219,17 +238,28 @@ public class AlertServiceImp implements AlertService {
 
     @Override
     public ResponseDTO<List<MovementAlertsHistory>> getMovementHistoryByVehicleID(Long vehicleID) {
-        Vehicles vehicle = vehicleDaoExt.fetchOneById(vehicleID);
-        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId());
-        return new ResponseDTO(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()), null);
+        ResponseDTO<List<MovementAlertsHistory>> responseDTO = new ResponseDTO<>();
+        responseDTO.setModel(Collections.emptyList());
+        Vehicles vehicle = vehicleDao.fetchOneById(vehicleID);
+        if (vehicle != null){
+            MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(vehicle.getDeviceId());
+            if (movementAlert != null)
+                responseDTO.setModel(movementAlertsHistoryDao.fetchByAlertId(movementAlert.getId()));
+        }
+        return responseDTO;
     }
 
     @Override
     public ResponseDTO<MovementAlertsHistory> deleteMovementAlertHistory(Long deviceId) {
         ResponseDTO<MovementAlertsHistory> responseDTO = new ResponseDTO<>();
 
-        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceId);
-        movementAlertsHistoryDao.deleteMovementsAlertHistory(movementAlert.getId());
+        try {
+            MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceId);
+            movementAlertsHistoryDao.deleteMovementsAlertHistory(movementAlert.getId());
+        } catch (Exception e){
+            logger.error(String.format("No se pudo eliminar los speedAlertsHistory del device  %s", deviceId));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los movementAlertHistory.");
+        }
 
         return responseDTO;
     }

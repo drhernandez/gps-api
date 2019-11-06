@@ -50,20 +50,21 @@ public class VehicleServiceImp implements VehicleService {
     @Override
     public ResponseDTO<Vehicles> updateVehicle(Long VehicleID, Vehicles newData) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
-        Vehicles vehicle = vehiclesDao.fetchOneById(VehicleID);
-        vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        vehicle.setDeletedAt(null);
-        vehicle.setUserId(newData.getUserId());
-        vehicle.setType(newData.getType());
-        vehicle.setPlate(newData.getPlate());
-        vehicle.setModel(newData.getModel());
-        vehicle.setDeviceId(newData.getDeviceId());
-
         try {
+
+            Vehicles vehicle = vehiclesDao.fetchOneById(VehicleID);
+            vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            vehicle.setDeletedAt(null);
+            vehicle.setUserId(newData.getUserId());
+            vehicle.setType(newData.getType());
+            vehicle.setPlate(newData.getPlate());
+            vehicle.setModel(newData.getModel());
+            vehicle.setDeviceId(newData.getDeviceId());
+
             vehiclesDao.update(vehicle);
             responseDTO.model = vehicle;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo modificar el vahiculo %s", vehicle.toString()));
+            logger.error("No se pudo modificar el vahiculo");
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el vehiculo.");
         }
         return responseDTO;
