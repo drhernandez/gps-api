@@ -6,6 +6,7 @@ drop table SPEED_ALERTS;
 drop table MOVEMENT_ALERTS;
 drop table DEVICES;
 drop table ACCESS_TOKENS;
+drop table RECOVERY_TOKENS;
 drop table USERS;
 
 create table USERS(
@@ -28,6 +29,11 @@ create table ACCESS_TOKENS(
 	token varchar
 );
 
+create table RECOVERY_TOKENS(
+	user_id bigint references USERS(id) primary key not null,
+	token varchar not null unique,
+	expiration_date timestamp not null
+);
 
 create table DEVICES(
 	id bigint primary key not null,
