@@ -20,6 +20,9 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.sendgrid.*;
+import java.io.IOException;
+
 import static com.tesis.config.Constants.EXPIRATION_RECOVERY_TIME;
 
 @Singleton
@@ -132,5 +135,32 @@ public class RecoveryServiceImp implements RecoveryService {
         return recoveryToken;
     }
 
-    private void sendRecoveryMail(RecoveryTokens recoveryToken){}
+    private void sendRecoveryMail(RecoveryTokens recoveryToken) throws IOException{
+        Users user = userDao.fetchOneById(recoveryToken.getUserId());
+
+        Email from = new Email(System.getenv("SENDGRID_SENDER"));
+        String subject = "GPS-TESIS Recuperacion de contraseña";
+        Email to = new Email("pedropruebapedro@gmail.com");
+//        Email to = new Email(user.getEmail());
+        Content content = new Content("text/plain",
+                "Link de recuperacion de contraseña: http://localhost:3000/reset-password/" + recoveryToken.getToken());
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
+        Request request = new Request();
+        try {
+            request.method = Method.POST;
+            request.endpoint = "mail/send";
+            request.body = mail.build();
+            Response response = sg.api(request);
+            if (response.statusCode != 202){
+                logger.error("Error al enviar el mail de recuperacion.");
+                logger.error("Response code: " + response.statusCode + ", Body: " + response.body);
+                logger.error("Headers: " + response.headers);
+            }
+        } catch (IOException e) {
+            logger.error("No se pudo enviar el mail de recuperacion.");
+            throw e;
+        }
+    }
 }
