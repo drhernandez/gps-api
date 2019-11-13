@@ -8,6 +8,7 @@ import com.tesis.jooq.tables.AccessTokens;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
+import com.tesis.jooq.tables.RecoveryTokens;
 import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
@@ -39,7 +40,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = 1033645259;
+    private static final long serialVersionUID = 1472962211;
 
     /**
      * The reference instance of <code>public</code>
@@ -65,6 +66,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.movement_alerts_history</code>.
      */
     public final MovementAlertsHistory MOVEMENT_ALERTS_HISTORY = com.tesis.jooq.tables.MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY;
+
+    /**
+     * The table <code>public.recovery_tokens</code>.
+     */
+    public final RecoveryTokens RECOVERY_TOKENS = com.tesis.jooq.tables.RecoveryTokens.RECOVERY_TOKENS;
 
     /**
      * The table <code>public.speed_alerts</code>.
@@ -137,6 +143,7 @@ public class Public extends SchemaImpl {
             Devices.DEVICES,
             MovementAlerts.MOVEMENT_ALERTS,
             MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY,
+            RecoveryTokens.RECOVERY_TOKENS,
             SpeedAlerts.SPEED_ALERTS,
             SpeedAlertsHistory.SPEED_ALERTS_HISTORY,
             Trackings.TRACKINGS,

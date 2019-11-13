@@ -8,6 +8,7 @@ import com.tesis.jooq.tables.AccessTokens;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
+import com.tesis.jooq.tables.RecoveryTokens;
 import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
@@ -49,6 +50,11 @@ public class Tables {
      * The table <code>public.movement_alerts_history</code>.
      */
     public static final MovementAlertsHistory MOVEMENT_ALERTS_HISTORY = com.tesis.jooq.tables.MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY;
+
+    /**
+     * The table <code>public.recovery_tokens</code>.
+     */
+    public static final RecoveryTokens RECOVERY_TOKENS = com.tesis.jooq.tables.RecoveryTokens.RECOVERY_TOKENS;
 
     /**
      * The table <code>public.speed_alerts</code>.
