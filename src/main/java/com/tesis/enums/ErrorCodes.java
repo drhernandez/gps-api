@@ -8,7 +8,9 @@ public enum ErrorCodes {
     invalid_data,
     invalid_response,
     invalid_access_token,
+    invalid_token,
     route_not_found,
+    not_found,
     //inbound
     shipment_already_exists,
     shipment_already_in_hub,

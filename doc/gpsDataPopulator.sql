@@ -6,6 +6,8 @@ delete from SPEED_ALERTS_HISTORY;
 delete from MOVEMENT_ALERTS_HISTORY;
 delete from SPEED_ALERTS;
 delete from MOVEMENT_ALERTS;
+delete from ACCESS_TOKENS;
+delete from RECOVERY_TOKENS;
 
 insert into USERS values (10, null, null, 'jose_buendia@gmail.com', 'jose_buendia', 'José Arcadio', 'Buendia', '2037374105',
 							'5ta Avenida de Macondo 1', '2034-203401');
