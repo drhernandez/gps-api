@@ -140,10 +140,9 @@ public class RecoveryServiceImp implements RecoveryService {
 
         Email from = new Email(System.getenv("SENDGRID_SENDER"));
         String subject = "GPS-TESIS Recuperacion de contraseña";
-        Email to = new Email("pedropruebapedro@gmail.com");
-//        Email to = new Email(user.getEmail());
+        Email to = new Email(user.getEmail());
         Content content = new Content("text/plain",
-                "Link de recuperacion de contraseña: http://localhost:3000/reset-password/" + recoveryToken.getToken());
+                "Link de recuperacion de contraseña: "+ System.getenv("FRONT_DOMAIN") +"/reset-password/" + recoveryToken.getToken());
         Mail mail = new Mail(from, subject, to, content);
 
         SendGrid sg = new SendGrid(System.getenv("SENDGRID_API_KEY"));
@@ -158,6 +157,7 @@ public class RecoveryServiceImp implements RecoveryService {
                 logger.error("Response code: " + response.statusCode + ", Body: " + response.body);
                 logger.error("Headers: " + response.headers);
             }
+            logger.info(String.format("Email de recuperacion enviado para el usuario %S", user.toString()));
         } catch (IOException e) {
             logger.error("No se pudo enviar el mail de recuperacion.");
             throw e;
