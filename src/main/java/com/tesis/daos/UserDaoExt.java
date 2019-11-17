@@ -7,7 +7,11 @@ import java.util.List;
 
 import com.tesis.jooq.tables.*;
 import com.tesis.jooq.tables.daos.UsersDao;
+import com.tesis.models.Pagination;
+import com.tesis.utils.filters.UserFilters;
+import org.jooq.Condition;
 import org.jooq.Configuration;
+import org.jooq.User;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,5 +81,34 @@ public class UserDaoExt extends  UsersDao{
                 throw e;
             }
         });
+    }
+
+    public List<com.tesis.jooq.tables.pojos.Users> findByFilters(UserFilters filters, Pagination pagination){
+
+        Condition searchCondition = DSL.trueCondition();
+
+        if (filters.getEmail() != null)
+            searchCondition = searchCondition.and(Users.USERS.EMAIL.like("%" + filters.getEmail() + "%"));
+        if (filters.getName() != null)
+            searchCondition = searchCondition.and(Users.USERS.NAME.like("%" + filters.getName() + "%"));
+        if (filters.getLast_name() != null)
+            searchCondition = searchCondition.and(Users.USERS.LAST_NAME.like("%" + filters.getLast_name() + "%"));
+        if (filters.getDni() != null)
+            searchCondition = searchCondition.and(Users.USERS.DNI.like("%" + filters.getDni() + "%"));
+
+
+        int count = DSL.using(configuration())
+                .fetchCount(DSL.selectFrom(Users.USERS).where(searchCondition).and(Users.USERS.DELETED_AT.isNull()));
+
+        pagination.setTotal(count);
+
+        return DSL.using(configuration())
+                .selectFrom(Users.USERS)
+                .where(searchCondition)
+                .and(Users.USERS.DELETED_AT.isNull())
+                .limit(pagination.getLimit())
+                .offset((pagination.getPage()-1)*pagination.getLimit())
+                .fetch()
+                .map(mapper());
     }
 }

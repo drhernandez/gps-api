@@ -8,9 +8,12 @@ import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.jooq.tables.pojos.Vehicles;
+import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.Search;
 import com.tesis.services.UserService;
 
+import com.tesis.utils.filters.UserFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -96,6 +99,15 @@ public class UserServiceImp implements UserService {
             logger.error("No se pudo modificar el usuario. Motivo: " + e.getMessage());
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el usuario.");
         }
+        return responseDTO;
+    }
+
+    @Override
+    public ResponseDTO<Search> userSearch(UserFilters filter, Pagination pagination) {
+
+        ResponseDTO<Search> responseDTO = new ResponseDTO<>();
+        responseDTO.model = new Search<>(usersDao.findByFilters(filter, pagination), pagination);
+
         return responseDTO;
     }
 }
