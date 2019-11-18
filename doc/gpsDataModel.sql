@@ -1,13 +1,16 @@
-drop table TRACKINGS;
-drop table VEHICLES;
-drop table SPEED_ALERTS_HISTORY;
-drop table MOVEMENT_ALERTS_HISTORY;
-drop table SPEED_ALERTS;
-drop table MOVEMENT_ALERTS;
-drop table DEVICES;
-drop table ACCESS_TOKENS;
-drop table RECOVERY_TOKENS;
-drop table USERS;
+drop table if exists TRACKINGS;
+drop table if exists VEHICLES;
+drop table if exists SPEED_ALERTS_HISTORY;
+drop table if exists MOVEMENT_ALERTS_HISTORY;
+drop table if exists SPEED_ALERTS;
+drop table if exists MOVEMENT_ALERTS;
+drop table if exists DEVICES;
+drop table if exists ACCESS_TOKENS;
+drop table if exists RECOVERY_TOKENS;
+drop table if exists USERS;
+drop table if exists BRANDS;
+drop table if exists BRAND_LINES;
+
 
 create table USERS(
 	id serial primary key not null,
@@ -109,3 +112,20 @@ create table MOVEMENT_ALERTS_HISTORY(
 	lat real,
 	lng real
 );
+
+
+create table BRANDS (
+  id serial primary key not null,
+  name varchar default null
+);
+ALTER TABLE public.BRANDS ALTER COLUMN id TYPE int8 USING id::int8;
+
+
+CREATE TABLE BRAND_LINES (
+  id serial primary key not null,
+  name varchar NOT NULL,
+  brand_id bigint references BRANDS(id) on delete cascade
+);
+ALTER TABLE public.BRAND_LINES ALTER COLUMN id TYPE int8 USING id::int8;
+
+

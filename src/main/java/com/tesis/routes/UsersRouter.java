@@ -21,6 +21,7 @@ public class UsersRouter implements RouteGroup {
         Spark.path("/users", () -> {
             Spark.post("", userController::createUser);
             Spark.get("", userController::getUsers);
+            Spark.get("/search", userController::userSearch);
             Spark.get("/:user_id", userController::getUsersByUserID);
             Spark.put("/:user_id", userController::updateUser);
             Spark.delete("/:user_id", userController::deleteUser);

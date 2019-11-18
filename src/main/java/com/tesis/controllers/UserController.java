@@ -5,10 +5,13 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.CredentialsDTO;
+import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.Search;
 import com.tesis.services.UserService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
+import com.tesis.utils.filters.UserFilters;
 import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,6 +144,27 @@ public class UserController {
 
         if (responseDTO.error != null) {
             response.status(500);
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object userSearch(Request request, Response response) throws ApiException{
+
+        UserFilters filters = new UserFilters();
+        Pagination pagination = new Pagination();
+
+        filters.setEmail(request.queryParams("email"));
+        filters.setName(request.queryParams("name"));
+        filters.setLast_name(request.queryParams("last_name"));
+        filters.setDni(request.queryParams("dni"));
+
+        pagination.setPage(request.queryParams("page") != null ? Integer.valueOf(request.queryParams("page")) : 1);
+        pagination.setLimit(request.queryParams("limit") != null ? Integer.valueOf(request.queryParams("limit")) : 10);
+
+        ResponseDTO<Search> responseDTO = userService.userSearch(filters, pagination);
+        if (responseDTO.error != null) {
             throw responseDTO.error;
         }
 
