@@ -49,6 +49,7 @@ public class ConfigModule extends AbstractModule {
         bind(AlertService.class).to(AlertServiceImp.class);
         bind(RecoveryService.class).to(RecoveryServiceImp.class);
         bind(BrandService.class).to(BrandServiceImp.class);
+        bind(BrandLineService.class).to(BrandLineServiceImp.class);
     }
 
     @Provides
