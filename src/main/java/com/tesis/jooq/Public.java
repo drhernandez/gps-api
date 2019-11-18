@@ -5,6 +5,8 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.AccessTokens;
+import com.tesis.jooq.tables.BrandLines;
+import com.tesis.jooq.tables.Brands;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
@@ -40,7 +42,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = 1472962211;
+    private static final long serialVersionUID = -1027655056;
 
     /**
      * The reference instance of <code>public</code>
@@ -51,6 +53,16 @@ public class Public extends SchemaImpl {
      * The table <code>public.access_tokens</code>.
      */
     public final AccessTokens ACCESS_TOKENS = com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS;
+
+    /**
+     * The table <code>public.brand_lines</code>.
+     */
+    public final BrandLines BRAND_LINES = com.tesis.jooq.tables.BrandLines.BRAND_LINES;
+
+    /**
+     * The table <code>public.brands</code>.
+     */
+    public final Brands BRANDS = com.tesis.jooq.tables.Brands.BRANDS;
 
     /**
      * The table <code>public.devices</code>.
@@ -122,6 +134,8 @@ public class Public extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
+            Sequences.BRAND_LINES_ID_SEQ,
+            Sequences.BRANDS_ID_SEQ,
             Sequences.MOVEMENT_ALERTS_ID_SEQ,
             Sequences.SPEED_ALERTS_ID_SEQ,
             Sequences.TRACKINGS_ID_SEQ,
@@ -140,6 +154,8 @@ public class Public extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             AccessTokens.ACCESS_TOKENS,
+            BrandLines.BRAND_LINES,
+            Brands.BRANDS,
             Devices.DEVICES,
             MovementAlerts.MOVEMENT_ALERTS,
             MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY,
