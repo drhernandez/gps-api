@@ -102,7 +102,6 @@ public class BrandServiceUnitTest extends UnitTestConfigs {
 
     @Test
     public void updateBrandTest_error(){
-        Mockito.doThrow(DataAccessException.class).when(brandDao).update(any(Brands.class));
         ResponseDTO<Brands> responseDTO = brandService.updateBrand(1L, Mockito.mock(Brands.class));
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());

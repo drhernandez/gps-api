@@ -6,7 +6,6 @@ import com.tesis.daos.BrandLineDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.BrandLines;
-import com.tesis.jooq.tables.pojos.Brands;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.BrandLineService;
 import org.slf4j.Logger;
@@ -20,9 +19,6 @@ public class BrandLineServiceImp implements BrandLineService {
 
     @Inject
     BrandLineDaoExt brandLineDao;
-
-    @Inject
-    BrandDaoExt brandDao;
 
     @Override
     public ResponseDTO<BrandLines> createBrandLine(BrandLines brandLine) {
