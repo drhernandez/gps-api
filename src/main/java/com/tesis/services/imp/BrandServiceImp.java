@@ -48,7 +48,6 @@ public class BrandServiceImp implements BrandService {
     public ResponseDTO<Brands> updateBrand(Long brandID, Brands newBrand) {
         ResponseDTO<Brands> responseDTO = new ResponseDTO<>();
         try {
-
             Brands brand = brandDao.fetchOneById(brandID);
             brand.setName(newBrand.getName());
             brandDao.update(brand);
