@@ -8,9 +8,10 @@ import java.io.IOException;
 public interface SendGridClient {
 
     /**
-     * Envía un mail a magoya
+     * Envia emails con los parametros recibidos
      * @param mail
-     * @return
+     * @throws IOException
+     * @throws ApiException
      */
     void sendMail(Mail mail) throws IOException, ApiException;
 }
