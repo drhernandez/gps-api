@@ -8,8 +8,8 @@ drop table if exists DEVICES;
 drop table if exists ACCESS_TOKENS;
 drop table if exists RECOVERY_TOKENS;
 drop table if exists USERS;
-drop table if exists BRANDS;
 drop table if exists BRAND_LINES;
+drop table if exists BRANDS;
 
 
 create table USERS(
@@ -39,12 +39,16 @@ create table RECOVERY_TOKENS(
 );
 
 create table DEVICES(
-	id bigint primary key not null,
+	id serial primary key not null,
+	physical_id bigint,
 	deleted_at timestamp,
 	last_updated timestamp,
 	model varchar not null,
 	software_version varchar
 );
+ALTER TABLE public.devices ADD UNIQUE (physical_id, deleted_at);
+ALTER TABLE public.devices ALTER COLUMN id TYPE int8 USING id::int8;
+CREATE UNIQUE INDEX deleted_at_null_idx ON public.devices (physical_id) WHERE deleted_at IS NULL;
 
 
 create table VEHICLES(
@@ -78,7 +82,7 @@ create table SPEED_ALERTS(
 	id serial primary key not null, 
 	active boolean not null,
 	speed real,
-	device_id bigint references DEVICES(id) on delete cascade unique,
+	device_id bigint references DEVICES(id) on delete cascade unique not null,
 	created_at timestamp not null,
 	updated_at timestamp,
 	activated_at timestamp
@@ -91,7 +95,7 @@ create table MOVEMENT_ALERTS(
 	active boolean not null,
 	lat real,
 	lng real,
-	device_id bigint references DEVICES(id) on delete cascade unique,
+	device_id bigint references DEVICES(id) on delete cascade unique not null,
 	created_at timestamp not null,
 	updated_at timestamp,
 	activated_at timestamp

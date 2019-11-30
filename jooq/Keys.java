@@ -57,7 +57,6 @@ public class Keys {
 
     public static final Identity<BrandLinesRecord, Long> IDENTITY_BRAND_LINES = Identities0.IDENTITY_BRAND_LINES;
     public static final Identity<BrandsRecord, Long> IDENTITY_BRANDS = Identities0.IDENTITY_BRANDS;
-    public static final Identity<DevicesRecord, Long> IDENTITY_DEVICES = Identities0.IDENTITY_DEVICES;
     public static final Identity<MovementAlertsRecord, Long> IDENTITY_MOVEMENT_ALERTS = Identities0.IDENTITY_MOVEMENT_ALERTS;
     public static final Identity<SpeedAlertsRecord, Long> IDENTITY_SPEED_ALERTS = Identities0.IDENTITY_SPEED_ALERTS;
     public static final Identity<TrackingsRecord, Long> IDENTITY_TRACKINGS = Identities0.IDENTITY_TRACKINGS;
@@ -107,7 +106,6 @@ public class Keys {
     private static class Identities0 {
         public static Identity<BrandLinesRecord, Long> IDENTITY_BRAND_LINES = Internal.createIdentity(BrandLines.BRAND_LINES, BrandLines.BRAND_LINES.ID);
         public static Identity<BrandsRecord, Long> IDENTITY_BRANDS = Internal.createIdentity(Brands.BRANDS, Brands.BRANDS.ID);
-        public static Identity<DevicesRecord, Long> IDENTITY_DEVICES = Internal.createIdentity(Devices.DEVICES, Devices.DEVICES.ID);
         public static Identity<MovementAlertsRecord, Long> IDENTITY_MOVEMENT_ALERTS = Internal.createIdentity(MovementAlerts.MOVEMENT_ALERTS, MovementAlerts.MOVEMENT_ALERTS.ID);
         public static Identity<SpeedAlertsRecord, Long> IDENTITY_SPEED_ALERTS = Internal.createIdentity(SpeedAlerts.SPEED_ALERTS, SpeedAlerts.SPEED_ALERTS.ID);
         public static Identity<TrackingsRecord, Long> IDENTITY_TRACKINGS = Internal.createIdentity(Trackings.TRACKINGS, Trackings.TRACKINGS.ID);
