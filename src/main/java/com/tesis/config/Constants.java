@@ -5,6 +5,7 @@ public class Constants {
     public static final String BODY = "body";
     public static final int MIN_LENGTH = 6;
     public static final int EXPIRATION_RECOVERY_TIME = 1; // in days
+    public static final int EXPIRATION_CHANGE_TIME = 30; // in days
 
     public static final float DEFAULT_SPEED_ALERT = 60;
     public static final double DEFAULT_MOVEMENT_ALERT_KM = 0.02; // 20 mts

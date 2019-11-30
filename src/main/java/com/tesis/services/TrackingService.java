@@ -15,4 +15,5 @@ public interface TrackingService {
     ResponseDTO<List<Trackings>> getTrackingsByVehicleID(Long vehicleID);
     ResponseDTO<Trackings> getLocationByVehicleID(Long vehicleID);
     ResponseDTO<Search> trackingSearch(TrackingFilters filters, Pagination pagination);
+    Boolean checkVehicleStatus(Trackings tracking);
 }

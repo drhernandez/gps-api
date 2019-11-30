@@ -66,6 +66,13 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     }
 
     /**
+     * Fetch records that have <code>status IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByStatus(String... values) {
+        return fetch(Vehicles.VEHICLES.STATUS, values);
+    }
+
+    /**
      * Fetch records that have <code>deleted_at IN (values)</code>
      */
     public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByDeletedAt(Timestamp... values) {
@@ -91,6 +98,13 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
      */
     public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByDeviceId(Long... values) {
         return fetch(Vehicles.VEHICLES.DEVICE_ID, values);
+    }
+
+    /**
+     * Fetch a unique record that has <code>device_id = value</code>
+     */
+    public com.tesis.jooq.tables.pojos.Vehicles fetchOneByDeviceId(Long value) {
+        return fetchOne(Vehicles.VEHICLES.DEVICE_ID, value);
     }
 
     /**

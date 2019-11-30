@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SpeedAlerts extends TableImpl<SpeedAlertsRecord> {
 
-    private static final long serialVersionUID = 1983556681;
+    private static final long serialVersionUID = -1354230552;
 
     /**
      * The reference instance of <code>public.speed_alerts</code>
@@ -75,7 +75,7 @@ public class SpeedAlerts extends TableImpl<SpeedAlertsRecord> {
     /**
      * The column <code>public.speed_alerts.device_id</code>.
      */
-    public final TableField<SpeedAlertsRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT, this, "");
+    public final TableField<SpeedAlertsRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.speed_alerts.created_at</code>.

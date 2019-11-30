@@ -72,6 +72,7 @@ public class Keys {
     public static final UniqueKey<BrandLinesRecord> BRAND_LINES_PKEY = UniqueKeys0.BRAND_LINES_PKEY;
     public static final UniqueKey<BrandsRecord> BRANDS_PKEY = UniqueKeys0.BRANDS_PKEY;
     public static final UniqueKey<DevicesRecord> DEVICES_PKEY = UniqueKeys0.DEVICES_PKEY;
+    public static final UniqueKey<DevicesRecord> DEVICES_PHYSICAL_ID_DELETED_AT_KEY = UniqueKeys0.DEVICES_PHYSICAL_ID_DELETED_AT_KEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = UniqueKeys0.MOVEMENT_ALERTS_PKEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = UniqueKeys0.MOVEMENT_ALERTS_DEVICE_ID_KEY;
     public static final UniqueKey<MovementAlertsHistoryRecord> MOVEMENT_ALERTS_HISTORY_PKEY = UniqueKeys0.MOVEMENT_ALERTS_HISTORY_PKEY;
@@ -84,6 +85,7 @@ public class Keys {
     public static final UniqueKey<UsersRecord> USERS_PKEY = UniqueKeys0.USERS_PKEY;
     public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = UniqueKeys0.USERS_EMAIL_KEY;
     public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = UniqueKeys0.VEHICLES_PKEY;
+    public static final UniqueKey<VehiclesRecord> VEHICLES_DEVICE_ID_KEY = UniqueKeys0.VEHICLES_DEVICE_ID_KEY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
@@ -120,6 +122,7 @@ public class Keys {
         public static final UniqueKey<BrandLinesRecord> BRAND_LINES_PKEY = Internal.createUniqueKey(BrandLines.BRAND_LINES, "brand_lines_pkey", BrandLines.BRAND_LINES.ID);
         public static final UniqueKey<BrandsRecord> BRANDS_PKEY = Internal.createUniqueKey(Brands.BRANDS, "brands_pkey", Brands.BRANDS.ID);
         public static final UniqueKey<DevicesRecord> DEVICES_PKEY = Internal.createUniqueKey(Devices.DEVICES, "devices_pkey", Devices.DEVICES.ID);
+        public static final UniqueKey<DevicesRecord> DEVICES_PHYSICAL_ID_DELETED_AT_KEY = Internal.createUniqueKey(Devices.DEVICES, "devices_physical_id_deleted_at_key", Devices.DEVICES.PHYSICAL_ID, Devices.DEVICES.DELETED_AT);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_pkey", MovementAlerts.MOVEMENT_ALERTS.ID);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_device_id_key", MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID);
         public static final UniqueKey<MovementAlertsHistoryRecord> MOVEMENT_ALERTS_HISTORY_PKEY = Internal.createUniqueKey(MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY, "movement_alerts_history_pkey", MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.TIME);
@@ -132,6 +135,7 @@ public class Keys {
         public static final UniqueKey<UsersRecord> USERS_PKEY = Internal.createUniqueKey(Users.USERS, "users_pkey", Users.USERS.ID);
         public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = Internal.createUniqueKey(Users.USERS, "users_email_key", Users.USERS.EMAIL);
         public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = Internal.createUniqueKey(Vehicles.VEHICLES, "vehicles_pkey", Vehicles.VEHICLES.ID);
+        public static final UniqueKey<VehiclesRecord> VEHICLES_DEVICE_ID_KEY = Internal.createUniqueKey(Vehicles.VEHICLES, "vehicles_device_id_key", Vehicles.VEHICLES.DEVICE_ID);
     }
 
     private static class ForeignKeys0 {

@@ -27,8 +27,53 @@ public class UserController {
 
     @Inject
     UserService userService;
+
     @Inject
     VehicleService vehicleService;
+
+    public Object activateUser(Request request, Response response) throws ApiException{
+
+        String param = request.params("user_id");
+        Long userID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+        }
+        try {
+            userID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+        }
+
+        ResponseDTO<Users> responseDTO = userService.activateUser(userID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object deactivateUser(Request request, Response response) throws ApiException{
+
+        String param = request.params("user_id");
+        Long userID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+        }
+        try {
+            userID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+        }
+
+        ResponseDTO<Users> responseDTO = userService.deactivateUser(userID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
 
 
     public Object getUsers(Request request, Response response) throws ApiException {

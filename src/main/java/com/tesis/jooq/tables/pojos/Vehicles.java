@@ -23,9 +23,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles implements Serializable {
 
-    private static final long serialVersionUID = -1273811951;
+    private static final long serialVersionUID = 1000072793;
 
     private Long      id;
+    private String    status;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
     private Long      userId;
@@ -38,6 +39,7 @@ public class Vehicles implements Serializable {
 
     public Vehicles(Vehicles value) {
         this.id = value.id;
+        this.status = value.status;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
         this.userId = value.userId;
@@ -49,6 +51,7 @@ public class Vehicles implements Serializable {
 
     public Vehicles(
         Long      id,
+        String    status,
         Timestamp deletedAt,
         Timestamp lastUpdated,
         Long      userId,
@@ -58,6 +61,7 @@ public class Vehicles implements Serializable {
         String    model
     ) {
         this.id = id;
+        this.status = status;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
         this.userId = userId;
@@ -73,6 +77,14 @@ public class Vehicles implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Timestamp getDeletedAt() {
@@ -136,6 +148,7 @@ public class Vehicles implements Serializable {
         StringBuilder sb = new StringBuilder("Vehicles (");
 
         sb.append(id);
+        sb.append(", ").append(status);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
         sb.append(", ").append(userId);

@@ -2,6 +2,7 @@ package com.tesis.daos;
 
 import javax.inject.Inject;
 
+import com.tesis.enums.Status;
 import com.tesis.jooq.tables.*;
 import org.jooq.Configuration;
 import com.tesis.jooq.tables.daos.VehiclesDao;
@@ -25,6 +26,7 @@ public class VehicleDaoExt extends VehiclesDao {
     public com.tesis.jooq.tables.pojos.Vehicles createVehicle(com.tesis.jooq.tables.pojos.Vehicles vehicle){
         DSL.using(configuration()).transaction(t -> {
             t.dsl().insertInto(Vehicles.VEHICLES,
+                        Vehicles.VEHICLES.STATUS,
                         Vehicles.VEHICLES.DELETED_AT,
                         Vehicles.VEHICLES.LAST_UPDATED,
                         Vehicles.VEHICLES.USER_ID,
@@ -32,7 +34,8 @@ public class VehicleDaoExt extends VehiclesDao {
                         Vehicles.VEHICLES.TYPE,
                         Vehicles.VEHICLES.PLATE,
                         Vehicles.VEHICLES.MODEL)
-                    .values(null,
+                    .values(vehicle.getStatus(),
+                            null,
                             null,
                             vehicle.getUserId(),
                             vehicle.getDeviceId(),
@@ -90,6 +93,7 @@ public class VehicleDaoExt extends VehiclesDao {
             t.dsl().update(Vehicles.VEHICLES)
                     .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .set(Vehicles.VEHICLES.DEVICE_ID, (Long) null)
+                    .set(Vehicles.VEHICLES.STATUS, Status.DELETED.toString())
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))
                     .execute();
         });

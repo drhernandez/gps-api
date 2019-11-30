@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices extends TableImpl<DevicesRecord> {
 
-    private static final long serialVersionUID = -472054442;
+    private static final long serialVersionUID = -1577999699;
 
     /**
      * The reference instance of <code>public.devices</code>
@@ -133,7 +133,7 @@ public class Devices extends TableImpl<DevicesRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.DEVICES_PKEY);
+        return Arrays.<Index>asList(Indexes.DELETED_AT_NULL_IDX, Indexes.DEVICES_PHYSICAL_ID_DELETED_AT_KEY, Indexes.DEVICES_PKEY);
     }
 
     /**
@@ -157,7 +157,7 @@ public class Devices extends TableImpl<DevicesRecord> {
      */
     @Override
     public List<UniqueKey<DevicesRecord>> getKeys() {
-        return Arrays.<UniqueKey<DevicesRecord>>asList(Keys.DEVICES_PKEY);
+        return Arrays.<UniqueKey<DevicesRecord>>asList(Keys.DEVICES_PKEY, Keys.DEVICES_PHYSICAL_ID_DELETED_AT_KEY);
     }
 
     /**
