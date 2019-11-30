@@ -2,6 +2,7 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.tesis.daos.VehicleDaoExt;
+import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.TrackingDaoExt;
 import com.tesis.jooq.tables.pojos.Trackings;
@@ -68,5 +69,10 @@ public class TrackingServiceImp implements TrackingService {
         ResponseDTO<Search> responseDTO = new ResponseDTO<>();
         responseDTO.model = new Search<>(trakingsDao.findByFilters(filters, pagination), pagination);
         return responseDTO;
+    }
+
+    public Boolean checkVehicleStatus(Trackings tracking){
+        Vehicles vehicle = vehiclesDao.fetchOneByDeviceId(tracking.getDeviceId());
+        return (vehicle.getStatus().equals(Status.ACTIVE.toString()));
     }
 }

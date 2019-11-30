@@ -14,6 +14,7 @@ drop table if exists BRANDS;
 
 create table USERS(
 	id serial primary key not null,
+	status varchar not null,
 	deleted_at timestamp,
 	last_updated timestamp,
 	email varchar unique not null,
@@ -53,15 +54,17 @@ CREATE UNIQUE INDEX deleted_at_null_idx ON public.devices (physical_id) WHERE de
 
 create table VEHICLES(
 	id serial primary key not null,
+	status varchar not null,
 	deleted_at timestamp,
 	last_updated timestamp,
 	user_id serial references USERS(id) on delete restrict not null,
-	device_id bigint references DEVICES(id) on delete restrict not null,
+	device_id bigint references DEVICES(id) on delete restrict unique,
 	type varchar,
 	plate varchar not null,
 	model varchar	
 );
 ALTER TABLE public.vehicles ALTER COLUMN id TYPE int8 USING id::int8;
+ALTER TABLE public.vehicles ALTER COLUMN device_id TYPE int8 USING device_id::int8;
 ALTER TABLE public.vehicles ALTER COLUMN user_id TYPE int8 USING user_id::int8;
 
 

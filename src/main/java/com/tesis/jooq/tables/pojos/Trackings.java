@@ -4,12 +4,8 @@
 package com.tesis.jooq.tables.pojos;
 
 
-import com.tesis.exceptions.ParseArgsException;
-import com.tesis.utils.JsonUtils;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import javax.annotation.Generated;
 
@@ -69,21 +65,6 @@ public class Trackings implements Serializable {
         this.sat = sat;
         this.hdop = hdop;
         this.time = time;
-    }
-
-    public Trackings(String[] args) throws ParseArgsException {
-        try {
-            this.id = null;
-            this.deviceId = Long.valueOf(args[0]);
-            this.lat = Float.valueOf(args[1]);
-            this.lng = Float.valueOf(args[2]);
-            this.speed = Float.valueOf(args[3]);
-            this.sat = Integer.valueOf(args[4]);
-            this.hdop = Integer.valueOf(args[5]);
-            this.time = Timestamp.valueOf(LocalDateTime.now());
-        } catch (Exception e) {
-            throw new ParseArgsException("Cannot create new tracking from args: " + JsonUtils.INSTANCE.GSON().toJson(args));
-        }
     }
 
     public Long getId() {

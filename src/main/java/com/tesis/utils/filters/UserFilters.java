@@ -2,10 +2,19 @@ package com.tesis.utils.filters;
 
 public class UserFilters {
 
+    String status;
     String email;
     String name;
     String last_name;
     String dni;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getEmail() {
         return email;

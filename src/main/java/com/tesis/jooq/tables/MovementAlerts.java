@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MovementAlerts extends TableImpl<MovementAlertsRecord> {
 
-    private static final long serialVersionUID = -641856022;
+    private static final long serialVersionUID = -1079037495;
 
     /**
      * The reference instance of <code>public.movement_alerts</code>
@@ -80,7 +80,7 @@ public class MovementAlerts extends TableImpl<MovementAlertsRecord> {
     /**
      * The column <code>public.movement_alerts.device_id</code>.
      */
-    public final TableField<MovementAlertsRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT, this, "");
+    public final TableField<MovementAlertsRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.movement_alerts.created_at</code>.

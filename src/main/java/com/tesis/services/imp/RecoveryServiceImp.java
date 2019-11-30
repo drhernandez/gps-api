@@ -24,7 +24,6 @@ import java.util.UUID;
 import com.sendgrid.Mail;
 import com.sendgrid.Email;
 import com.sendgrid.Content;
-import java.io.IOException;
 
 import static com.tesis.config.Constants.EXPIRATION_RECOVERY_TIME;
 
@@ -64,7 +63,7 @@ public class RecoveryServiceImp implements RecoveryService {
     }
 
     @Override
-    public ResponseDTO createRecoveryToken(CredentialsDTO credentialsDTO) {
+    public ResponseDTO createRecoveryToken(CredentialsDTO credentialsDTO, Timestamp expirationDate) {
         ResponseDTO responseDTO = new ResponseDTO<>();
         RecoveryTokens recoveryToken;
 
@@ -78,12 +77,12 @@ public class RecoveryServiceImp implements RecoveryService {
 
             recoveryToken = recoveryDao.fetchOneByUserId(user.getId());
             if (recoveryToken == null)
-                recoveryToken = insertRecoveryToken(user.getId());
+                recoveryToken = insertRecoveryToken(user.getId(), expirationDate);
 
             else
                 if (recoveryToken.getExpirationDate().before(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))) {
                     recoveryDao.deleteById(user.getId());
-                    recoveryToken = insertRecoveryToken(user.getId());
+                    recoveryToken = insertRecoveryToken(user.getId(), expirationDate);
                 }
 
             sendRecoveryMail(recoveryToken);
@@ -125,13 +124,13 @@ public class RecoveryServiceImp implements RecoveryService {
         return responseDTO;
     }
 
-    private RecoveryTokens insertRecoveryToken(Long userId){
+    private RecoveryTokens insertRecoveryToken(Long userId, Timestamp expirationDate){
         RecoveryTokens recoveryToken = new RecoveryTokens();
 
         try {
             recoveryToken.setUserId(userId);
             recoveryToken.setToken(UUID.randomUUID().toString());
-            recoveryToken.setExpirationDate(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()).plusDays(EXPIRATION_RECOVERY_TIME)));
+            recoveryToken.setExpirationDate(expirationDate);
             recoveryDao.insert(recoveryToken);
         }catch (Exception e){
             logger.error(e.getMessage());
@@ -145,17 +144,18 @@ public class RecoveryServiceImp implements RecoveryService {
         Users user = userDao.fetchOneById(recoveryToken.getUserId());
 
         Email from = new Email(System.getenv("SENDGRID_SENDER"));
-        String subject = "GPS-TESIS Recuperacion de contraseña";
-        Email to = new Email(user.getEmail());
+        String subject = "GPS-TESIS Cambio de contraseña";
+//        Email to = new Email(user.getEmail());
+        Email to = new Email("pedropruebapedro@gmail.com");
         Content content = new Content("text/plain",
-                "Link de recuperacion de contraseña: " +
+                "Link de cambio de contraseña: " +
                         System.getenv("FRONT_DOMAIN") +"/reset-password/" + recoveryToken.getToken());
         Mail mail = new Mail(from, subject, to, content);
 
         try {
             sendGridClient.sendMail(mail);
         } catch (Exception e) {
-            logger.error(String.format("Email de recuperacion enviado para el usuario %s. Reason: %s",
+            logger.error(String.format("Error al enviar email de cambiode contraseña para el usuario %s. Reason: %s",
                     user.toString(),
                     e.getMessage()));
         }

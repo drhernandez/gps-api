@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles extends TableImpl<VehiclesRecord> {
 
-    private static final long serialVersionUID = 1809689383;
+    private static final long serialVersionUID = -1673073579;
 
     /**
      * The reference instance of <code>public.vehicles</code>
@@ -61,6 +61,11 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      * The column <code>public.vehicles.id</code>.
      */
     public final TableField<VehiclesRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('vehicles_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+
+    /**
+     * The column <code>public.vehicles.status</code>.
+     */
+    public final TableField<VehiclesRecord, String> STATUS = createField("status", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
 
     /**
      * The column <code>public.vehicles.deleted_at</code>.
@@ -143,7 +148,7 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.VEHICLES_PKEY);
+        return Arrays.<Index>asList(Indexes.VEHICLES_DEVICE_ID_KEY, Indexes.VEHICLES_PKEY);
     }
 
     /**
@@ -167,7 +172,7 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      */
     @Override
     public List<UniqueKey<VehiclesRecord>> getKeys() {
-        return Arrays.<UniqueKey<VehiclesRecord>>asList(Keys.VEHICLES_PKEY);
+        return Arrays.<UniqueKey<VehiclesRecord>>asList(Keys.VEHICLES_PKEY, Keys.VEHICLES_DEVICE_ID_KEY);
     }
 
     /**

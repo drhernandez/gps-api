@@ -11,6 +11,8 @@ import java.util.List;
 public interface UserService {
 
     ResponseDTO<List<Users>> getUsers();
+    ResponseDTO<Users> activateUser(Long userId);
+    ResponseDTO<Users> deactivateUser(Long userId);
     ResponseDTO<Users> getUsersByUserID(Long userID);
     ResponseDTO<Users> getUsersByDeviceId(Long deviceID);
     ResponseDTO<Users> createUser(Users user);

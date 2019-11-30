@@ -42,6 +42,8 @@ public class Indexes {
     public static final Index ACCESS_TOKENS_PKEY = Indexes0.ACCESS_TOKENS_PKEY;
     public static final Index BRAND_LINES_PKEY = Indexes0.BRAND_LINES_PKEY;
     public static final Index BRANDS_PKEY = Indexes0.BRANDS_PKEY;
+    public static final Index DELETED_AT_NULL_IDX = Indexes0.DELETED_AT_NULL_IDX;
+    public static final Index DEVICES_PHYSICAL_ID_DELETED_AT_KEY = Indexes0.DEVICES_PHYSICAL_ID_DELETED_AT_KEY;
     public static final Index DEVICES_PKEY = Indexes0.DEVICES_PKEY;
     public static final Index MOVEMENT_ALERTS_DEVICE_ID_KEY = Indexes0.MOVEMENT_ALERTS_DEVICE_ID_KEY;
     public static final Index MOVEMENT_ALERTS_PKEY = Indexes0.MOVEMENT_ALERTS_PKEY;
@@ -52,6 +54,7 @@ public class Indexes {
     public static final Index TRACKINGS_PKEY = Indexes0.TRACKINGS_PKEY;
     public static final Index USERS_EMAIL_KEY = Indexes0.USERS_EMAIL_KEY;
     public static final Index USERS_PKEY = Indexes0.USERS_PKEY;
+    public static final Index VEHICLES_DEVICE_ID_KEY = Indexes0.VEHICLES_DEVICE_ID_KEY;
     public static final Index VEHICLES_PKEY = Indexes0.VEHICLES_PKEY;
 
     // -------------------------------------------------------------------------
@@ -62,6 +65,8 @@ public class Indexes {
         public static Index ACCESS_TOKENS_PKEY = Internal.createIndex("access_tokens_pkey", AccessTokens.ACCESS_TOKENS, new OrderField[] { AccessTokens.ACCESS_TOKENS.USER_ID }, true);
         public static Index BRAND_LINES_PKEY = Internal.createIndex("brand_lines_pkey", BrandLines.BRAND_LINES, new OrderField[] { BrandLines.BRAND_LINES.ID }, true);
         public static Index BRANDS_PKEY = Internal.createIndex("brands_pkey", Brands.BRANDS, new OrderField[] { Brands.BRANDS.ID }, true);
+        public static Index DELETED_AT_NULL_IDX = Internal.createIndex("deleted_at_null_idx", Devices.DEVICES, new OrderField[] { Devices.DEVICES.PHYSICAL_ID }, true);
+        public static Index DEVICES_PHYSICAL_ID_DELETED_AT_KEY = Internal.createIndex("devices_physical_id_deleted_at_key", Devices.DEVICES, new OrderField[] { Devices.DEVICES.PHYSICAL_ID, Devices.DEVICES.DELETED_AT }, true);
         public static Index DEVICES_PKEY = Internal.createIndex("devices_pkey", Devices.DEVICES, new OrderField[] { Devices.DEVICES.ID }, true);
         public static Index MOVEMENT_ALERTS_DEVICE_ID_KEY = Internal.createIndex("movement_alerts_device_id_key", MovementAlerts.MOVEMENT_ALERTS, new OrderField[] { MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID }, true);
         public static Index MOVEMENT_ALERTS_PKEY = Internal.createIndex("movement_alerts_pkey", MovementAlerts.MOVEMENT_ALERTS, new OrderField[] { MovementAlerts.MOVEMENT_ALERTS.ID }, true);
@@ -72,6 +77,7 @@ public class Indexes {
         public static Index TRACKINGS_PKEY = Internal.createIndex("trackings_pkey", Trackings.TRACKINGS, new OrderField[] { Trackings.TRACKINGS.ID }, true);
         public static Index USERS_EMAIL_KEY = Internal.createIndex("users_email_key", Users.USERS, new OrderField[] { Users.USERS.EMAIL }, true);
         public static Index USERS_PKEY = Internal.createIndex("users_pkey", Users.USERS, new OrderField[] { Users.USERS.ID }, true);
+        public static Index VEHICLES_DEVICE_ID_KEY = Internal.createIndex("vehicles_device_id_key", Vehicles.VEHICLES, new OrderField[] { Vehicles.VEHICLES.DEVICE_ID }, true);
         public static Index VEHICLES_PKEY = Internal.createIndex("vehicles_pkey", Vehicles.VEHICLES, new OrderField[] { Vehicles.VEHICLES.ID }, true);
     }
 }
