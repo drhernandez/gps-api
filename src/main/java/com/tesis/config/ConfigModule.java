@@ -4,6 +4,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
+import com.sendgrid.SendGrid;
+import com.tesis.clients.SendGridClient;
+import com.tesis.clients.imp.SendGridClientImp;
 import com.tesis.routes.*;
 import com.tesis.server.Server;
 import com.tesis.services.*;
@@ -50,6 +53,14 @@ public class ConfigModule extends AbstractModule {
         bind(RecoveryService.class).to(RecoveryServiceImp.class);
         bind(BrandService.class).to(BrandServiceImp.class);
         bind(BrandLineService.class).to(BrandLineServiceImp.class);
+
+        //bind clients
+        bind(SendGridClient.class).to(SendGridClientImp.class);
+    }
+
+    @Provides
+    SendGrid sendGridProvider() {
+        return new SendGrid(System.getenv("SENDGRID_API_KEY"));
     }
 
     @Provides

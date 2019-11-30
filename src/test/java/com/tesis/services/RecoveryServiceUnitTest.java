@@ -1,5 +1,6 @@
 package com.tesis.services;
 
+import com.tesis.clients.SendGridClient;
 import com.tesis.daos.RecoveryTokensDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
@@ -33,6 +34,9 @@ public class RecoveryServiceUnitTest {
 
     @Mock
     UserDaoExt userDao;
+
+    @Mock
+    SendGridClient sendGridClient;
 
     @Mock
     PasswordEncoder passwordEncoder;
