@@ -8,8 +8,8 @@ delete from SPEED_ALERTS;
 delete from MOVEMENT_ALERTS;
 delete from ACCESS_TOKENS;
 delete from RECOVERY_TOKENS;
-delete from BRANDS;
 delete from BRAND_LINES;
+delete from BRANDS;
 
 insert into USERS values (10, null, null, 'jose_buendia@gmail.com', 'jose_buendia', 'José Arcadio', 'Buendia', '2037374105',
 							'5ta Avenida de Macondo 1', '2034-203401');
@@ -18,8 +18,10 @@ insert into USERS values (11, null, null, 'ursula_iguaran@gmail.com', 'ursula_ig
 insert into USERS values (12, null, null, 'drhernandez92@gmail.com', '$2a$10$Fgthr0ORPFpFr5uCmaWfOO/.cUKO1rMATdbMJP4OED/L.5gt/irqW',
 							'Diego', 'Hernández', '36354805', 'Tomas de irobi 165', '351-5495416');
 					
-insert into DEVICES values (00001, null, null, 'ARDUINO GENUINO/UNO', '1.0');
-insert into DEVICES values (00002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
+insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version) 
+	values (00001, null, null, 'ARDUINO GENUINO/UNO', '1.0');
+insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version) 
+	values (00002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
 
 insert into VEHICLES values (10, null, null, 10, 00001, 'Ford Fiesta', 'AA 383 TI', '2018');
 insert into VEHICLES values (11, null, null, 11, 00002, 'Toyota Corolla', 'AD 257 TO', '2019');

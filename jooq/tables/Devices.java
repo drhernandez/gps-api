@@ -17,7 +17,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
@@ -42,7 +41,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices extends TableImpl<DevicesRecord> {
 
-    private static final long serialVersionUID = -472054442;
+    private static final long serialVersionUID = 1936992114;
 
     /**
      * The reference instance of <code>public.devices</code>
@@ -60,12 +59,7 @@ public class Devices extends TableImpl<DevicesRecord> {
     /**
      * The column <code>public.devices.id</code>.
      */
-    public final TableField<DevicesRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('devices_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
-
-    /**
-     * The column <code>public.devices.physical_id</code>.
-     */
-    public final TableField<DevicesRecord, Long> PHYSICAL_ID = createField("physical_id", org.jooq.impl.SQLDataType.BIGINT, this, "");
+    public final TableField<DevicesRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>public.devices.deleted_at</code>.
@@ -134,14 +128,6 @@ public class Devices extends TableImpl<DevicesRecord> {
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.DEVICES_PKEY);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Identity<DevicesRecord, Long> getIdentity() {
-        return Keys.IDENTITY_DEVICES;
     }
 
     /**

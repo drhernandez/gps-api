@@ -29,10 +29,10 @@ public class DevicesServiceImp implements DevicesService {
         ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
 
         try {
-            devicesDao.insert(device);
+            devicesDao.insertDevice(device);
             responseDTO.model = device;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el device %s", device.toString()));
+            logger.error(String.format("No se pudo guardar el device %s. Razon: %s", device.toString(), e.getMessage()));
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el device.");
         }
 
@@ -53,6 +53,7 @@ public class DevicesServiceImp implements DevicesService {
         try {
 
             Devices device = devicesDao.fetchOneById(deviceID);
+            device.setPhysicalId(newDevice.getPhysicalId());
             device.setDeletedAt(null);
             device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
             device.setModel(newDevice.getModel());

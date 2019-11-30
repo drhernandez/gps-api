@@ -40,39 +40,6 @@ public class VehicleDaoExt extends VehiclesDao {
                             vehicle.getPlate(),
                             vehicle.getModel())
                     .execute();
-
-            t.dsl().insertInto(SpeedAlerts.SPEED_ALERTS,
-                        SpeedAlerts.SPEED_ALERTS.ACTIVE,
-                        SpeedAlerts.SPEED_ALERTS.DEVICE_ID,
-                        SpeedAlerts.SPEED_ALERTS.SPEED,
-                        SpeedAlerts.SPEED_ALERTS.CREATED_AT,
-                        SpeedAlerts.SPEED_ALERTS.UPDATED_AT,
-                        SpeedAlerts.SPEED_ALERTS.ACTIVATED_AT)
-                    .values(
-                            false,
-                            vehicle.getDeviceId(),
-                            DEFAULT_SPEED_ALERT,
-                            Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
-                            null,
-                            null)
-                    .execute();
-
-            t.dsl().insertInto(MovementAlerts.MOVEMENT_ALERTS,
-                        MovementAlerts.MOVEMENT_ALERTS.ACTIVE,
-                        MovementAlerts.MOVEMENT_ALERTS.LAT,
-                        MovementAlerts.MOVEMENT_ALERTS.LNG,
-                        MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID,
-                        MovementAlerts.MOVEMENT_ALERTS.CREATED_AT,
-                        MovementAlerts.MOVEMENT_ALERTS.UPDATED_AT,
-                        MovementAlerts.MOVEMENT_ALERTS.ACTIVATED_AT)
-                    .values(false,
-                            null,
-                            null,
-                            vehicle.getDeviceId(),
-                            Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
-                            null,
-                            null)
-                    .execute();
         });
 
         return vehicle;
