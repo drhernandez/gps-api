@@ -145,8 +145,7 @@ public class RecoveryServiceImp implements RecoveryService {
 
         Email from = new Email(System.getenv("SENDGRID_SENDER"));
         String subject = "GPS-TESIS Cambio de contraseña";
-//        Email to = new Email(user.getEmail());
-        Email to = new Email("pedropruebapedro@gmail.com");
+        Email to = new Email(user.getEmail());
         Content content = new Content("text/plain",
                 "Link de cambio de contraseña: " +
                         System.getenv("FRONT_DOMAIN") +"/reset-password/" + recoveryToken.getToken());
