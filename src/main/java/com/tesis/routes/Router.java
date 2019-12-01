@@ -42,11 +42,11 @@ public class Router {
             if (!request.url().contains("auth") &&
                 !request.url().contains("recovery") &&
                 !(request.url().contains("users") && request.requestMethod().equals("POST"))) {
-                String accessTocken = request.headers("Authorization");
-                if (accessTocken != null) {
-                    accessTocken = accessTocken.split(" ")[1];
+                String accessToken = request.headers("Authorization");
+                if (accessToken != null) {
+                    accessToken = accessToken.split(" ")[1];
                     try {
-                        authService.validateAccessToken(accessTocken);
+                        authService.validateAccessToken(accessToken);
                     } catch (Exception e){
                         logger.info("Authorization fail, Reason: " + e.getMessage());
                         halt(401, "Unauthorized");
