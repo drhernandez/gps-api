@@ -23,7 +23,7 @@ import java.util.List;
 
 public class UserController {
 
-    private static Logger logger = LoggerFactory.getLogger(TrackingController.class);
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Inject
     UserService userService;
@@ -36,12 +36,12 @@ public class UserController {
         String param = request.params("user_id");
         Long userID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.activateUser]");
         }
         try {
             userID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.activateUser]");
         }
 
         ResponseDTO<Users> responseDTO = userService.activateUser(userID);
@@ -58,12 +58,12 @@ public class UserController {
         String param = request.params("user_id");
         Long userID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deactivateUser]");
         }
         try {
             userID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deleteUser]");
+            throw new ApiException("invalid_data", "[reason: invalid_user_id] [method: UserController.deactivateUser]");
         }
 
         ResponseDTO<Users> responseDTO = userService.deactivateUser(userID);
@@ -200,6 +200,7 @@ public class UserController {
         UserFilters filters = new UserFilters();
         Pagination pagination = new Pagination();
 
+        filters.setStatus(request.queryParams("status"));
         filters.setEmail(request.queryParams("email"));
         filters.setName(request.queryParams("name"));
         filters.setLast_name(request.queryParams("last_name"));

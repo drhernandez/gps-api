@@ -1,13 +1,16 @@
 delete from TRACKINGS;
 delete from VEHICLES;
 delete from DEVICES;
-delete from USERS;
 delete from SPEED_ALERTS_HISTORY;
 delete from MOVEMENT_ALERTS_HISTORY;
 delete from SPEED_ALERTS;
 delete from MOVEMENT_ALERTS;
 delete from ACCESS_TOKENS;
 delete from RECOVERY_TOKENS;
+delete from USERS;
+delete from ADMIN_ACCESS_TOKENS;
+delete from ADMIN_RECOVERY_TOKENS;
+delete from ADMIN_USERS;
 delete from BRAND_LINES;
 delete from BRANDS;
 
@@ -16,6 +19,10 @@ insert into USERS values (10, 'ACTIVE', null, null, 'jose_buendia@gmail.com', 'j
 insert into USERS values (11, 'ACTIVE', null, null, 'ursula_iguaran@gmail.com', 'ursula_iguaran', 'Úrsula', 'Iguarán', '2387875106',
 							'5ta Avenida de Macondo 1', '2034-203402');
 insert into USERS values (12, 'ACTIVE', null, null, 'drhernandez92@gmail.com', '$2a$10$Fgthr0ORPFpFr5uCmaWfOO/.cUKO1rMATdbMJP4OED/L.5gt/irqW',
+							'Diego', 'Hernández', '36354805', 'Tomas de irobi 165', '351-5495416');
+					
+
+insert into ADMIN_USERS values (1, 'ACTIVE', null, null, 'drhernandez92@gmail.com', '$2a$10$Fgthr0ORPFpFr5uCmaWfOO/.cUKO1rMATdbMJP4OED/L.5gt/irqW',
 							'Diego', 'Hernández', '36354805', 'Tomas de irobi 165', '351-5495416');
 					
 insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version) 
