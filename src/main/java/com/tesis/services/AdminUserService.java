@@ -11,8 +11,6 @@ import java.util.List;
 public interface AdminUserService {
 
     ResponseDTO<List<AdminUsers>> getAdminUsers();
-    ResponseDTO<AdminUsers> activateAdminUser(Long userId);
-    ResponseDTO<AdminUsers> deactivateAdminUser(Long userId);
     ResponseDTO<AdminUsers> getAdminUsersByAdminUserID(Long userID);
     ResponseDTO<AdminUsers> createAdminUser(AdminUsers user);
     ResponseDTO<AdminUsers> updateAdminUser(Long userID, AdminUsers user);

@@ -22,7 +22,6 @@ import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static com.tesis.config.Constants.EXPIRATION_CHANGE_TIME;
 
@@ -40,39 +39,6 @@ public class AdminUserServiceImp implements AdminUserService {
     @Inject
     RecoveryService recoveryService;
 
-    public ResponseDTO<AdminUsers> activateAdminUser(Long userId){
-        ResponseDTO<AdminUsers> responseDTO = new ResponseDTO<>();
-
-        try {
-            AdminUsers user = adminuUersDao.fetchOneById(userId);
-            if (user.getStatus().equals(Status.PENDING.toString()))
-                initUserPasswordChange(user);
-            user.setStatus(Status.ACTIVE.toString());
-            adminuUersDao.update(user);
-            responseDTO.model = user;
-        } catch (Exception e) {
-            logger.error("No se pudo activar el usuario");
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al activar el usuario.");
-        }
-        return responseDTO;
-    }
-
-    public ResponseDTO<AdminUsers> deactivateAdminUser(Long userId){
-        ResponseDTO<AdminUsers> responseDTO = new ResponseDTO<>();
-
-        try {
-            AdminUsers user = adminuUersDao.fetchOneById(userId);
-            user.setStatus(Status.INACTIVE.toString());
-            adminuUersDao.update(user);
-            responseDTO.model = user;
-        } catch (Exception e) {
-            logger.error("No se pudo modificar el usuario");
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el usuario.");
-        }
-
-        return responseDTO;
-    }
-
     public ResponseDTO<List<AdminUsers>> getAdminUsers() {
         return new ResponseDTO(adminuUersDao.findAllActives(), null);
     }
@@ -88,8 +54,7 @@ public class AdminUserServiceImp implements AdminUserService {
 
         try {
             adminUser.setPassword(passwordEncoder.encode(adminUser.getPassword()));
-//            adminUser.setPassword(UUID.randomUUID().toString());
-            adminUser.setStatus(Status.PENDING.toString());
+            adminUser.setStatus(Status.ACTIVE.toString());
             adminuUersDao.insert(adminUser);
             responseDTO.model = adminUser;
         } catch (Exception e) {
