@@ -2,7 +2,6 @@ package com.tesis.routes;
 
 import com.google.inject.Inject;
 import com.tesis.controllers.AdminUserController;
-import com.tesis.controllers.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.RouteGroup;

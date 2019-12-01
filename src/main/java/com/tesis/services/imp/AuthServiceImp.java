@@ -50,7 +50,7 @@ public class AuthServiceImp implements AuthService {
         return passwordEncoder.matches(credentialsDTO.getPassword(), user.getPassword());
     }
 
-    public ResponseDTO<AccessTokens> checkAccessToken(CredentialsDTO credentialsDTO){
+    public ResponseDTO<AccessTokens> getOrCreateAccessToken(CredentialsDTO credentialsDTO){
         ResponseDTO<AccessTokens> responseDTO = new ResponseDTO<>();
         Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
         AccessTokens token = accessTokensDao.fetchOneByUserId(user.getId());

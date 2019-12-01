@@ -29,7 +29,7 @@ public class AuthController {
 
         if (authService.checkUserCredentials(credentialsDTO)) {
             response.status(HttpStatus.OK_200);
-            responseDTO = authService.checkAccessToken(credentialsDTO);
+            responseDTO = authService.getOrCreateAccessToken(credentialsDTO);
         }
         else {
             response.status(HttpStatus.UNAUTHORIZED_401);
