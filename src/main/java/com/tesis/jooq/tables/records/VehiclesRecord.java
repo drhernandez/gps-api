@@ -30,7 +30,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implements Record9<Long, String, Timestamp, Timestamp, Long, Long, String, String, String> {
 
-    private static final long serialVersionUID = 1370874091;
+    private static final long serialVersionUID = 2049761650;
 
     /**
      * Setter for <code>public.vehicles.id</code>.
@@ -117,44 +117,44 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
     }
 
     /**
-     * Setter for <code>public.vehicles.type</code>.
-     */
-    public void setType(String value) {
-        set(6, value);
-    }
-
-    /**
-     * Getter for <code>public.vehicles.type</code>.
-     */
-    public String getType() {
-        return (String) get(6);
-    }
-
-    /**
      * Setter for <code>public.vehicles.plate</code>.
      */
     public void setPlate(String value) {
-        set(7, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>public.vehicles.plate</code>.
      */
     public String getPlate() {
+        return (String) get(6);
+    }
+
+    /**
+     * Setter for <code>public.vehicles.brand</code>.
+     */
+    public void setBrand(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>public.vehicles.brand</code>.
+     */
+    public String getBrand() {
         return (String) get(7);
     }
 
     /**
-     * Setter for <code>public.vehicles.model</code>.
+     * Setter for <code>public.vehicles.brand_line</code>.
      */
-    public void setModel(String value) {
+    public void setBrandLine(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>public.vehicles.model</code>.
+     * Getter for <code>public.vehicles.brand_line</code>.
      */
-    public String getModel() {
+    public String getBrandLine() {
         return (String) get(8);
     }
 
@@ -243,14 +243,6 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      */
     @Override
     public Field<String> field7() {
-        return Vehicles.VEHICLES.TYPE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Field<String> field8() {
         return Vehicles.VEHICLES.PLATE;
     }
 
@@ -258,8 +250,16 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      * {@inheritDoc}
      */
     @Override
+    public Field<String> field8() {
+        return Vehicles.VEHICLES.BRAND;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Field<String> field9() {
-        return Vehicles.VEHICLES.MODEL;
+        return Vehicles.VEHICLES.BRAND_LINE;
     }
 
     /**
@@ -315,14 +315,6 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      */
     @Override
     public String component7() {
-        return getType();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String component8() {
         return getPlate();
     }
 
@@ -330,8 +322,16 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      * {@inheritDoc}
      */
     @Override
+    public String component8() {
+        return getBrand();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String component9() {
-        return getModel();
+        return getBrandLine();
     }
 
     /**
@@ -387,14 +387,6 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      */
     @Override
     public String value7() {
-        return getType();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String value8() {
         return getPlate();
     }
 
@@ -402,8 +394,16 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      * {@inheritDoc}
      */
     @Override
+    public String value8() {
+        return getBrand();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String value9() {
-        return getModel();
+        return getBrandLine();
     }
 
     /**
@@ -465,15 +465,6 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      */
     @Override
     public VehiclesRecord value7(String value) {
-        setType(value);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VehiclesRecord value8(String value) {
         setPlate(value);
         return this;
     }
@@ -482,8 +473,17 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
      * {@inheritDoc}
      */
     @Override
+    public VehiclesRecord value8(String value) {
+        setBrand(value);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public VehiclesRecord value9(String value) {
-        setModel(value);
+        setBrandLine(value);
         return this;
     }
 
@@ -518,7 +518,7 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
     /**
      * Create a detached, initialised VehiclesRecord
      */
-    public VehiclesRecord(Long id, String status, Timestamp deletedAt, Timestamp lastUpdated, Long userId, Long deviceId, String type, String plate, String model) {
+    public VehiclesRecord(Long id, String status, Timestamp deletedAt, Timestamp lastUpdated, Long userId, Long deviceId, String plate, String brand, String brandLine) {
         super(Vehicles.VEHICLES);
 
         set(0, id);
@@ -527,8 +527,8 @@ public class VehiclesRecord extends UpdatableRecordImpl<VehiclesRecord> implemen
         set(3, lastUpdated);
         set(4, userId);
         set(5, deviceId);
-        set(6, type);
-        set(7, plate);
-        set(8, model);
+        set(6, plate);
+        set(7, brand);
+        set(8, brandLine);
     }
 }

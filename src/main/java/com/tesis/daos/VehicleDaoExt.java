@@ -31,17 +31,17 @@ public class VehicleDaoExt extends VehiclesDao {
                         Vehicles.VEHICLES.LAST_UPDATED,
                         Vehicles.VEHICLES.USER_ID,
                         Vehicles.VEHICLES.DEVICE_ID,
-                        Vehicles.VEHICLES.TYPE,
                         Vehicles.VEHICLES.PLATE,
-                        Vehicles.VEHICLES.MODEL)
+                        Vehicles.VEHICLES.BRAND,
+                        Vehicles.VEHICLES.BRAND_LINE)
                     .values(vehicle.getStatus(),
                             null,
                             null,
                             vehicle.getUserId(),
                             vehicle.getDeviceId(),
-                            vehicle.getType(),
                             vehicle.getPlate(),
-                            vehicle.getModel())
+                            vehicle.getBrand(),
+                            vehicle.getBrandLine())
                     .execute();
         });
 

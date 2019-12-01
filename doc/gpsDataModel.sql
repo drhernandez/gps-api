@@ -91,9 +91,9 @@ create table VEHICLES(
 	last_updated timestamp,
 	user_id serial references USERS(id) on delete restrict not null,
 	device_id bigint references DEVICES(id) on delete restrict unique,
-	type varchar,
 	plate varchar not null,
-	model varchar	
+	brand varchar,
+	brand_line varchar
 );
 ALTER TABLE public.vehicles ALTER COLUMN id TYPE int8 USING id::int8;
 ALTER TABLE public.vehicles ALTER COLUMN device_id TYPE int8 USING device_id::int8;

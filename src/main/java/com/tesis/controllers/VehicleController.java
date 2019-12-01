@@ -18,7 +18,7 @@ import java.util.List;
 
 public class VehicleController {
 
-    private static Logger logger = LoggerFactory.getLogger(TrackingController.class);
+    private static Logger logger = LoggerFactory.getLogger(VehicleController.class);
 
 
     @Inject

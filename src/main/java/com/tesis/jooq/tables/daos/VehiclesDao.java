@@ -108,13 +108,6 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     }
 
     /**
-     * Fetch records that have <code>type IN (values)</code>
-     */
-    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByType(String... values) {
-        return fetch(Vehicles.VEHICLES.TYPE, values);
-    }
-
-    /**
      * Fetch records that have <code>plate IN (values)</code>
      */
     public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByPlate(String... values) {
@@ -122,9 +115,16 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     }
 
     /**
-     * Fetch records that have <code>model IN (values)</code>
+     * Fetch records that have <code>brand IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByModel(String... values) {
-        return fetch(Vehicles.VEHICLES.MODEL, values);
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByBrand(String... values) {
+        return fetch(Vehicles.VEHICLES.BRAND, values);
+    }
+
+    /**
+     * Fetch records that have <code>brand_line IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByBrandLine(String... values) {
+        return fetch(Vehicles.VEHICLES.BRAND_LINE, values);
     }
 }
