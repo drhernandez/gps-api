@@ -3,10 +3,14 @@ package com.tesis.services.imp;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.daos.AccessTokenDaoExt;
+import com.tesis.daos.AdminAccessTokenDaoExt;
+import com.tesis.daos.AdminUserDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.AccessTokens;
+import com.tesis.jooq.tables.pojos.AdminAccessTokens;
+import com.tesis.jooq.tables.pojos.AdminUsers;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
@@ -107,5 +111,11 @@ public class AuthServiceImp implements AuthService {
     private Key getSigningKey() {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(JWT_KEY);
         return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
+    }
+
+    private Claims decodeAccessToken(String jwt) throws JwtException {
+        return Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(JWT_KEY))
+                .parseClaimsJws(jwt).getBody();
     }
 }

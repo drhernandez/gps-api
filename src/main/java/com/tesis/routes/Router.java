@@ -41,6 +41,7 @@ public class Router {
         Spark.before((request, response) -> {
             if (!request.url().contains("auth") &&
                 !request.url().contains("recovery") &&
+                !request.url().contains("admins") &&
                 !(request.url().contains("users") && request.requestMethod().equals("POST"))) {
                 String accessToken = request.headers("Authorization");
                 if (accessToken != null) {

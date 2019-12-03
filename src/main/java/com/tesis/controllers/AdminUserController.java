@@ -24,50 +24,6 @@ public class AdminUserController {
     @Inject
     AdminUserService adminUserService;
 
-    public Object activateAdminUser(Request request, Response response) throws ApiException{
-
-        String param = request.params("admin_user_id");
-        Long adminUserID;
-        if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_admin_user_id] [method: AdminUserController.activateUser]");
-        }
-        try {
-            adminUserID = Long.valueOf(param);
-        } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_admin_user_id] [method: AdminUserController.activateUser]");
-        }
-
-        ResponseDTO<AdminUsers> responseDTO = adminUserService.activateAdminUser(adminUserID);
-
-        if (responseDTO.error != null) {
-            throw responseDTO.error;
-        }
-
-        return responseDTO.getModelAsJson();
-    }
-
-    public Object deactivateAdminUser(Request request, Response response) throws ApiException{
-
-        String param = request.params("admin_user_id");
-        Long adminUserID;
-        if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_admin_user_id] [method: AdminUserController.deactivateAdminUser]");
-        }
-        try {
-            adminUserID = Long.valueOf(param);
-        } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_admin_user_id] [method: AdminUserController.deactivateAdminUser]");
-        }
-
-        ResponseDTO<AdminUsers> responseDTO = adminUserService.deactivateAdminUser(adminUserID);
-
-        if (responseDTO.error != null) {
-            throw responseDTO.error;
-        }
-
-        return responseDTO.getModelAsJson();
-    }
-
 
     public Object getAdminUsers(Request request, Response response) throws ApiException {
 
