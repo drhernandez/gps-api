@@ -5,6 +5,9 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.AccessTokens;
+import com.tesis.jooq.tables.AdminAccessTokens;
+import com.tesis.jooq.tables.AdminRecoveryTokens;
+import com.tesis.jooq.tables.AdminUsers;
 import com.tesis.jooq.tables.BrandLines;
 import com.tesis.jooq.tables.Brands;
 import com.tesis.jooq.tables.Devices;
@@ -37,6 +40,21 @@ public class Tables {
      * The table <code>public.access_tokens</code>.
      */
     public static final AccessTokens ACCESS_TOKENS = com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS;
+
+    /**
+     * The table <code>public.admin_access_tokens</code>.
+     */
+    public static final AdminAccessTokens ADMIN_ACCESS_TOKENS = com.tesis.jooq.tables.AdminAccessTokens.ADMIN_ACCESS_TOKENS;
+
+    /**
+     * The table <code>public.admin_recovery_tokens</code>.
+     */
+    public static final AdminRecoveryTokens ADMIN_RECOVERY_TOKENS = com.tesis.jooq.tables.AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS;
+
+    /**
+     * The table <code>public.admin_users</code>.
+     */
+    public static final AdminUsers ADMIN_USERS = com.tesis.jooq.tables.AdminUsers.ADMIN_USERS;
 
     /**
      * The table <code>public.brand_lines</code>.

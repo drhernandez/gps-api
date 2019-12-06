@@ -8,6 +8,9 @@ drop table if exists DEVICES;
 drop table if exists ACCESS_TOKENS;
 drop table if exists RECOVERY_TOKENS;
 drop table if exists USERS;
+drop table if exists ADMIN_ACCESS_TOKENS;
+drop table if exists ADMIN_RECOVERY_TOKENS;
+drop table if exists ADMIN_USERS;
 drop table if exists BRAND_LINES;
 drop table if exists BRANDS;
 
@@ -28,6 +31,22 @@ create table USERS(
 ALTER TABLE public.users ALTER COLUMN id TYPE int8 USING id::int8;
 
 
+create table ADMIN_USERS(
+	id serial primary key not null,
+	status varchar not null,
+	deleted_at timestamp,
+	last_updated timestamp,
+	email varchar unique not null,
+	password varchar not null,
+	name varchar not null,
+	last_name varchar not null,
+	dni varchar not null,
+	address varchar not null,
+	phone varchar not null
+);
+ALTER TABLE public.admin_users ALTER COLUMN id TYPE int8 USING id::int8;
+
+
 create table ACCESS_TOKENS(
 	user_id bigint references USERS(id) primary key not null,
 	token varchar
@@ -38,6 +57,19 @@ create table RECOVERY_TOKENS(
 	token varchar not null unique,
 	expiration_date timestamp not null
 );
+
+
+create table ADMIN_ACCESS_TOKENS(
+	user_id bigint references ADMIN_USERS(id) primary key not null,
+	token varchar
+);
+
+create table ADMIN_RECOVERY_TOKENS(
+	user_id bigint references ADMIN_USERS(id) primary key not null,
+	token varchar not null unique,
+	expiration_date timestamp not null
+);
+
 
 create table DEVICES(
 	id serial primary key not null,
@@ -59,9 +91,9 @@ create table VEHICLES(
 	last_updated timestamp,
 	user_id serial references USERS(id) on delete restrict not null,
 	device_id bigint references DEVICES(id) on delete restrict unique,
-	type varchar,
 	plate varchar not null,
-	model varchar	
+	brand varchar,
+	brand_line varchar
 );
 ALTER TABLE public.vehicles ALTER COLUMN id TYPE int8 USING id::int8;
 ALTER TABLE public.vehicles ALTER COLUMN device_id TYPE int8 USING device_id::int8;

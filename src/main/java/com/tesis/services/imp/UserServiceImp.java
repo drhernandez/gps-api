@@ -98,9 +98,8 @@ public class UserServiceImp implements UserService {
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
 
         try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
             user.setStatus(Status.PENDING.toString());
-            user.setPassword(UUID.randomUUID().toString());
             usersDao.insert(user);
             responseDTO.model = user;
         } catch (Exception e) {
@@ -119,7 +118,7 @@ public class UserServiceImp implements UserService {
             user.setStatus(newData.getStatus());
             user.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
             user.setDeletedAt(null);
-            user.setPassword(newData.getPassword());
+            user.setPassword(passwordEncoder.encode(newData.getPassword()));
             user.setName(newData.getName());
             user.setLastName(newData.getLastName());
             user.setDni(newData.getDni());
