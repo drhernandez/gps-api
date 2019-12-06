@@ -3,20 +3,17 @@ package com.tesis.services.imp;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.daos.AccessTokenDaoExt;
-import com.tesis.daos.AdminAccessTokenDaoExt;
-import com.tesis.daos.AdminUserDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.AccessTokens;
-import com.tesis.jooq.tables.pojos.AdminAccessTokens;
-import com.tesis.jooq.tables.pojos.AdminUsers;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.AuthService;
 
 import io.jsonwebtoken.*;
+import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,7 +61,7 @@ public class AuthServiceImp implements AuthService {
                 validateAccessToken(token.getToken());
                 responseDTO.setModel(token);
                 return responseDTO;
-            } catch (JwtException jwte) {
+            } catch (Exception e) {
                 accessTokensDao.delete(token);
                 logger.info("Sesión expirada. Usuario %s. Creando nuevo token...", user.toString());
             }
@@ -103,9 +100,12 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public void validateAccessToken(String jwt) {
+    public void validateAccessToken(String jwt) throws ApiException {
         Key signingKey = getSigningKey();
         Jwts.parser().setSigningKey(signingKey).parse(jwt);
+        AccessTokens accessTokens = accessTokensDao.fetchOne(com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS.TOKEN, jwt);
+        if (accessTokens == null)
+            throw new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
     }
 
     private Key getSigningKey() {
