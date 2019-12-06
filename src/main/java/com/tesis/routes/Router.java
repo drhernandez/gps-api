@@ -28,35 +28,11 @@ public class Router {
     @Inject
     Injector injector;
 
-    @Inject
-    AuthService authService;
-
     public void init() {
 
         // Find all routers binded to the RouterGroup interface and load the routes for each router
         List<Binding<RouteGroup>> routerBindings = injector.findBindingsByType(TypeLiteral.get(RouteGroup.class));
         routerBindings.stream().map(binding -> injector.getInstance(binding.getKey())).forEach(RouteGroup::addRoutes);
-
-        // Validación de accessToken
-        Spark.before((request, response) -> {
-            if (!request.url().contains("auth") &&
-                !request.url().contains("recovery") &&
-                !request.url().contains("admins") &&
-                !(request.url().contains("users") && request.requestMethod().equals("POST"))) {
-                String accessToken = request.headers("Authorization");
-                if (accessToken != null) {
-                    accessToken = accessToken.split(" ")[1];
-                    try {
-                        authService.validateAccessToken(accessToken);
-                    } catch (Exception e){
-                        logger.info("Authorization fail, Reason: " + e.getMessage());
-                        halt(401, "Unauthorized");
-                    }
-                }
-                else
-                    halt(400, "Auth info is required");
-            }
-        });
 
         Spark.notFound((request, response) -> {
             response.header("Content-Type", MediaType.JSON_UTF_8.toString());
