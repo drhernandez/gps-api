@@ -1,13 +1,13 @@
 package com.tesis.controllers;
 
 import com.google.inject.Inject;
+import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.ResponseDTO;
-import com.tesis.services.AlertService;
-import com.tesis.services.TrackingService;
-import com.tesis.services.VehicleService;
+import com.tesis.services.*;
 import com.tesis.utils.JsonUtils;
+import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -20,13 +20,24 @@ public class VehicleController {
 
     private static Logger logger = LoggerFactory.getLogger(VehicleController.class);
 
+    private VehicleService vehicleService;
+    private TrackingService trackingService;
+    private AlertService alertService;
+    private AuthAdminService authAdminService;
+    private AuthService authService;
 
     @Inject
-    VehicleService vehicleService;
-    @Inject
-    TrackingService trackingService;
-    @Inject
-    AlertService alertService;
+    public VehicleController(VehicleService vehicleService,
+                             TrackingService trackingService,
+                             AlertService alertService,
+                             AuthAdminService authAdminService,
+                             AuthService authService) {
+        this.vehicleService = vehicleService;
+        this.trackingService = trackingService;
+        this.alertService = alertService;
+        this.authAdminService = authAdminService;
+        this.authService = authService;
+    }
 
     public Object getVehicles(Request request, Response response) throws ApiException {
 
@@ -40,20 +51,29 @@ public class VehicleController {
     }
 
     public Object getVehiclesByVehicleID(Request request, Response response) throws ApiException {
-
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("Vehicle_id");
-        Long VehicleID;
+        Long vehicleID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]");
         }
 
         try {
-            VehicleID = Long.valueOf(param);
+            vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]");
         }
 
-        ResponseDTO<Vehicles> responseDTO = vehicleService.getVehiclesByVehicleID(VehicleID);
+        ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
+        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+            if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+                logger.error("User access unauthorized [method: VehicleController.getVehiclesByVehicleID]");
+                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+                throw responseDTO.error;
+            }
+        }
+
+        responseDTO = vehicleService.getVehiclesByVehicleID(vehicleID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -63,11 +83,19 @@ public class VehicleController {
     }
 
     public Object createVehicle(Request request, Response response) throws ApiException {
+        String accessToken = request.headers("Authorization").split(" ")[1];
+
+        ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
+        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+            logger.error("User access unauthorized [method: VehicleController.createVehicle]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
 
         Vehicles Vehicle = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Vehicles.class);
         //Agregar validaciones
 
-        ResponseDTO<Vehicles> responseDTO = vehicleService.createVehicle(Vehicle);
+        responseDTO = vehicleService.createVehicle(Vehicle);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -77,7 +105,7 @@ public class VehicleController {
     }
 
     public  Object updateVehicle(Request request, Response response) throws ApiException {
-
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("Vehicle_id");
         Long VehicleID;
         if (StringUtils.isBlank(param)) {
@@ -90,10 +118,17 @@ public class VehicleController {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.updateVehicle]");
         }
 
+        ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
+        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+            logger.error("User access unauthorized [method: VehicleController.updateVehicle]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
         Vehicles Vehicle = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Vehicles.class);
         //Add validations
 
-        ResponseDTO<Vehicles> responseDTO = vehicleService.updateVehicle(VehicleID, Vehicle);
+        responseDTO = vehicleService.updateVehicle(VehicleID, Vehicle);
 
         if (responseDTO.error != null) {
             response.status(500);
@@ -104,17 +139,28 @@ public class VehicleController {
     }
 
     public Object deleteVehicle(Request request, Response response) throws  ApiException {
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("Vehicle_id");
-        Long VehicleID;
+        Long vehicleID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.deleteVehicle]");
         }
         try {
-            VehicleID = Long.valueOf(param);
+            vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.deleteVehicle]");
         }
-        ResponseDTO responseDTO = vehicleService.deleteVehicle(VehicleID);
+
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+            if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+                logger.error("User access unauthorized [method: VehicleController.deleteVehicle]");
+                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+                throw responseDTO.error;
+            }
+        }
+
+        responseDTO = vehicleService.deleteVehicle(vehicleID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -126,6 +172,7 @@ public class VehicleController {
     }
 
     public Object getTrackingsByVehicleID(Request request, Response response) throws ApiException {
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
@@ -137,7 +184,14 @@ public class VehicleController {
             throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getTrackingsByVehicleID]");
         }
 
-        ResponseDTO responseDTO = trackingService.getTrackingsByVehicleID(vehicleID);
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+            logger.error("User access unauthorized [method: VehicleController.getTrackingsByVehicleID]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
+        responseDTO = trackingService.getTrackingsByVehicleID(vehicleID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -149,6 +203,7 @@ public class VehicleController {
     }
 
     public Object getLocationByVehicleID(Request request, Response response) throws ApiException {
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
@@ -160,7 +215,14 @@ public class VehicleController {
             throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getLocationByVehicleID]");
         }
 
-        ResponseDTO responseDTO = trackingService.getLocationByVehicleID(vehicleID);
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+            logger.error("User access unauthorized [method: VehicleController.getLocationByVehicleID]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
+        responseDTO = trackingService.getLocationByVehicleID(vehicleID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -172,6 +234,7 @@ public class VehicleController {
     }
 
     public Object getSpeedAlertByVehicleID(Request request, Response response) throws ApiException{
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
@@ -183,7 +246,15 @@ public class VehicleController {
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedAlertByVehicleID]");
         }
-        ResponseDTO<SpeedAlerts> responseDTO = alertService.getSpeedAlertByVehicleID(vehicleID);
+
+        ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
+        if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+            logger.error("User access unauthorized [method: VehicleController.getSpeedAlertByVehicleID]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
+        responseDTO = alertService.getSpeedAlertByVehicleID(vehicleID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -193,6 +264,7 @@ public class VehicleController {
     }
 
     public Object getMovementAlertByVehicleID(Request request, Response response) throws ApiException{
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
@@ -204,7 +276,15 @@ public class VehicleController {
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementAlertByVehicleID]");
         }
-        ResponseDTO<MovementAlerts> responseDTO = alertService.getMovementAlertByVehicleID(vehicleID);
+
+        ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
+        if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+            logger.error("User access unauthorized [method: VehicleController.getMovementAlertByVehicleID]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
+        responseDTO = alertService.getMovementAlertByVehicleID(vehicleID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -214,6 +294,7 @@ public class VehicleController {
     }
 
     public Object getSpeedHistoryByVehicleID(Request request, Response response) throws ApiException {
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
@@ -226,7 +307,14 @@ public class VehicleController {
             throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedHistoryByVehicleID]");
         }
 
-        ResponseDTO<List<SpeedAlertsHistory>> responseDTO = alertService.getSpeedHistoryByVehicleID(vehicleID);
+        ResponseDTO<List<SpeedAlertsHistory>> responseDTO = new ResponseDTO<>();
+        if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+            logger.error("User access unauthorized [method: VehicleController.getSpeedHistoryByVehicleID]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
+        responseDTO = alertService.getSpeedHistoryByVehicleID(vehicleID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -236,6 +324,7 @@ public class VehicleController {
     }
 
     public Object getMovementHistoryByVehicleID(Request request, Response response) throws ApiException {
+        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
@@ -248,7 +337,14 @@ public class VehicleController {
             throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementHistoryByVehicleID]");
         }
 
-        ResponseDTO<List<MovementAlertsHistory>> responseDTO = alertService.getMovementHistoryByVehicleID(vehicleID);
+        ResponseDTO<List<MovementAlertsHistory>> responseDTO = new ResponseDTO<>();
+        if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+            logger.error("User access unauthorized [method: VehicleController.getMovementHistoryByVehicleID]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
+        responseDTO = alertService.getMovementHistoryByVehicleID(vehicleID);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;

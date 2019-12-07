@@ -88,4 +88,9 @@ public class VehicleServiceImp implements VehicleService {
     public ResponseDTO<List<Vehicles>> getVehiclesByUserID(Long userID){
         return new ResponseDTO(vehiclesDao.fetchByUserId(userID), null);
     }
+
+    public Long getUserIDByVehicleID(Long vehicleID){
+        return vehiclesDao.fetchOneById(vehicleID).getUserId();
+    }
+
 }
