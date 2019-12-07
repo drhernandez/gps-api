@@ -11,14 +11,22 @@ public class BrandRouter implements RouteGroup {
 
     private static Logger logger = LoggerFactory.getLogger(DevicesRouter.class);
 
+    private BrandController brandController;
+    private Middlewares middlewares;
+
     @Inject
-    BrandController brandController;
+    public BrandRouter(BrandController brandController, Middlewares middlewares) {
+        this.brandController = brandController;
+        this.middlewares = middlewares;
+    }
 
     @Override
     public void addRoutes() {
 
         logger.info("Loading brand routes...");
         Spark.path("/brands", () -> {
+            Spark.before("*", middlewares.adminAccessTokenFilter);
+
             Spark.post("", brandController::createBrand);
             Spark.get("", brandController::getBrands);
             Spark.get("/brandlines", brandController::getBrandLines);
