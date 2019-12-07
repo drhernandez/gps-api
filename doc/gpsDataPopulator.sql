@@ -113,7 +113,7 @@ insert into TRACKINGS (device_id, lat, lng, speed, sat, hdop, time)
         values (00001, -31.422068, -64.186497, 10.0, 4 , 246, '10-09-2018 20:56:39.000-03:00');
        
 INSERT INTO BRANDS (id, name) VALUES 
- (1,' MARCA'),
+ (1,'VOLVO'),
  (2,'AGRALE'),
  (3,'ALFA ROMEO'),
  (4,'AUDI'),
@@ -160,11 +160,10 @@ INSERT INTO BRANDS (id, name) VALUES
  (45,'SUZUKI'),
  (46,'TATA'),
  (47,'TOYOTA'),
- (48,'VOLKSWAGEN'),
- (49,'VOLVO');
+ (48,'VOLKSWAGEN');
 
 INSERT INTO BRAND_LINES (id, name, brand_id) VALUES 
- (1,' MODELO',1),
+ (1,'XC90',1),
  (2,'MARRUA',2),
  (3,'147',3),
  (4,'156',3),
@@ -549,18 +548,17 @@ INSERT INTO BRAND_LINES (id, name, brand_id) VALUES
  (383,'UP',48),
  (384,'VENTO',48),
  (385,'VOYAGE',48),
- (386,'C30',49),
- (387,'C70',49),
- (388,'S40',49),
- (389,'S60',49),
- (390,'S80',49),
- (391,'V40',49),
- (392,'V50',49),
- (393,'V60',49),
- (394,'V70',49),
- (395,'XC60',49),
- (396,'XC70',49),
- (397,'XC90',49);
+ (386,'C30',1),
+ (387,'C70',1),
+ (388,'S40',1),
+ (389,'S60',1),
+ (390,'S80',1),
+ (391,'V40',1),
+ (392,'V50',1),
+ (393,'V60',1),
+ (394,'V70',1),
+ (395,'XC60',1),
+ (396,'XC70',1);
 
 
 

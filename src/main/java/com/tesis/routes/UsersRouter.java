@@ -11,17 +11,22 @@ public class UsersRouter implements RouteGroup {
 
     private static Logger logger = LoggerFactory.getLogger(DevicesRouter.class);
 
+    private UserController userController;
+    private Middlewares middlewares;
+
     @Inject
-    UserController userController;
+    public UsersRouter(UserController userController, Middlewares mideMiddlewares) {
+        this.userController = userController;
+        this.middlewares = mideMiddlewares;
+    }
 
     @Override
     public void addRoutes() {
 
         logger.info("Loading users routes...");
         Spark.path("/users", () -> {
-            Spark.post("", userController::createUser);
+            Spark.before("*", middlewares.accessTokenFilter);
             Spark.get("", userController::getUsers);
-            Spark.get("/search", userController::userSearch);
             Spark.get("/:user_id", userController::getUsersByUserID);
             Spark.put("/:user_id", userController::updateUser);
             Spark.delete("/:user_id", userController::deleteUser);

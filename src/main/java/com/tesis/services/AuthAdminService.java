@@ -11,5 +11,6 @@ public interface AuthAdminService {
     Boolean checkAdminUserCredentials(CredentialsDTO credentialsDTO);
     ResponseDTO<AdminAccessTokens> getOrCreateAdminAccessToken(CredentialsDTO credentialsDTO);
     void checkAdminAccessToken(String jwt) throws ApiException;
+    boolean checkAdminUserPermissions(String jwt, Long idRequired);
 
 }

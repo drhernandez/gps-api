@@ -3,6 +3,7 @@ package com.tesis.services.imp;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.daos.AccessTokenDaoExt;
+import com.tesis.daos.AdminAccessTokenDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
@@ -41,6 +42,9 @@ public class AuthServiceImp implements AuthService {
 
     @Inject
     AccessTokenDaoExt accessTokensDao;
+
+    @Inject
+    AdminAccessTokenDaoExt adminAccessTokensDao;
 
 
     public Boolean checkUserCredentials(CredentialsDTO credentialsDTO){
@@ -117,5 +121,12 @@ public class AuthServiceImp implements AuthService {
         return Jwts.parser()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(JWT_KEY))
                 .parseClaimsJws(jwt).getBody();
+    }
+
+    public boolean checkUserPermissions(String jwt, Long idRequired) {
+        Long userId = decodeAccessToken(jwt).get("userId", Long.class);
+        AccessTokens accessTokens = accessTokensDao.findById(userId);
+
+        return (userId.equals(idRequired) && accessTokens != null);
     }
 }

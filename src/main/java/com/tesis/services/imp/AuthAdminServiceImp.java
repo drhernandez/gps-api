@@ -12,6 +12,7 @@ import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.AuthAdminService;
 import io.jsonwebtoken.*;
+import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -59,7 +60,7 @@ public class AuthAdminServiceImp implements AuthAdminService {
                 validateAccessToken(token.getToken());
                 responseDTO.setModel(token);
                 return responseDTO;
-            } catch (JwtException jwte) {
+            } catch (Exception e) {
                 adminAccessTokensDao.delete(token);
                 logger.info("Sesión expirada. Usuario administrador %s. Creando nuevo token...", adminUser.toString());
             }
@@ -112,9 +113,26 @@ public class AuthAdminServiceImp implements AuthAdminService {
         }
     }
 
-    private void validateAccessToken(String jwt) {
+    @Override
+    public boolean checkAdminUserPermissions(String jwt, Long idRequired) {
+        try {
+            validateAccessToken(jwt);
+        } catch (ApiException e) {
+            return false;
+        }
+
+        // validate admin permissions scope
+        // ...
+        return true;
+    }
+
+
+    private void validateAccessToken(String jwt) throws ApiException {
         Key signingKey = getSigningKey();
         Jwts.parser().setSigningKey(signingKey).parse(jwt);
+        AdminAccessTokens accessTokens = adminAccessTokensDao.fetchOne(com.tesis.jooq.tables.AdminAccessTokens.ADMIN_ACCESS_TOKENS.TOKEN, jwt);
+        if (accessTokens == null)
+            throw new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
     }
 
     private Key getSigningKey() {
