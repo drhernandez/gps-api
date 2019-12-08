@@ -19,7 +19,7 @@ public class TrackingDaoExt extends TrackingsDao {
         super(configuration);
     }
 
-    public void saveTrackings(com.tesis.jooq.tables.pojos.Trackings tracking){
+    public void saveTracking(com.tesis.jooq.tables.pojos.Trackings tracking){
         Long deviceID = getDeviceIDFromPhysicalID(tracking.getDeviceId());
 
         DSL.using(configuration()).insertInto(Trackings.TRACKINGS,

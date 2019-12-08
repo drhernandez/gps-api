@@ -102,19 +102,19 @@ public class TrackingRouter implements RouteGroup {
 //        }));
     }
 
-    public boolean checkDistance(Trackings tracking, MovementAlerts alert){
-
-        double lat1 = Math.toRadians(tracking.getLat());
-        double lng1 = Math.toRadians(tracking.getLng());
-        double lat2 = Math.toRadians(alert.getLat());
-        double lng2 = Math.toRadians(alert.getLng());
-
-        // Haversine equation
-        double a = Math.pow(Math.sin((lat2 - lat1) / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((lng2 - lng1) / 2),2);
-
-        return (2 * Math.asin(Math.sqrt(a)) * EARTH_RADIUS_KM) > DEFAULT_MOVEMENT_ALERT_KM;
-
-    }
+//    public boolean checkDistance(Trackings tracking, MovementAlerts alert){
+//
+//        double lat1 = Math.toRadians(tracking.getLat());
+//        double lng1 = Math.toRadians(tracking.getLng());
+//        double lat2 = Math.toRadians(alert.getLat());
+//        double lng2 = Math.toRadians(alert.getLng());
+//
+//        // Haversine equation
+//        double a = Math.pow(Math.sin((lat2 - lat1) / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((lng2 - lng1) / 2),2);
+//
+//        return (2 * Math.asin(Math.sqrt(a)) * EARTH_RADIUS_KM) > DEFAULT_MOVEMENT_ALERT_KM;
+//
+//    }
 }
 
 
