@@ -6,6 +6,7 @@ import com.tesis.controllers.AlertController;
 import com.tesis.controllers.TrackingController;
 import com.tesis.jooq.tables.pojos.*;
 import com.tesis.services.AlertService;
+import com.tesis.services.AuthService;
 import com.tesis.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,18 +23,32 @@ public class TrackingRouter implements RouteGroup {
 
     Logger logger = LoggerFactory.getLogger(TrackingRouter.class);
 
+    private TrackingController trackingController;
+    private AlertController alertController;
+    private AlertService alertService;
+    private AuthService authService;
+    private Middlewares middlewares;
+
     @Inject
-    TrackingController trackingController;
-    @Inject
-    AlertController alertController;
-    @Inject
-    AlertService alertService;
+    public TrackingRouter(TrackingController trackingController,
+                          AlertController alertController,
+                          AlertService alertService,
+                          AuthService authService,
+                          Middlewares middlewares) {
+        this.trackingController = trackingController;
+        this.alertController = alertController;
+        this.alertService = alertService;
+        this.authService = authService;
+        this.middlewares = middlewares;
+    }
 
     @Override
     public void addRoutes() {
 
         logger.info("Loading Tracking routes...");
         Spark.path("/trackings", () -> {
+            Spark.before("/*", middlewares.accessTokenFilter);
+
             Spark.post("", trackingController::saveTracking);
             Spark.get("/search", trackingController::trackingSearch);
             Spark.get("/:device_id", trackingController::getTrackingsByDeviceID);
