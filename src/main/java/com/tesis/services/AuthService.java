@@ -12,4 +12,5 @@ public interface AuthService {
     ResponseDTO<AccessTokens> getOrCreateAccessToken(CredentialsDTO credentialsDTO);
     void validateAccessToken(String jwt) throws ApiException;
     boolean checkUserPermissions(String jwt, Long idRequired);
+    void checkTokenRequired(String jwt);
 }

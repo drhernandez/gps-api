@@ -56,4 +56,19 @@ public class Middlewares {
             halt(400, "Auth info is required");
     };
 
+    public Filter requiredTokenCheck = (Request request, Response response) -> {
+        String accessToken = request.headers("Authorization");
+        if (accessToken != null) {
+            accessToken = accessToken.split(" ")[1];
+            try {
+                authService.checkTokenRequired(accessToken);
+            } catch (Exception e){
+                logger.info("Authorization fail, Reason: " + e.getMessage());
+                halt(401, "Unauthorized");
+            }
+        }
+        else
+            halt(400, "Auth info is required");
+    };
+
 }

@@ -105,8 +105,7 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public void validateAccessToken(String jwt) throws ApiException {
-        Key signingKey = getSigningKey();
-        Jwts.parser().setSigningKey(signingKey).parse(jwt);
+        checkTokenRequired(jwt);
         AccessTokens accessTokens = accessTokensDao.fetchOne(com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS.TOKEN, jwt);
         if (accessTokens == null)
             throw new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
@@ -128,5 +127,10 @@ public class AuthServiceImp implements AuthService {
         AccessTokens accessTokens = accessTokensDao.findById(userId);
 
         return (userId.equals(idRequired) && accessTokens != null);
+    }
+
+    public void checkTokenRequired(String jwt){
+        Key signingKey = getSigningKey();
+        Jwts.parser().setSigningKey(signingKey).parse(jwt);
     }
 }
