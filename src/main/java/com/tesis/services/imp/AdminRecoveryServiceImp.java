@@ -142,7 +142,8 @@ public class AdminRecoveryServiceImp implements AdminRecoveryService {
 
         Email from = new Email(System.getenv("SENDGRID_SENDER"));
         String subject = "GPS-TESIS Cambio de contraseña de administrador";
-        Email to = new Email(adminUser.getEmail());
+//        Email to = new Email(adminUser.getEmail());
+        Email to = new Email("pedropruebapedro@gmail.com");
         Content content = new Content("text/plain",
                 "Link de cambio de contraseña de administrador: " +
                         System.getenv("FRONT_DOMAIN") +"/reset-password/" + adminRecoveryToken.getToken());

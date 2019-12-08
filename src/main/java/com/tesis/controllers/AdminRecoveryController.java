@@ -22,8 +22,12 @@ public class AdminRecoveryController {
 
     private static Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    private AdminRecoveryServiceImp adminRecoveryService;
+
     @Inject
-    AdminRecoveryServiceImp adminRecoveryService;
+    public AdminRecoveryController(AdminRecoveryServiceImp adminRecoveryService) {
+        this.adminRecoveryService = adminRecoveryService;
+    }
 
     public Object createRecoveryAdminPasswordToken(Request request, Response response) throws ApiException {
         CredentialsDTO credentialsDTO = JsonUtils.INSTANCE.GSON().fromJson(request.body(), CredentialsDTO.class);

@@ -11,8 +11,12 @@ public class RecoveryRouter implements RouteGroup {
 
     private static Logger logger = LoggerFactory.getLogger(DevicesRouter.class);
 
+    private RecoveryController recoveryController;
+
     @Inject
-    RecoveryController recoveryController;
+    public RecoveryRouter(RecoveryController recoveryController) {
+        this.recoveryController = recoveryController;
+    }
 
     @Override
     public void addRoutes() {

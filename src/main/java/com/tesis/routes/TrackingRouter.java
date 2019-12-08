@@ -47,7 +47,7 @@ public class TrackingRouter implements RouteGroup {
 
         logger.info("Loading Tracking routes...");
         Spark.path("/trackings", () -> {
-            Spark.before("/*", middlewares.accessTokenFilter);
+//            Spark.before("/*", middlewares.accessTokenFilter);
 
             Spark.post("", trackingController::saveTracking);
             Spark.get("/search", trackingController::trackingSearch);
