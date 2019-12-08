@@ -263,4 +263,16 @@ public class AlertServiceImp implements AlertService {
 
         return responseDTO;
     }
+
+    public Long getUserIDByDeviceID(Long deviceID){
+        return vehicleDao.fetchOneByDeviceId(deviceID).getUserId();
+    }
+
+    public Long getUserIDBySpeedAlertID(Long speedAlertID){
+        return getUserIDByDeviceID(speedAlertsDao.fetchOneById(speedAlertID).getDeviceId());
+    }
+
+    public Long getUserIDByMovementAlertID(Long movementAlertID){
+        return getUserIDByDeviceID(movementAlertDao.fetchOneById(movementAlertID).getDeviceId());
+    }
 }

@@ -57,7 +57,7 @@ public class AuthAdminServiceImp implements AuthAdminService {
 
         if(token != null) {
             try {
-                validateAccessToken(token.getToken());
+                validateAdminAccessToken(token.getToken());
                 responseDTO.setModel(token);
                 return responseDTO;
             } catch (Exception e) {
@@ -116,7 +116,7 @@ public class AuthAdminServiceImp implements AuthAdminService {
     @Override
     public boolean checkAdminUserPermissions(String jwt, Long idRequired) {
         try {
-            validateAccessToken(jwt);
+            validateAdminAccessToken(jwt);
         } catch (ApiException e) {
             return false;
         }
@@ -127,7 +127,7 @@ public class AuthAdminServiceImp implements AuthAdminService {
     }
 
 
-    private void validateAccessToken(String jwt) throws ApiException {
+    private void validateAdminAccessToken(String jwt) throws ApiException {
         Key signingKey = getSigningKey();
         Jwts.parser().setSigningKey(signingKey).parse(jwt);
         AdminAccessTokens accessTokens = adminAccessTokensDao.fetchOne(com.tesis.jooq.tables.AdminAccessTokens.ADMIN_ACCESS_TOKENS.TOKEN, jwt);

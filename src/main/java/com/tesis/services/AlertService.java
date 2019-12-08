@@ -31,4 +31,7 @@ public interface AlertService {
     ResponseDTO<List<MovementAlertsHistory>> getMovementHistoryByVehicleID(Long vehicleID);
     ResponseDTO<MovementAlertsHistory> deleteMovementAlertHistory(Long deviceId);
 
+    Long getUserIDByDeviceID(Long deviceID);
+    Long getUserIDBySpeedAlertID(Long speedAlertID);
+    Long getUserIDByMovementAlertID(Long movementAlertID);
 }
