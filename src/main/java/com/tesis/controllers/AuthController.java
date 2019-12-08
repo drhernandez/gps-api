@@ -19,11 +19,14 @@ public class AuthController {
 
     private static Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    @Inject
-    AuthService authService;
+    private AuthService authService;
+    private AuthAdminService authAdminService;
 
     @Inject
-    AuthAdminService authAdminService;
+    public AuthController(AuthService authService, AuthAdminService authAdminService) {
+        this.authService = authService;
+        this.authAdminService = authAdminService;
+    }
 
     public Object login(Request request, Response response) throws ApiException {
         CredentialsDTO credentialsDTO = JsonUtils.INSTANCE.GSON().fromJson(request.body(), CredentialsDTO.class);

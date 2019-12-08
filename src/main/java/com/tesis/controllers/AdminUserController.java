@@ -21,9 +21,12 @@ public class AdminUserController {
 
     private static Logger logger = LoggerFactory.getLogger(AdminUserController.class);
 
-    @Inject
-    AdminUserService adminUserService;
+    private AdminUserService adminUserService;
 
+    @Inject
+    public AdminUserController(AdminUserService adminUserService) {
+        this.adminUserService = adminUserService;
+    }
 
     public Object getAdminUsers(Request request, Response response) throws ApiException {
 

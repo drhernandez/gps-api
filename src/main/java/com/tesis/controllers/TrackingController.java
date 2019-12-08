@@ -28,8 +28,12 @@ public class TrackingController {
 
     private static Logger logger = LoggerFactory.getLogger(TrackingController.class);
 
+    private TrackingService trackingService;
+
     @Inject
-    TrackingService trackingService;
+    public TrackingController(TrackingService trackingService) {
+        this.trackingService = trackingService;
+    }
 
     public Object saveTracking(Request request, Response response) throws ApiException {
 

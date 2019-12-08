@@ -16,12 +16,14 @@ import java.util.List;
 
 public class BrandController {
 
-    @Inject
-    BrandServiceImp brandService;
+    private BrandServiceImp brandService;
+    private BrandLineServiceImp brandLineService;
 
     @Inject
-    BrandLineServiceImp brandLineService;
-
+    public BrandController(BrandServiceImp brandService, BrandLineServiceImp brandLineService) {
+        this.brandService = brandService;
+        this.brandLineService = brandLineService;
+    }
 
     //   ---------------- Brand methods ----------------
 
