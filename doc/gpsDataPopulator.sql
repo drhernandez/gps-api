@@ -26,9 +26,9 @@ insert into ADMIN_USERS values (1, 'ACTIVE', null, null, 'drhernandez92@gmail.co
 							'Diego', 'Hernández', '36354805', 'Tomas de irobi 165', '351-5495416');
 					
 insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version) 
-	values (00001, null, null, 'ARDUINO GENUINO/UNO', '1.0');
+	values (10001, null, null, 'ARDUINO GENUINO/UNO', '1.0');
 insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version) 
-	values (00002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
+	values (10002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
 
 insert into VEHICLES values (10, 'ACTIVE', null, null, 10, 00001, 'AA 383 TI', 'Ford', 'Fiesta');
 insert into VEHICLES values (11, 'ACTIVE', null, null, 11, 00002,  'AD 257 TO', 'Toyota', 'Corolla');

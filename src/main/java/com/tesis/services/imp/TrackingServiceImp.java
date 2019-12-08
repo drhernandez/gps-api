@@ -28,7 +28,7 @@ public class TrackingServiceImp implements TrackingService {
         ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO<>();
 
         try {
-            trakings.forEach(tracking -> trakingsDao.insert(tracking));
+            trakings.forEach(tracking -> trakingsDao.saveTrackings(tracking));
             responseDTO.model = trakings;
         } catch (Exception e) {
             responseDTO.error = new ApiException("db_error", "Error inserting tracking data", e);
@@ -72,7 +72,9 @@ public class TrackingServiceImp implements TrackingService {
     }
 
     public Boolean checkVehicleStatus(Trackings tracking){
-        Vehicles vehicle = vehiclesDao.fetchOneByDeviceId(tracking.getDeviceId());
+        Vehicles vehicle = vehiclesDao.fetchOneByDeviceId(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()));
+        if (vehicle == null)
+            return false;
         return (vehicle.getStatus().equals(Status.ACTIVE.toString()));
     }
 }

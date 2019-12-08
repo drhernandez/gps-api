@@ -54,52 +54,52 @@ public class TrackingRouter implements RouteGroup {
             Spark.get("/:device_id", trackingController::getTrackingsByDeviceID);
         });
 
-        Spark.after("/trackings",((request, response) -> {
-            if (request.requestMethod().equals("POST") && response.status() == 200) {
-                List<Trackings> trackingsList = JsonUtils.INSTANCE.GSON().fromJson(response.body(), new TypeToken<List<Trackings>>(){}.getType());
-                SpeedAlerts speedAlert = alertService.getSpeedIfActive(trackingsList.get(0).getDeviceId());
-                if(speedAlert != null) {
-                    for(int i=0; i<trackingsList.size(); i++){
-                        if(trackingsList.get(i).getSpeed() > speedAlert.getSpeed() &&
-                                trackingsList.get(i).getTime().after(speedAlert.getActivatedAt())){
-                            alertService.createSpeedAlertHistory(new SpeedAlertsHistory(
-                                    trackingsList.get(i).getTime(),
-                                    speedAlert.getId(),
-                                    trackingsList.get(i).getSpeed()));
-                            try {
-                                alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"SPEED");
-                            } catch (Exception e) {
-                                halt(500, e.getMessage());
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                MovementAlerts movementAlert = alertService.getMovementIfActive(trackingsList.get(0).getDeviceId());
-                if(movementAlert != null) {
-
-                    for(int i=0; i<trackingsList.size(); i++) {
-                        if(trackingsList.get(i).getTime().after(movementAlert.getActivatedAt()) &&
-                                checkDistance(trackingsList.get(i), movementAlert)){
-                            alertService.createMovementAlertHistory(new MovementAlertsHistory(
-                                    trackingsList.get(i).getTime(),
-                                    movementAlert.getId(),
-                                    trackingsList.get(i).getLat(),
-                                    trackingsList.get(i).getLng()
-                            ));
-                            try {
-                                alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"MOVEMENT");
-                            } catch (Exception e) {
-                                halt(500, e.getMessage());
-                            }
-                            break;
-                        }
-                    }
-
-                }
-            }
-        }));
+//        Spark.after("/trackings",((request, response) -> {
+//            if (request.requestMethod().equals("POST") && response.status() == 200) {
+//                List<Trackings> trackingsList = JsonUtils.INSTANCE.GSON().fromJson(response.body(), new TypeToken<List<Trackings>>(){}.getType());
+//                SpeedAlerts speedAlert = alertService.getSpeedIfActive(trackingsList.get(0).getDeviceId());
+//                if(speedAlert != null) {
+//                    for(int i=0; i<trackingsList.size(); i++){
+//                        if(trackingsList.get(i).getSpeed() > speedAlert.getSpeed() &&
+//                                trackingsList.get(i).getTime().after(speedAlert.getActivatedAt())){
+//                            alertService.createSpeedAlertHistory(new SpeedAlertsHistory(
+//                                    trackingsList.get(i).getTime(),
+//                                    speedAlert.getId(),
+//                                    trackingsList.get(i).getSpeed()));
+//                            try {
+//                                alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"SPEED");
+//                            } catch (Exception e) {
+//                                halt(500, e.getMessage());
+//                            }
+//                            break;
+//                        }
+//                    }
+//                }
+//
+//                MovementAlerts movementAlert = alertService.getMovementIfActive(trackingsList.get(0).getDeviceId());
+//                if(movementAlert != null) {
+//
+//                    for(int i=0; i<trackingsList.size(); i++) {
+//                        if(trackingsList.get(i).getTime().after(movementAlert.getActivatedAt()) &&
+//                                checkDistance(trackingsList.get(i), movementAlert)){
+//                            alertService.createMovementAlertHistory(new MovementAlertsHistory(
+//                                    trackingsList.get(i).getTime(),
+//                                    movementAlert.getId(),
+//                                    trackingsList.get(i).getLat(),
+//                                    trackingsList.get(i).getLng()
+//                            ));
+//                            try {
+//                                alertController.sendAlarm(trackingsList.get(i).getDeviceId(),"MOVEMENT");
+//                            } catch (Exception e) {
+//                                halt(500, e.getMessage());
+//                            }
+//                            break;
+//                        }
+//                    }
+//
+//                }
+//            }
+//        }));
     }
 
     public boolean checkDistance(Trackings tracking, MovementAlerts alert){
@@ -118,9 +118,13 @@ public class TrackingRouter implements RouteGroup {
 }
 
 
+//normal alert
+//10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00
+
+
 //movement alert
-//00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00
+//10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00
 
 
 //speed alert
-//00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;00003,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00
+//10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00

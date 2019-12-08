@@ -1,5 +1,6 @@
 package com.tesis.daos;
 
+import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.daos.TrackingsDao;
 import com.tesis.models.Pagination;
@@ -16,6 +17,35 @@ public class TrackingDaoExt extends TrackingsDao {
     @Inject
     public TrackingDaoExt(Configuration configuration){
         super(configuration);
+    }
+
+    public void saveTrackings(com.tesis.jooq.tables.pojos.Trackings tracking){
+        Long deviceID = getDeviceIDFromPhysicalID(tracking.getDeviceId());
+
+        DSL.using(configuration()).insertInto(Trackings.TRACKINGS,
+                    Trackings.TRACKINGS.DEVICE_ID,
+                    Trackings.TRACKINGS.LAT,
+                    Trackings.TRACKINGS.LNG,
+                    Trackings.TRACKINGS.SAT,
+                    Trackings.TRACKINGS.HDOP,
+                    Trackings.TRACKINGS.TIME,
+                    Trackings.TRACKINGS.SPEED)
+                .values(deviceID,
+                        tracking.getLat(),
+                        tracking.getLng(),
+                        tracking.getSat(),
+                        tracking.getHdop(),
+                        tracking.getTime(),
+                        tracking.getSpeed())
+                .execute();
+    }
+
+    public Long getDeviceIDFromPhysicalID(Long physicalID){
+        return DSL.using(configuration())
+                .selectFrom(Devices.DEVICES)
+                .where(Devices.DEVICES.PHYSICAL_ID.eq(physicalID))
+                .and(Devices.DEVICES.DELETED_AT.isNull())
+                .fetchOne().getId();
     }
 
     public List<com.tesis.jooq.tables.pojos.Trackings> findAllActivesByDeviceID(Long deviceID){
