@@ -3,6 +3,7 @@ package com.tesis.controllers;
 import com.google.inject.Inject;
 import com.mashape.unirest.http.*;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.tesis.clients.SendSMSCClient;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.*;
@@ -37,16 +38,19 @@ public class AlertController {
     private UserService userService;
     private AuthService authService;
     private AuthAdminService authAdminService;
+    private SendSMSCClient sendSMSCClient;
 
     @Inject
     public AlertController(AlertService alertService,
                            UserService userService,
                            AuthService authService,
-                           AuthAdminService authAdminService) {
+                           AuthAdminService authAdminService,
+                           SendSMSCClient sendSMSCClient) {
         this.alertService = alertService;
         this.userService = userService;
         this.authService = authService;
         this.authAdminService = authAdminService;
+        this.sendSMSCClient = sendSMSCClient;
     }
 
     //  ----------------  Speed Alert methods ----------------
@@ -397,80 +401,16 @@ public class AlertController {
 
     //  ----------------  SMSC Api methods ----------------
 
-    public void sendAlarm(Long deviceId, String alertType) throws ApiException {
-        Users user = userService.getUsersByDeviceId(deviceId).getModel();
-
-        try {
-            String result = Unirest.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
-                    "&apikey=" + System.getenv("SMSC_API_KEY") +
-                    "&cmd=enviar&num=" + user.getPhone() +
-                    "&msj=" + (alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT))
-
-                    .asJson()
-                    .getBody()
-                    .toString();
-
-            SMSResponse resp = JsonUtils.INSTANCE.GSON().fromJson(result, SMSResponse.class);
-
-            switch (resp.getCode()){
-                case "200":
-                    break;
-                case "403":
-                    logger.error(resp.getMessage());
-                    throw new ApiException(invalid_data.name(),
-                            String.format("invalid phone number: %s", user.getPhone()),
-                            HttpServletResponse.SC_NOT_FOUND);
-                case "405":
-                    logger.error(resp.getMessage());
-                    throw new ApiException(invalid_data.name(),
-                            "no messages available",
-                            HttpServletResponse.SC_NOT_FOUND);
-            }
-
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw new ApiException(ErrorCodes.internal_error.toString(), "Error al enviar el mensaje de alerta.");
-        }
-
-    }
-
     public Object sendSMS(Request request, Response response) throws ApiException, UnirestException {
         SMSRequest smsRequest = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SMSRequest.class);
 
         try {
-
-            String result = Unirest.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
-                    "&apikey=" + System.getenv("SMSC_API_KEY") +
-                    "&cmd=enviar&num=" + smsRequest.getReceptor() +
-                    "&msj=Test%20de%20alerta%20de%20texto%20GPS-TESIS")
-
-                    .asJson()
-                    .getBody()
-                    .toString();
-
-            SMSResponse resp = JsonUtils.INSTANCE.GSON().fromJson(result, SMSResponse.class);
-
-            switch (resp.getCode()){
-                case "200":
-                    return new ResponseDTO();
-                case "403":
-                    logger.error(resp.getMessage());
-                    throw new ApiException(invalid_data.name(),
-                            String.format("invalid phone number: %s", smsRequest.getReceptor()),
-                            HttpServletResponse.SC_NOT_FOUND);
-                case "405":
-                    logger.error(resp.getMessage());
-                    throw new ApiException(invalid_data.name(),
-                            "no messages available",
-                            HttpServletResponse.SC_NOT_FOUND);
-            }
-
-
+            sendSMSCClient.sendSMS(smsRequest);
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw e;
-
         }
         return new ResponseDTO();
     }
+
 }

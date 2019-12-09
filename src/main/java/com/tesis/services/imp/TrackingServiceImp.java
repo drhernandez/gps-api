@@ -1,6 +1,7 @@
 package com.tesis.services.imp;
 
 import com.google.inject.Inject;
+import com.tesis.clients.SendSMSCClient;
 import com.tesis.controllers.AlertController;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.Status;
@@ -9,18 +10,19 @@ import com.tesis.daos.TrackingDaoExt;
 import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.SMSRequest;
 import com.tesis.models.Search;
 import com.tesis.routes.TrackingRouter;
 import com.tesis.services.AlertService;
 import com.tesis.services.TrackingService;
+import com.tesis.services.UserService;
 import com.tesis.utils.filters.TrackingFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.tesis.config.Constants.DEFAULT_MOVEMENT_ALERT_KM;
-import static com.tesis.config.Constants.EARTH_RADIUS_KM;
+import static com.tesis.config.Constants.*;
 import static spark.Spark.halt;
 
 public class TrackingServiceImp implements TrackingService {
@@ -38,7 +40,11 @@ public class TrackingServiceImp implements TrackingService {
     AlertService alertService;
 
     @Inject
-    AlertController alertController; //TODO change to SMSC Client
+    SendSMSCClient smscClient;
+
+    @Inject
+    UserService userService;
+
 
     @Override
     public ResponseDTO<List<Trackings>> saveTracking(List<Trackings> trackings) {
@@ -62,7 +68,7 @@ public class TrackingServiceImp implements TrackingService {
                                     tracking.getTime(),
                                     speedAlert.getId(),
                                     tracking.getSpeed()));
-                            alertController.sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()),"SPEED");
+                            sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()),"SPEED");
                             break;
                         } catch (Exception e) {
                             logger.error("Error en la comprobacion de alertas de velocidad de trakings");
@@ -82,7 +88,7 @@ public class TrackingServiceImp implements TrackingService {
                                     tracking.getLat(),
                                     tracking.getLng()
                             ));
-                            alertController.sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()),"MOVEMENT");
+                            sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()),"MOVEMENT");
                             break;
                         } catch (Exception e) {
                             logger.error("Error en la comprobacion de alertas de movimineto de trakings");
@@ -152,6 +158,20 @@ public class TrackingServiceImp implements TrackingService {
         double a = Math.pow(Math.sin((lat2 - lat1) / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((lng2 - lng1) / 2),2);
 
         return (2 * Math.asin(Math.sqrt(a)) * EARTH_RADIUS_KM) > DEFAULT_MOVEMENT_ALERT_KM;
+
+    }
+
+    private void sendAlarm(Long deviceID, String alertType) throws ApiException {
+        Users user = userService.getUsersByDeviceId(deviceID).getModel();
+        SMSRequest alertRequest = new SMSRequest();
+        alertRequest.setReceptor(user.getPhone());
+        alertRequest.setMessage((alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT));
+
+        try {
+            smscClient.sendSMS(alertRequest);
+        } catch (ApiException e) {
+            throw e;
+        }
 
     }
 }
