@@ -52,6 +52,8 @@ public class TrackingServiceImp implements TrackingService {
         ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO<>();
 
         try {
+            boolean speedAlertSend = false;
+            boolean movementAlertSend = false;
             SpeedAlerts speedAlert = alertService.getSpeedIfActive(trakingsDao.getDeviceIDFromPhysicalID(trackings.get(0).getDeviceId()));
             MovementAlerts movementAlert = alertService.getMovementIfActive(trakingsDao.getDeviceIDFromPhysicalID(trackings.get(0).getDeviceId()));
 
@@ -64,12 +66,14 @@ public class TrackingServiceImp implements TrackingService {
                     if(tracking.getSpeed() > speedAlert.getSpeed() &&
                             tracking.getTime().after(speedAlert.getActivatedAt())) {
                         try {
-                            alertService.createSpeedAlertHistory(new SpeedAlertsHistory(
-                                    tracking.getTime(),
-                                    speedAlert.getId(),
-                                    tracking.getSpeed()));
-                            sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()),"SPEED");
-                            break;
+                            if (!speedAlertSend) {
+                                alertService.createSpeedAlertHistory(new SpeedAlertsHistory(
+                                        tracking.getTime(),
+                                        speedAlert.getId(),
+                                        tracking.getSpeed()));
+                                sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()), "SPEED");
+                                speedAlertSend = true;
+                            }
                         } catch (Exception e) {
                             logger.error("Error en la comprobacion de alertas de velocidad de trakings");
                             halt(500, e.getMessage());
@@ -82,14 +86,16 @@ public class TrackingServiceImp implements TrackingService {
                     if(tracking.getTime().after(movementAlert.getActivatedAt()) &&
                             checkDistance(tracking, movementAlert)){
                         try {
-                            alertService.createMovementAlertHistory(new MovementAlertsHistory(
-                                    tracking.getTime(),
-                                    movementAlert.getId(),
-                                    tracking.getLat(),
-                                    tracking.getLng()
-                            ));
-                            sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()),"MOVEMENT");
-                            break;
+                            if (!movementAlertSend) {
+                                alertService.createMovementAlertHistory(new MovementAlertsHistory(
+                                        tracking.getTime(),
+                                        movementAlert.getId(),
+                                        tracking.getLat(),
+                                        tracking.getLng()
+                                ));
+                                sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()), "MOVEMENT");
+                                movementAlertSend = true;
+                            }
                         } catch (Exception e) {
                             logger.error("Error en la comprobacion de alertas de movimineto de trakings");
                             halt(500, e.getMessage());
@@ -98,6 +104,7 @@ public class TrackingServiceImp implements TrackingService {
                 }
             }
             responseDTO.model = trackings;
+
         } catch (Exception e) {
             logger.error("Error al guardar el tracking. Reason: " + e.getMessage());
             responseDTO.error = new ApiException("db_error", "Error al guardar el tracking", e);
@@ -168,7 +175,8 @@ public class TrackingServiceImp implements TrackingService {
         alertRequest.setMessage((alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT));
 
         try {
-            smscClient.sendSMS(alertRequest);
+//            smscClient.sendSMS(alertRequest);
+            smscClient.sendAlertSMS(alertRequest, alertType);
         } catch (ApiException e) {
             throw e;
         }
