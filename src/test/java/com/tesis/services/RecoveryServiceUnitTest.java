@@ -1,5 +1,6 @@
 package com.tesis.services;
 
+import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.RecoveryTokensDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
@@ -27,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RecoveryServiceUnitTest {
+public class RecoveryServiceUnitTest extends UnitTestConfigs {
     @Mock
     RecoveryTokensDaoExt recoveryDao;
 
