@@ -3,6 +3,7 @@ package com.tesis.services;
 import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.ErrorCodes;
+import com.tesis.enums.Status;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.imp.VehicleServiceImp;
@@ -40,6 +41,7 @@ public class VehicleServiceUnitTest extends UnitTestConfigs {
         ResponseDTO<Vehicles> responseDTO = vehicleService.createVehicle(vehicle);
 
         assertEquals(responseDTO.getModel().getPlate(), vehicle.getPlate());
+        assertEquals(responseDTO.getModel().getStatus(), Status.PENDING.toString());
     }
 
     @Test
@@ -78,11 +80,13 @@ public class VehicleServiceUnitTest extends UnitTestConfigs {
     public void updateVehicleTest_ok(){
         Vehicles vehicle = mock(Vehicles.class);
         vehicle.setPlate("ABC-123");
+        vehicle.setStatus(Status.ACTIVE.toString());
 
         Mockito.when(vehicleDao.fetchOneById(any())).thenReturn(vehicle);
         ResponseDTO<Vehicles> responseDTO = vehicleService.updateVehicle(new Random().nextLong(), vehicle);
 
         assertEquals(responseDTO.getModel().getPlate(), vehicle.getPlate());
+        assertEquals(responseDTO.getModel().getStatus(), vehicle.getStatus());
     }
 
     @Test
@@ -112,6 +116,26 @@ public class VehicleServiceUnitTest extends UnitTestConfigs {
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
         assertEquals(responseDTO.getError().getMessage(), "Error al eliminar el vehiculo.");
+    }
+
+    @Test
+    public void getUserIDByVehicleIDTest_ok(){
+        Vehicles vehicle = mock(Vehicles.class);
+        vehicle.setPlate("ABC-123");
+        vehicle.setUserId(1L);
+//        Mockito.when(vehicleDao.fetchOneById(any())).thenReturn(vehicle);
+        Long userId = vehicleService.getUserIDByVehicleID(1L);
+
+        assertEquals(userId, vehicle.getUserId());
+    }
+
+    @Test
+    public void getUserIDByVehicleIDTest_error(){
+
+        Mockito.when(vehicleDao.fetchByIDForUserID(any())).thenReturn(null);
+        Long userId = vehicleService.getUserIDByVehicleID(1L);
+
+        assertNull(userId);
     }
 
 }

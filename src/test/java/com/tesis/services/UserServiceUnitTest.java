@@ -3,6 +3,7 @@ package com.tesis.services;
 import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
+import com.tesis.enums.Status;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.imp.UserServiceImp;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -37,16 +39,39 @@ public class UserServiceUnitTest extends UnitTestConfigs {
     UserServiceImp userService;
 
     @Test
+    public void activateUserTest_ok(){
+        Users user = new Users();
+        user.setPassword("passTest");
+        user.setName("Diego");
+        user.setStatus(Status.INACTIVE.toString());
+        Mockito.when(usersDao.fetchOneById(1L)).thenReturn(user);
+
+        ResponseDTO<Users> responseDTO = userService.activateUser(1L);
+
+        assertEquals(responseDTO.getModel().getStatus(), Status.ACTIVE.toString());
+    }
+
+    @Test
+    public void activateUserTest_error(){
+        Mockito.when(usersDao.fetchOneById(1L)).thenReturn(null);
+
+        ResponseDTO<Users> responseDTO = userService.activateUser(1L);
+        assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
+        assertEquals(responseDTO.getError().getMessage(), "Error al activar el usuario.");
+    }
+
+    @Test
     public void createUserTest_ok(){
         Users user = new Users();
         user.setPassword("passTest");
         user.setName("Diego");
 
-        Mockito.when(passwordEncoder.encode("passTest")).thenReturn("passEncoded");
+        Mockito.when(passwordEncoder.encode(any(String.class))).thenReturn("passEncoded");
         ResponseDTO<Users> responseDTO = userService.createUser(user);
 
         assertEquals(responseDTO.getModel().getName(), user.getName());
         assertEquals(responseDTO.getModel().getPassword(), "passEncoded");
+        assertEquals(responseDTO.getModel().getStatus(), Status.PENDING.toString());
     }
 
     @Test
@@ -55,7 +80,7 @@ public class UserServiceUnitTest extends UnitTestConfigs {
         user.setPassword(null);
         user.setName("Diego");
 
-        Mockito.when(passwordEncoder.encode(null)).thenThrow(NullPointerException.class);
+        Mockito.when(passwordEncoder.encode(any(String.class))).thenThrow(NullPointerException.class);
         ResponseDTO<Users> responseDTO = userService.createUser(user);
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());

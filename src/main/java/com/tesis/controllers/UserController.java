@@ -143,10 +143,20 @@ public class UserController {
 
     public Object createUser(Request request, Response response) throws ApiException {
 
+        String accessToken = request.headers("Authorization").split(" ")[1];
+
+        ResponseDTO<Users> responseDTO = new ResponseDTO<>();
+
+        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+            logger.error("User access unauthorized [method: UserController.getUsers]");
+            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+            throw responseDTO.error;
+        }
+
         Users user = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Users.class);
         //Agregar validaciones
 
-        ResponseDTO<Users> responseDTO = userService.createUser(user);
+        responseDTO = userService.createUser(user);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;

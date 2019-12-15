@@ -1,6 +1,6 @@
 package com.tesis.services;
 
-import com.tesis.clients.SendGridClient;
+import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.RecoveryTokensDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
@@ -28,15 +28,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
-public class RecoveryServiceUnitTest {
+public class RecoveryServiceUnitTest extends UnitTestConfigs {
     @Mock
     RecoveryTokensDaoExt recoveryDao;
 
     @Mock
     UserDaoExt userDao;
-
-    @Mock
-    SendGridClient sendGridClient;
 
     @Mock
     PasswordEncoder passwordEncoder;
@@ -91,7 +88,7 @@ public class RecoveryServiceUnitTest {
         Mockito.when(userDao.fetchOneById(any(Long.class))).thenReturn(user);
         Mockito.when(recoveryDao.fetchOneByUserId(1L)).thenReturn(null);
 
-        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO);
+        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()).plusDays(1)));
         assertNull(responseDTO.getError());
     }
 
@@ -106,11 +103,11 @@ public class RecoveryServiceUnitTest {
         user.setEmail("pedropruebapedro@gmail.com");
 
         Mockito.when(userDao.fetchOneByEmail(any(String.class))).thenReturn(user);
-        Mockito.when(userDao.fetchOneById(any(Long.class))).thenReturn(user);
+//        Mockito.when(userDao.fetchOneById(any(Long.class))).thenReturn(user);
         Mockito.when(recoveryDao.fetchOneByUserId(1L)).thenReturn(recoveryToken);
         Mockito.doThrow(DataAccessException.class).when(recoveryDao).insert(any(RecoveryTokens.class));
 
-        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO);
+        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()).plusDays(1)));
 
         Mockito.verify(recoveryDao, times(1)).deleteById(any(Long.class));
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());

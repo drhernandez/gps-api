@@ -90,7 +90,7 @@ public class VehicleServiceImp implements VehicleService {
     }
 
     public Long getUserIDByVehicleID(Long vehicleID){
-        return vehiclesDao.fetchOneById(vehicleID).getUserId();
+        return vehiclesDao.fetchByIDForUserID(vehicleID);
     }
 
 }
