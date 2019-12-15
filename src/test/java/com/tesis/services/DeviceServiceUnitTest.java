@@ -3,6 +3,7 @@ package com.tesis.services;
 import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.DeviceDaoExt;
 import com.tesis.enums.ErrorCodes;
+import com.tesis.exceptions.DataException;
 import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.imp.DevicesServiceImp;
@@ -44,11 +45,11 @@ public class DeviceServiceUnitTest extends UnitTestConfigs {
     }
 
     @Test
-    public void createDeviceTest_error(){
+    public void createDeviceTest_error() throws DataException {
         Devices device = new Devices();
         device.setModel("ARDUINO-UNO");
 
-        Mockito.doThrow(DataAccessException.class).when(deviceDao).insert(device);
+        Mockito.doThrow(DataAccessException.class).when(deviceDao).insertDevice(device);
         ResponseDTO<Devices> responseDTO = deviceService.createDevice(device);
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
