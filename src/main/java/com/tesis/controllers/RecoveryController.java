@@ -12,18 +12,28 @@ import spark.Request;
 import spark.Response;
 
 import javax.inject.Inject;
+import java.sql.Timestamp;
+import java.time.Clock;
+import java.time.LocalDateTime;
+
+import static com.tesis.config.Constants.EXPIRATION_RECOVERY_TIME;
 
 public class RecoveryController {
 
     private static Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    private RecoveryServiceImp recoveryService;
+
     @Inject
-    RecoveryServiceImp recoveryService;
+    public RecoveryController(RecoveryServiceImp recoveryService) {
+        this.recoveryService = recoveryService;
+    }
 
     public Object createRecoveryPasswordToken(Request request, Response response) throws ApiException {
         CredentialsDTO credentialsDTO = JsonUtils.INSTANCE.GSON().fromJson(request.body(), CredentialsDTO.class);
 
-        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO);
+        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO,
+                Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()).plusDays(EXPIRATION_RECOVERY_TIME)));
 
         if (responseDTO.error != null) {
             throw responseDTO.error;

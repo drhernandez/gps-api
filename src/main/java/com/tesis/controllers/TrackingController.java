@@ -15,19 +15,25 @@ import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.tesis.config.Constants.MIN_LENGTH;
+import static com.tesis.enums.ErrorCodes.internal_error;
 
 public class TrackingController {
 
     private static Logger logger = LoggerFactory.getLogger(TrackingController.class);
 
+    private TrackingService trackingService;
+
     @Inject
-    TrackingService trackingService;
+    public TrackingController(TrackingService trackingService) {
+        this.trackingService = trackingService;
+    }
 
     public Object saveTracking(Request request, Response response) throws ApiException {
 
@@ -36,18 +42,11 @@ public class TrackingController {
             throw new ApiException("invalid_data", "[reason: invalid_body] [method: TrackingController.saveTracking]");
         }
 
-//        List<Trackings> trackings = new ArrayList<>();
-//        Arrays.asList(body.split(";")).forEach(t -> {
-//            String[] args = t.split(",");
-//            if (args.length >= MIN_LENGTH) {
-//                try {
-//                    Trackings traking = new Trackings(args);
-//                    trackings.add(traking);
-//                } catch (ParseArgsException e) {
-//                    logger.error(e.getMessage());
-//                }
-//            }
-//        });
+        List<Trackings> trackingList = getTrackingFromWeft(body);
+        if (!trackingService.checkVehicleStatus(trackingList.get(0))){
+            throw new ApiException(internal_error.name(), "Vehicle not active",
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
 
         ResponseDTO responseDTO = trackingService.saveTracking(getTrackingFromWeft(body));
         if (responseDTO.error != null) {

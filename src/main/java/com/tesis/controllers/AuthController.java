@@ -5,6 +5,7 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.models.CredentialsDTO;
 import com.tesis.models.ResponseDTO;
+import com.tesis.services.AuthAdminService;
 import com.tesis.services.AuthService;
 import com.tesis.utils.JsonUtils;
 
@@ -18,8 +19,14 @@ public class AuthController {
 
     private static Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    private AuthService authService;
+    private AuthAdminService authAdminService;
+
     @Inject
-    AuthService authService;
+    public AuthController(AuthService authService, AuthAdminService authAdminService) {
+        this.authService = authService;
+        this.authAdminService = authAdminService;
+    }
 
     public Object login(Request request, Response response) throws ApiException {
         CredentialsDTO credentialsDTO = JsonUtils.INSTANCE.GSON().fromJson(request.body(), CredentialsDTO.class);
@@ -29,7 +36,28 @@ public class AuthController {
 
         if (authService.checkUserCredentials(credentialsDTO)) {
             response.status(HttpStatus.OK_200);
-            responseDTO = authService.checkAccessToken(credentialsDTO);
+            responseDTO = authService.getOrCreateAccessToken(credentialsDTO);
+        }
+        else {
+            response.status(HttpStatus.UNAUTHORIZED_401);
+            responseDTO.error = new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
+        }
+
+        if (responseDTO.error != null)
+            throw responseDTO.error;
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object adminLogin(Request request, Response response) throws ApiException {
+        CredentialsDTO credentialsDTO = JsonUtils.INSTANCE.GSON().fromJson(request.body(), CredentialsDTO.class);
+        //Agregar validaciones
+
+        ResponseDTO responseDTO = new ResponseDTO();
+
+        if (authAdminService.checkAdminUserCredentials(credentialsDTO)) {
+            response.status(HttpStatus.OK_200);
+            responseDTO = authAdminService.getOrCreateAdminAccessToken(credentialsDTO);
         }
         else {
             response.status(HttpStatus.UNAUTHORIZED_401);

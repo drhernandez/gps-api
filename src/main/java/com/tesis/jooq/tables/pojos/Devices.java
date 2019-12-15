@@ -23,9 +23,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Devices implements Serializable {
 
-    private static final long serialVersionUID = -1616586769;
+    private static final long serialVersionUID = 257961945;
 
     private Long      id;
+    private Long      physicalId;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
     private String    model;
@@ -35,6 +36,7 @@ public class Devices implements Serializable {
 
     public Devices(Devices value) {
         this.id = value.id;
+        this.physicalId = value.physicalId;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
         this.model = value.model;
@@ -43,12 +45,14 @@ public class Devices implements Serializable {
 
     public Devices(
         Long      id,
+        Long      physicalId,
         Timestamp deletedAt,
         Timestamp lastUpdated,
         String    model,
         String    softwareVersion
     ) {
         this.id = id;
+        this.physicalId = physicalId;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
         this.model = model;
@@ -61,6 +65,14 @@ public class Devices implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getPhysicalId() {
+        return this.physicalId;
+    }
+
+    public void setPhysicalId(Long physicalId) {
+        this.physicalId = physicalId;
     }
 
     public Timestamp getDeletedAt() {
@@ -100,6 +112,7 @@ public class Devices implements Serializable {
         StringBuilder sb = new StringBuilder("Devices (");
 
         sb.append(id);
+        sb.append(", ").append(physicalId);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
         sb.append(", ").append(model);

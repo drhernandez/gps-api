@@ -11,8 +11,12 @@ public class AuthRouter implements RouteGroup {
 
     private static Logger logger = LoggerFactory.getLogger(DevicesRouter.class);
 
+    private AuthController authController;
+
     @Inject
-    AuthController authController;
+    public AuthRouter(AuthController authController) {
+        this.authController = authController;
+    }
 
     @Override
     public void addRoutes() {
@@ -20,6 +24,7 @@ public class AuthRouter implements RouteGroup {
         logger.info("Loading auth routes...");
         Spark.path("/auth", () -> {
             Spark.post("/login", authController::login);
+            Spark.post("/adminlogin", authController::adminLogin);
             Spark.get("/validate", authController::checkAccess);
         });
     }

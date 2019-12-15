@@ -5,6 +5,9 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.AccessTokens;
+import com.tesis.jooq.tables.AdminAccessTokens;
+import com.tesis.jooq.tables.AdminRecoveryTokens;
+import com.tesis.jooq.tables.AdminUsers;
 import com.tesis.jooq.tables.BrandLines;
 import com.tesis.jooq.tables.Brands;
 import com.tesis.jooq.tables.Devices;
@@ -42,7 +45,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -1027655056;
+    private static final long serialVersionUID = -1414168163;
 
     /**
      * The reference instance of <code>public</code>
@@ -53,6 +56,21 @@ public class Public extends SchemaImpl {
      * The table <code>public.access_tokens</code>.
      */
     public final AccessTokens ACCESS_TOKENS = com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS;
+
+    /**
+     * The table <code>public.admin_access_tokens</code>.
+     */
+    public final AdminAccessTokens ADMIN_ACCESS_TOKENS = com.tesis.jooq.tables.AdminAccessTokens.ADMIN_ACCESS_TOKENS;
+
+    /**
+     * The table <code>public.admin_recovery_tokens</code>.
+     */
+    public final AdminRecoveryTokens ADMIN_RECOVERY_TOKENS = com.tesis.jooq.tables.AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS;
+
+    /**
+     * The table <code>public.admin_users</code>.
+     */
+    public final AdminUsers ADMIN_USERS = com.tesis.jooq.tables.AdminUsers.ADMIN_USERS;
 
     /**
      * The table <code>public.brand_lines</code>.
@@ -134,8 +152,10 @@ public class Public extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
+            Sequences.ADMIN_USERS_ID_SEQ,
             Sequences.BRAND_LINES_ID_SEQ,
             Sequences.BRANDS_ID_SEQ,
+            Sequences.DEVICES_ID_SEQ,
             Sequences.MOVEMENT_ALERTS_ID_SEQ,
             Sequences.SPEED_ALERTS_ID_SEQ,
             Sequences.TRACKINGS_ID_SEQ,
@@ -154,6 +174,9 @@ public class Public extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             AccessTokens.ACCESS_TOKENS,
+            AdminAccessTokens.ADMIN_ACCESS_TOKENS,
+            AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS,
+            AdminUsers.ADMIN_USERS,
             BrandLines.BRAND_LINES,
             Brands.BRANDS,
             Devices.DEVICES,

@@ -1,28 +1,37 @@
 delete from TRACKINGS;
 delete from VEHICLES;
 delete from DEVICES;
-delete from USERS;
 delete from SPEED_ALERTS_HISTORY;
 delete from MOVEMENT_ALERTS_HISTORY;
 delete from SPEED_ALERTS;
 delete from MOVEMENT_ALERTS;
 delete from ACCESS_TOKENS;
 delete from RECOVERY_TOKENS;
-delete from BRANDS;
+delete from USERS;
+delete from ADMIN_ACCESS_TOKENS;
+delete from ADMIN_RECOVERY_TOKENS;
+delete from ADMIN_USERS;
 delete from BRAND_LINES;
+delete from BRANDS;
 
-insert into USERS values (10, null, null, 'jose_buendia@gmail.com', 'jose_buendia', 'José Arcadio', 'Buendia', '2037374105',
+insert into USERS values (10, 'ACTIVE', null, null, 'jose_buendia@gmail.com', 'jose_buendia', 'José Arcadio', 'Buendia', '2037374105',
 							'5ta Avenida de Macondo 1', '2034-203401');
-insert into USERS values (11, null, null, 'ursula_iguaran@gmail.com', 'ursula_iguaran', 'Úrsula', 'Iguarán', '2387875106',
+insert into USERS values (11, 'ACTIVE', null, null, 'ursula_iguaran@gmail.com', 'ursula_iguaran', 'Úrsula', 'Iguarán', '2387875106',
 							'5ta Avenida de Macondo 1', '2034-203402');
-insert into USERS values (12, null, null, 'drhernandez92@gmail.com', '$2a$10$Fgthr0ORPFpFr5uCmaWfOO/.cUKO1rMATdbMJP4OED/L.5gt/irqW',
+insert into USERS values (12, 'ACTIVE', null, null, 'drhernandez92@gmail.com', '$2a$10$Fgthr0ORPFpFr5uCmaWfOO/.cUKO1rMATdbMJP4OED/L.5gt/irqW',
 							'Diego', 'Hernández', '36354805', 'Tomas de irobi 165', '351-5495416');
 					
-insert into DEVICES values (00001, null, null, 'ARDUINO GENUINO/UNO', '1.0');
-insert into DEVICES values (00002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
 
-insert into VEHICLES values (10, null, null, 10, 00001, 'Ford Fiesta', 'AA 383 TI', '2018');
-insert into VEHICLES values (11, null, null, 11, 00002, 'Toyota Corolla', 'AD 257 TO', '2019');
+insert into ADMIN_USERS values (1, 'ACTIVE', null, null, 'drhernandez92@gmail.com', '$2a$10$Fgthr0ORPFpFr5uCmaWfOO/.cUKO1rMATdbMJP4OED/L.5gt/irqW',
+							'Diego', 'Hernández', '36354805', 'Tomas de irobi 165', '351-5495416');
+					
+insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version) 
+	values (10001, null, null, 'ARDUINO GENUINO/UNO', '1.0');
+insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version) 
+	values (10002, null, null, 'ARDUINO GENUINO/UNO', '1.0');
+
+insert into VEHICLES values (10, 'ACTIVE', null, null, 10, 00001, 'AA 383 TI', 'Ford', 'Fiesta');
+insert into VEHICLES values (11, 'ACTIVE', null, null, 11, 00002,  'AD 257 TO', 'Toyota', 'Corolla');
 
 insert into SPEED_ALERTS (active, speed, device_id, created_at, updated_at, activated_at) 
 	values (false, 60, 00001, NOW(), null, NOW());
@@ -104,7 +113,7 @@ insert into TRACKINGS (device_id, lat, lng, speed, sat, hdop, time)
         values (00001, -31.422068, -64.186497, 10.0, 4 , 246, '10-09-2018 20:56:39.000-03:00');
        
 INSERT INTO BRANDS (id, name) VALUES 
- (1,' MARCA'),
+ (1,'VOLVO'),
  (2,'AGRALE'),
  (3,'ALFA ROMEO'),
  (4,'AUDI'),
@@ -151,11 +160,10 @@ INSERT INTO BRANDS (id, name) VALUES
  (45,'SUZUKI'),
  (46,'TATA'),
  (47,'TOYOTA'),
- (48,'VOLKSWAGEN'),
- (49,'VOLVO');
+ (48,'VOLKSWAGEN');
 
 INSERT INTO BRAND_LINES (id, name, brand_id) VALUES 
- (1,' MODELO',1),
+ (1,'XC90',1),
  (2,'MARRUA',2),
  (3,'147',3),
  (4,'156',3),
@@ -540,18 +548,17 @@ INSERT INTO BRAND_LINES (id, name, brand_id) VALUES
  (383,'UP',48),
  (384,'VENTO',48),
  (385,'VOYAGE',48),
- (386,'C30',49),
- (387,'C70',49),
- (388,'S40',49),
- (389,'S60',49),
- (390,'S80',49),
- (391,'V40',49),
- (392,'V50',49),
- (393,'V60',49),
- (394,'V70',49),
- (395,'XC60',49),
- (396,'XC70',49),
- (397,'XC90',49);
+ (386,'C30',1),
+ (387,'C70',1),
+ (388,'S40',1),
+ (389,'S60',1),
+ (390,'S80',1),
+ (391,'V40',1),
+ (392,'V50',1),
+ (393,'V60',1),
+ (394,'V70',1),
+ (395,'XC60',1),
+ (396,'XC70',1);
 
 
 

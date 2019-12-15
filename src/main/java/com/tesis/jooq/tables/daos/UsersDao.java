@@ -66,6 +66,13 @@ public class UsersDao extends DAOImpl<UsersRecord, com.tesis.jooq.tables.pojos.U
     }
 
     /**
+     * Fetch records that have <code>status IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Users> fetchByStatus(String... values) {
+        return fetch(Users.USERS.STATUS, values);
+    }
+
+    /**
      * Fetch records that have <code>deleted_at IN (values)</code>
      */
     public List<com.tesis.jooq.tables.pojos.Users> fetchByDeletedAt(Timestamp... values) {

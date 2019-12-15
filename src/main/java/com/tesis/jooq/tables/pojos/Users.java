@@ -23,9 +23,10 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users implements Serializable {
 
-    private static final long serialVersionUID = 1549498601;
+    private static final long serialVersionUID = 1880802285;
 
     private Long      id;
+    private String    status;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
     private String    email;
@@ -40,6 +41,7 @@ public class Users implements Serializable {
 
     public Users(Users value) {
         this.id = value.id;
+        this.status = value.status;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
         this.email = value.email;
@@ -53,6 +55,7 @@ public class Users implements Serializable {
 
     public Users(
         Long      id,
+        String    status,
         Timestamp deletedAt,
         Timestamp lastUpdated,
         String    email,
@@ -64,6 +67,7 @@ public class Users implements Serializable {
         String    phone
     ) {
         this.id = id;
+        this.status = status;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
         this.email = email;
@@ -81,6 +85,14 @@ public class Users implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Timestamp getDeletedAt() {
@@ -160,6 +172,7 @@ public class Users implements Serializable {
         StringBuilder sb = new StringBuilder("Users (");
 
         sb.append(id);
+        sb.append(", ").append(status);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
         sb.append(", ").append(email);

@@ -5,6 +5,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.tesis.enums.Status;
 import com.tesis.jooq.tables.*;
 import com.tesis.jooq.tables.daos.UsersDao;
 import com.tesis.models.Pagination;
@@ -28,7 +29,12 @@ public class UserDaoExt extends  UsersDao{
     }
 
     public List<com.tesis.jooq.tables.pojos.Users> findAllActives(){
-        return DSL.using(configuration()).selectFrom(Users.USERS).where(Users.USERS.DELETED_AT.isNull()).fetch().map(mapper());
+        return DSL.using(configuration())
+                .selectFrom(Users.USERS)
+                .where(Users.USERS.DELETED_AT.isNull())
+//                .and(Users.USERS.STATUS.eq(Status.ACTIVE.toString()))
+                .fetch()
+                .map(mapper());
     }
 
     public void deleteUserCascade(Long userID) {
@@ -74,6 +80,7 @@ public class UserDaoExt extends  UsersDao{
 
                 tx.dsl().update(Users.USERS)
                         .set(Users.USERS.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                        .set(Users.USERS.STATUS, Status.DELETED.toString())
                         .where(Users.USERS.ID.eq(userID)).execute();
 
             } catch (Exception e) {
@@ -87,6 +94,8 @@ public class UserDaoExt extends  UsersDao{
 
         Condition searchCondition = DSL.trueCondition();
 
+        if (filters.getStatus() != null)
+            searchCondition = searchCondition.and(Users.USERS.STATUS.like(filters.getStatus()));
         if (filters.getEmail() != null)
             searchCondition = searchCondition.and(Users.USERS.EMAIL.like("%" + filters.getEmail() + "%"));
         if (filters.getName() != null)

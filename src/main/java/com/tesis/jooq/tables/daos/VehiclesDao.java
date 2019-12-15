@@ -66,6 +66,13 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     }
 
     /**
+     * Fetch records that have <code>status IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByStatus(String... values) {
+        return fetch(Vehicles.VEHICLES.STATUS, values);
+    }
+
+    /**
      * Fetch records that have <code>deleted_at IN (values)</code>
      */
     public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByDeletedAt(Timestamp... values) {
@@ -94,10 +101,10 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     }
 
     /**
-     * Fetch records that have <code>type IN (values)</code>
+     * Fetch a unique record that has <code>device_id = value</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByType(String... values) {
-        return fetch(Vehicles.VEHICLES.TYPE, values);
+    public com.tesis.jooq.tables.pojos.Vehicles fetchOneByDeviceId(Long value) {
+        return fetchOne(Vehicles.VEHICLES.DEVICE_ID, value);
     }
 
     /**
@@ -108,9 +115,16 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     }
 
     /**
-     * Fetch records that have <code>model IN (values)</code>
+     * Fetch records that have <code>brand IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByModel(String... values) {
-        return fetch(Vehicles.VEHICLES.MODEL, values);
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByBrand(String... values) {
+        return fetch(Vehicles.VEHICLES.BRAND, values);
+    }
+
+    /**
+     * Fetch records that have <code>brand_line IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByBrandLine(String... values) {
+        return fetch(Vehicles.VEHICLES.BRAND_LINE, values);
     }
 }

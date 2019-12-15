@@ -11,18 +11,22 @@ public class VehicleRouter implements RouteGroup {
 
     private static Logger logger = LoggerFactory.getLogger(DevicesRouter.class);
 
+    private VehicleController vehicleController;
+    private Middlewares middlewares;
+
     @Inject
-    VehicleController vehicleController;
+    public VehicleRouter(VehicleController vehicleController, Middlewares middlewares) {
+        this.vehicleController = vehicleController;
+        this.middlewares = middlewares;
+    }
 
     @Override
     public void addRoutes() {
 
         logger.info("Loading Vehicles routes...");
         Spark.path("/vehicles", () -> {
-            Spark.post("", vehicleController::createVehicle);
-            Spark.get("", vehicleController::getVehicles);
+            Spark.before("/*", middlewares.requiredTokenCheck);
             Spark.get("/:vehicle_id", vehicleController::getVehiclesByVehicleID);
-            Spark.put("/:vehicle_id", vehicleController::updateVehicle);
             Spark.delete("/:vehicle_id", vehicleController::deleteVehicle);
 
             Spark.get("/:vehicle_id/trackings", vehicleController::getTrackingsByVehicleID);

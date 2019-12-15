@@ -3,6 +3,7 @@ package com.tesis.services.imp;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.daos.AccessTokenDaoExt;
+import com.tesis.daos.AdminAccessTokenDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
@@ -13,6 +14,7 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.services.AuthService;
 
 import io.jsonwebtoken.*;
+import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +43,9 @@ public class AuthServiceImp implements AuthService {
     @Inject
     AccessTokenDaoExt accessTokensDao;
 
+    @Inject
+    AdminAccessTokenDaoExt adminAccessTokensDao;
+
 
     public Boolean checkUserCredentials(CredentialsDTO credentialsDTO){
         Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
@@ -50,7 +55,7 @@ public class AuthServiceImp implements AuthService {
         return passwordEncoder.matches(credentialsDTO.getPassword(), user.getPassword());
     }
 
-    public ResponseDTO<AccessTokens> checkAccessToken(CredentialsDTO credentialsDTO){
+    public ResponseDTO<AccessTokens> getOrCreateAccessToken(CredentialsDTO credentialsDTO){
         ResponseDTO<AccessTokens> responseDTO = new ResponseDTO<>();
         Users user = usersDao.fetchOneByEmail(credentialsDTO.getEmail());
         AccessTokens token = accessTokensDao.fetchOneByUserId(user.getId());
@@ -60,7 +65,7 @@ public class AuthServiceImp implements AuthService {
                 validateAccessToken(token.getToken());
                 responseDTO.setModel(token);
                 return responseDTO;
-            } catch (JwtException jwte) {
+            } catch (Exception e) {
                 accessTokensDao.delete(token);
                 logger.info("Sesión expirada. Usuario %s. Creando nuevo token...", user.toString());
             }
@@ -99,13 +104,33 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public void validateAccessToken(String jwt) {
-        Key signingKey = getSigningKey();
-        Jwts.parser().setSigningKey(signingKey).parse(jwt);
+    public void validateAccessToken(String jwt) throws ApiException {
+        checkTokenRequired(jwt);
+        AccessTokens accessTokens = accessTokensDao.fetchOne(com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS.TOKEN, jwt);
+        if (accessTokens == null)
+            throw new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
     }
 
     private Key getSigningKey() {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(JWT_KEY);
         return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
+    }
+
+    private Claims decodeAccessToken(String jwt) throws JwtException {
+        return Jwts.parser()
+                .setSigningKey(DatatypeConverter.parseBase64Binary(JWT_KEY))
+                .parseClaimsJws(jwt).getBody();
+    }
+
+    public boolean checkUserPermissions(String jwt, Long idRequired) {
+        Long userId = decodeAccessToken(jwt).get("userId", Long.class);
+        AccessTokens accessTokens = accessTokensDao.findById(userId);
+
+        return (userId.equals(idRequired) && accessTokens != null);
+    }
+
+    public void checkTokenRequired(String jwt){
+        Key signingKey = getSigningKey();
+        Jwts.parser().setSigningKey(signingKey).parse(jwt);
     }
 }

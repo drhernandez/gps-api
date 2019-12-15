@@ -5,6 +5,9 @@ package com.tesis.jooq;
 
 
 import com.tesis.jooq.tables.AccessTokens;
+import com.tesis.jooq.tables.AdminAccessTokens;
+import com.tesis.jooq.tables.AdminRecoveryTokens;
+import com.tesis.jooq.tables.AdminUsers;
 import com.tesis.jooq.tables.BrandLines;
 import com.tesis.jooq.tables.Brands;
 import com.tesis.jooq.tables.Devices;
@@ -17,6 +20,9 @@ import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 import com.tesis.jooq.tables.records.AccessTokensRecord;
+import com.tesis.jooq.tables.records.AdminAccessTokensRecord;
+import com.tesis.jooq.tables.records.AdminRecoveryTokensRecord;
+import com.tesis.jooq.tables.records.AdminUsersRecord;
 import com.tesis.jooq.tables.records.BrandLinesRecord;
 import com.tesis.jooq.tables.records.BrandsRecord;
 import com.tesis.jooq.tables.records.DevicesRecord;
@@ -55,8 +61,10 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
+    public static final Identity<AdminUsersRecord, Long> IDENTITY_ADMIN_USERS = Identities0.IDENTITY_ADMIN_USERS;
     public static final Identity<BrandLinesRecord, Long> IDENTITY_BRAND_LINES = Identities0.IDENTITY_BRAND_LINES;
     public static final Identity<BrandsRecord, Long> IDENTITY_BRANDS = Identities0.IDENTITY_BRANDS;
+    public static final Identity<DevicesRecord, Long> IDENTITY_DEVICES = Identities0.IDENTITY_DEVICES;
     public static final Identity<MovementAlertsRecord, Long> IDENTITY_MOVEMENT_ALERTS = Identities0.IDENTITY_MOVEMENT_ALERTS;
     public static final Identity<SpeedAlertsRecord, Long> IDENTITY_SPEED_ALERTS = Identities0.IDENTITY_SPEED_ALERTS;
     public static final Identity<TrackingsRecord, Long> IDENTITY_TRACKINGS = Identities0.IDENTITY_TRACKINGS;
@@ -68,9 +76,15 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<AccessTokensRecord> ACCESS_TOKENS_PKEY = UniqueKeys0.ACCESS_TOKENS_PKEY;
+    public static final UniqueKey<AdminAccessTokensRecord> ADMIN_ACCESS_TOKENS_PKEY = UniqueKeys0.ADMIN_ACCESS_TOKENS_PKEY;
+    public static final UniqueKey<AdminRecoveryTokensRecord> ADMIN_RECOVERY_TOKENS_PKEY = UniqueKeys0.ADMIN_RECOVERY_TOKENS_PKEY;
+    public static final UniqueKey<AdminRecoveryTokensRecord> ADMIN_RECOVERY_TOKENS_TOKEN_KEY = UniqueKeys0.ADMIN_RECOVERY_TOKENS_TOKEN_KEY;
+    public static final UniqueKey<AdminUsersRecord> ADMIN_USERS_PKEY = UniqueKeys0.ADMIN_USERS_PKEY;
+    public static final UniqueKey<AdminUsersRecord> ADMIN_USERS_EMAIL_KEY = UniqueKeys0.ADMIN_USERS_EMAIL_KEY;
     public static final UniqueKey<BrandLinesRecord> BRAND_LINES_PKEY = UniqueKeys0.BRAND_LINES_PKEY;
     public static final UniqueKey<BrandsRecord> BRANDS_PKEY = UniqueKeys0.BRANDS_PKEY;
     public static final UniqueKey<DevicesRecord> DEVICES_PKEY = UniqueKeys0.DEVICES_PKEY;
+    public static final UniqueKey<DevicesRecord> DEVICES_PHYSICAL_ID_DELETED_AT_KEY = UniqueKeys0.DEVICES_PHYSICAL_ID_DELETED_AT_KEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = UniqueKeys0.MOVEMENT_ALERTS_PKEY;
     public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = UniqueKeys0.MOVEMENT_ALERTS_DEVICE_ID_KEY;
     public static final UniqueKey<MovementAlertsHistoryRecord> MOVEMENT_ALERTS_HISTORY_PKEY = UniqueKeys0.MOVEMENT_ALERTS_HISTORY_PKEY;
@@ -83,12 +97,15 @@ public class Keys {
     public static final UniqueKey<UsersRecord> USERS_PKEY = UniqueKeys0.USERS_PKEY;
     public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = UniqueKeys0.USERS_EMAIL_KEY;
     public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = UniqueKeys0.VEHICLES_PKEY;
+    public static final UniqueKey<VehiclesRecord> VEHICLES_DEVICE_ID_KEY = UniqueKeys0.VEHICLES_DEVICE_ID_KEY;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<AccessTokensRecord, UsersRecord> ACCESS_TOKENS__ACCESS_TOKENS_USER_ID_FKEY = ForeignKeys0.ACCESS_TOKENS__ACCESS_TOKENS_USER_ID_FKEY;
+    public static final ForeignKey<AdminAccessTokensRecord, AdminUsersRecord> ADMIN_ACCESS_TOKENS__ADMIN_ACCESS_TOKENS_USER_ID_FKEY = ForeignKeys0.ADMIN_ACCESS_TOKENS__ADMIN_ACCESS_TOKENS_USER_ID_FKEY;
+    public static final ForeignKey<AdminRecoveryTokensRecord, AdminUsersRecord> ADMIN_RECOVERY_TOKENS__ADMIN_RECOVERY_TOKENS_USER_ID_FKEY = ForeignKeys0.ADMIN_RECOVERY_TOKENS__ADMIN_RECOVERY_TOKENS_USER_ID_FKEY;
     public static final ForeignKey<BrandLinesRecord, BrandsRecord> BRAND_LINES__BRAND_LINES_BRAND_ID_FKEY = ForeignKeys0.BRAND_LINES__BRAND_LINES_BRAND_ID_FKEY;
     public static final ForeignKey<MovementAlertsRecord, DevicesRecord> MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY = ForeignKeys0.MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY;
     public static final ForeignKey<MovementAlertsHistoryRecord, MovementAlertsRecord> MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY = ForeignKeys0.MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY;
@@ -104,8 +121,10 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class Identities0 {
+        public static Identity<AdminUsersRecord, Long> IDENTITY_ADMIN_USERS = Internal.createIdentity(AdminUsers.ADMIN_USERS, AdminUsers.ADMIN_USERS.ID);
         public static Identity<BrandLinesRecord, Long> IDENTITY_BRAND_LINES = Internal.createIdentity(BrandLines.BRAND_LINES, BrandLines.BRAND_LINES.ID);
         public static Identity<BrandsRecord, Long> IDENTITY_BRANDS = Internal.createIdentity(Brands.BRANDS, Brands.BRANDS.ID);
+        public static Identity<DevicesRecord, Long> IDENTITY_DEVICES = Internal.createIdentity(Devices.DEVICES, Devices.DEVICES.ID);
         public static Identity<MovementAlertsRecord, Long> IDENTITY_MOVEMENT_ALERTS = Internal.createIdentity(MovementAlerts.MOVEMENT_ALERTS, MovementAlerts.MOVEMENT_ALERTS.ID);
         public static Identity<SpeedAlertsRecord, Long> IDENTITY_SPEED_ALERTS = Internal.createIdentity(SpeedAlerts.SPEED_ALERTS, SpeedAlerts.SPEED_ALERTS.ID);
         public static Identity<TrackingsRecord, Long> IDENTITY_TRACKINGS = Internal.createIdentity(Trackings.TRACKINGS, Trackings.TRACKINGS.ID);
@@ -115,9 +134,15 @@ public class Keys {
 
     private static class UniqueKeys0 {
         public static final UniqueKey<AccessTokensRecord> ACCESS_TOKENS_PKEY = Internal.createUniqueKey(AccessTokens.ACCESS_TOKENS, "access_tokens_pkey", AccessTokens.ACCESS_TOKENS.USER_ID);
+        public static final UniqueKey<AdminAccessTokensRecord> ADMIN_ACCESS_TOKENS_PKEY = Internal.createUniqueKey(AdminAccessTokens.ADMIN_ACCESS_TOKENS, "admin_access_tokens_pkey", AdminAccessTokens.ADMIN_ACCESS_TOKENS.USER_ID);
+        public static final UniqueKey<AdminRecoveryTokensRecord> ADMIN_RECOVERY_TOKENS_PKEY = Internal.createUniqueKey(AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS, "admin_recovery_tokens_pkey", AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS.USER_ID);
+        public static final UniqueKey<AdminRecoveryTokensRecord> ADMIN_RECOVERY_TOKENS_TOKEN_KEY = Internal.createUniqueKey(AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS, "admin_recovery_tokens_token_key", AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS.TOKEN);
+        public static final UniqueKey<AdminUsersRecord> ADMIN_USERS_PKEY = Internal.createUniqueKey(AdminUsers.ADMIN_USERS, "admin_users_pkey", AdminUsers.ADMIN_USERS.ID);
+        public static final UniqueKey<AdminUsersRecord> ADMIN_USERS_EMAIL_KEY = Internal.createUniqueKey(AdminUsers.ADMIN_USERS, "admin_users_email_key", AdminUsers.ADMIN_USERS.EMAIL);
         public static final UniqueKey<BrandLinesRecord> BRAND_LINES_PKEY = Internal.createUniqueKey(BrandLines.BRAND_LINES, "brand_lines_pkey", BrandLines.BRAND_LINES.ID);
         public static final UniqueKey<BrandsRecord> BRANDS_PKEY = Internal.createUniqueKey(Brands.BRANDS, "brands_pkey", Brands.BRANDS.ID);
         public static final UniqueKey<DevicesRecord> DEVICES_PKEY = Internal.createUniqueKey(Devices.DEVICES, "devices_pkey", Devices.DEVICES.ID);
+        public static final UniqueKey<DevicesRecord> DEVICES_PHYSICAL_ID_DELETED_AT_KEY = Internal.createUniqueKey(Devices.DEVICES, "devices_physical_id_deleted_at_key", Devices.DEVICES.PHYSICAL_ID, Devices.DEVICES.DELETED_AT);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_PKEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_pkey", MovementAlerts.MOVEMENT_ALERTS.ID);
         public static final UniqueKey<MovementAlertsRecord> MOVEMENT_ALERTS_DEVICE_ID_KEY = Internal.createUniqueKey(MovementAlerts.MOVEMENT_ALERTS, "movement_alerts_device_id_key", MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID);
         public static final UniqueKey<MovementAlertsHistoryRecord> MOVEMENT_ALERTS_HISTORY_PKEY = Internal.createUniqueKey(MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY, "movement_alerts_history_pkey", MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.TIME);
@@ -130,10 +155,13 @@ public class Keys {
         public static final UniqueKey<UsersRecord> USERS_PKEY = Internal.createUniqueKey(Users.USERS, "users_pkey", Users.USERS.ID);
         public static final UniqueKey<UsersRecord> USERS_EMAIL_KEY = Internal.createUniqueKey(Users.USERS, "users_email_key", Users.USERS.EMAIL);
         public static final UniqueKey<VehiclesRecord> VEHICLES_PKEY = Internal.createUniqueKey(Vehicles.VEHICLES, "vehicles_pkey", Vehicles.VEHICLES.ID);
+        public static final UniqueKey<VehiclesRecord> VEHICLES_DEVICE_ID_KEY = Internal.createUniqueKey(Vehicles.VEHICLES, "vehicles_device_id_key", Vehicles.VEHICLES.DEVICE_ID);
     }
 
     private static class ForeignKeys0 {
         public static final ForeignKey<AccessTokensRecord, UsersRecord> ACCESS_TOKENS__ACCESS_TOKENS_USER_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.USERS_PKEY, AccessTokens.ACCESS_TOKENS, "access_tokens__access_tokens_user_id_fkey", AccessTokens.ACCESS_TOKENS.USER_ID);
+        public static final ForeignKey<AdminAccessTokensRecord, AdminUsersRecord> ADMIN_ACCESS_TOKENS__ADMIN_ACCESS_TOKENS_USER_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.ADMIN_USERS_PKEY, AdminAccessTokens.ADMIN_ACCESS_TOKENS, "admin_access_tokens__admin_access_tokens_user_id_fkey", AdminAccessTokens.ADMIN_ACCESS_TOKENS.USER_ID);
+        public static final ForeignKey<AdminRecoveryTokensRecord, AdminUsersRecord> ADMIN_RECOVERY_TOKENS__ADMIN_RECOVERY_TOKENS_USER_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.ADMIN_USERS_PKEY, AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS, "admin_recovery_tokens__admin_recovery_tokens_user_id_fkey", AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS.USER_ID);
         public static final ForeignKey<BrandLinesRecord, BrandsRecord> BRAND_LINES__BRAND_LINES_BRAND_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.BRANDS_PKEY, BrandLines.BRAND_LINES, "brand_lines__brand_lines_brand_id_fkey", BrandLines.BRAND_LINES.BRAND_ID);
         public static final ForeignKey<MovementAlertsRecord, DevicesRecord> MOVEMENT_ALERTS__MOVEMENT_ALERTS_DEVICE_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.DEVICES_PKEY, MovementAlerts.MOVEMENT_ALERTS, "movement_alerts__movement_alerts_device_id_fkey", MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID);
         public static final ForeignKey<MovementAlertsHistoryRecord, MovementAlertsRecord> MOVEMENT_ALERTS_HISTORY__MOVEMENT_ALERTS_HISTORY_ALERT_ID_FKEY = Internal.createForeignKey(com.tesis.jooq.Keys.MOVEMENT_ALERTS_PKEY, MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY, "movement_alerts_history__movement_alerts_history_alert_id_fkey", MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY.ALERT_ID);

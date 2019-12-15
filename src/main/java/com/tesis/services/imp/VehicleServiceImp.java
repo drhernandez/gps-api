@@ -3,6 +3,7 @@ package com.tesis.services.imp;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.enums.ErrorCodes;
+import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.jooq.tables.pojos.Vehicles;
@@ -37,6 +38,7 @@ public class VehicleServiceImp implements VehicleService {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
 
         try {
+            vehicle.setStatus(Status.PENDING.toString());
             vehiclesDao.createVehicle(vehicle);
             responseDTO.model = vehicle;
         } catch (Exception e) {
@@ -53,13 +55,14 @@ public class VehicleServiceImp implements VehicleService {
         try {
 
             Vehicles vehicle = vehiclesDao.fetchOneById(VehicleID);
+            vehicle.setStatus(newData.getStatus());
             vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
             vehicle.setDeletedAt(null);
             vehicle.setUserId(newData.getUserId());
-            vehicle.setType(newData.getType());
             vehicle.setPlate(newData.getPlate());
-            vehicle.setModel(newData.getModel());
             vehicle.setDeviceId(newData.getDeviceId());
+            vehicle.setBrand(newData.getBrand());
+            vehicle.setBrandLine(newData.getBrandLine());
 
             vehiclesDao.update(vehicle);
             responseDTO.model = vehicle;
@@ -85,4 +88,9 @@ public class VehicleServiceImp implements VehicleService {
     public ResponseDTO<List<Vehicles>> getVehiclesByUserID(Long userID){
         return new ResponseDTO(vehiclesDao.fetchByUserId(userID), null);
     }
+
+    public Long getUserIDByVehicleID(Long vehicleID){
+        return vehiclesDao.fetchOneById(vehicleID).getUserId();
+    }
+
 }

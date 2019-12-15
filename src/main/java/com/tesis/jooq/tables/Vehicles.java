@@ -42,7 +42,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles extends TableImpl<VehiclesRecord> {
 
-    private static final long serialVersionUID = 1809689383;
+    private static final long serialVersionUID = -168264256;
 
     /**
      * The reference instance of <code>public.vehicles</code>
@@ -63,6 +63,11 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
     public final TableField<VehiclesRecord, Long> ID = createField("id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('vehicles_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
+     * The column <code>public.vehicles.status</code>.
+     */
+    public final TableField<VehiclesRecord, String> STATUS = createField("status", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
+
+    /**
      * The column <code>public.vehicles.deleted_at</code>.
      */
     public final TableField<VehiclesRecord, Timestamp> DELETED_AT = createField("deleted_at", org.jooq.impl.SQLDataType.TIMESTAMP, this, "");
@@ -80,12 +85,7 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
     /**
      * The column <code>public.vehicles.device_id</code>.
      */
-    public final TableField<VehiclesRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
-
-    /**
-     * The column <code>public.vehicles.type</code>.
-     */
-    public final TableField<VehiclesRecord, String> TYPE = createField("type", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+    public final TableField<VehiclesRecord, Long> DEVICE_ID = createField("device_id", org.jooq.impl.SQLDataType.BIGINT, this, "");
 
     /**
      * The column <code>public.vehicles.plate</code>.
@@ -93,9 +93,14 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
     public final TableField<VehiclesRecord, String> PLATE = createField("plate", org.jooq.impl.SQLDataType.VARCHAR.nullable(false), this, "");
 
     /**
-     * The column <code>public.vehicles.model</code>.
+     * The column <code>public.vehicles.brand</code>.
      */
-    public final TableField<VehiclesRecord, String> MODEL = createField("model", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+    public final TableField<VehiclesRecord, String> BRAND = createField("brand", org.jooq.impl.SQLDataType.VARCHAR, this, "");
+
+    /**
+     * The column <code>public.vehicles.brand_line</code>.
+     */
+    public final TableField<VehiclesRecord, String> BRAND_LINE = createField("brand_line", org.jooq.impl.SQLDataType.VARCHAR, this, "");
 
     /**
      * Create a <code>public.vehicles</code> table reference
@@ -143,7 +148,7 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      */
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.VEHICLES_PKEY);
+        return Arrays.<Index>asList(Indexes.VEHICLES_DEVICE_ID_KEY, Indexes.VEHICLES_PKEY);
     }
 
     /**
@@ -167,7 +172,7 @@ public class Vehicles extends TableImpl<VehiclesRecord> {
      */
     @Override
     public List<UniqueKey<VehiclesRecord>> getKeys() {
-        return Arrays.<UniqueKey<VehiclesRecord>>asList(Keys.VEHICLES_PKEY);
+        return Arrays.<UniqueKey<VehiclesRecord>>asList(Keys.VEHICLES_PKEY, Keys.VEHICLES_DEVICE_ID_KEY);
     }
 
     /**

@@ -66,6 +66,13 @@ public class DevicesDao extends DAOImpl<DevicesRecord, com.tesis.jooq.tables.poj
     }
 
     /**
+     * Fetch records that have <code>physical_id IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.Devices> fetchByPhysicalId(Long... values) {
+        return fetch(Devices.DEVICES.PHYSICAL_ID, values);
+    }
+
+    /**
      * Fetch records that have <code>deleted_at IN (values)</code>
      */
     public List<com.tesis.jooq.tables.pojos.Devices> fetchByDeletedAt(Timestamp... values) {

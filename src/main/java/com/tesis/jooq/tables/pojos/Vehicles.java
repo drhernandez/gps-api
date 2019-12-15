@@ -23,48 +23,52 @@ import javax.annotation.Generated;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vehicles implements Serializable {
 
-    private static final long serialVersionUID = -1273811951;
+    private static final long serialVersionUID = 1174546108;
 
     private Long      id;
+    private String    status;
     private Timestamp deletedAt;
     private Timestamp lastUpdated;
     private Long      userId;
     private Long      deviceId;
-    private String    type;
     private String    plate;
-    private String    model;
+    private String    brand;
+    private String    brandLine;
 
     public Vehicles() {}
 
     public Vehicles(Vehicles value) {
         this.id = value.id;
+        this.status = value.status;
         this.deletedAt = value.deletedAt;
         this.lastUpdated = value.lastUpdated;
         this.userId = value.userId;
         this.deviceId = value.deviceId;
-        this.type = value.type;
         this.plate = value.plate;
-        this.model = value.model;
+        this.brand = value.brand;
+        this.brandLine = value.brandLine;
     }
 
     public Vehicles(
         Long      id,
+        String    status,
         Timestamp deletedAt,
         Timestamp lastUpdated,
         Long      userId,
         Long      deviceId,
-        String    type,
         String    plate,
-        String    model
+        String    brand,
+        String    brandLine
     ) {
         this.id = id;
+        this.status = status;
         this.deletedAt = deletedAt;
         this.lastUpdated = lastUpdated;
         this.userId = userId;
         this.deviceId = deviceId;
-        this.type = type;
         this.plate = plate;
-        this.model = model;
+        this.brand = brand;
+        this.brandLine = brandLine;
     }
 
     public Long getId() {
@@ -73,6 +77,14 @@ public class Vehicles implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Timestamp getDeletedAt() {
@@ -107,14 +119,6 @@ public class Vehicles implements Serializable {
         this.deviceId = deviceId;
     }
 
-    public String getType() {
-        return this.type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getPlate() {
         return this.plate;
     }
@@ -123,12 +127,20 @@ public class Vehicles implements Serializable {
         this.plate = plate;
     }
 
-    public String getModel() {
-        return this.model;
+    public String getBrand() {
+        return this.brand;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getBrandLine() {
+        return this.brandLine;
+    }
+
+    public void setBrandLine(String brandLine) {
+        this.brandLine = brandLine;
     }
 
     @Override
@@ -136,13 +148,14 @@ public class Vehicles implements Serializable {
         StringBuilder sb = new StringBuilder("Vehicles (");
 
         sb.append(id);
+        sb.append(", ").append(status);
         sb.append(", ").append(deletedAt);
         sb.append(", ").append(lastUpdated);
         sb.append(", ").append(userId);
         sb.append(", ").append(deviceId);
-        sb.append(", ").append(type);
         sb.append(", ").append(plate);
-        sb.append(", ").append(model);
+        sb.append(", ").append(brand);
+        sb.append(", ").append(brandLine);
 
         sb.append(")");
         return sb.toString();

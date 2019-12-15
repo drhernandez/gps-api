@@ -2,6 +2,7 @@ package com.tesis.daos;
 
 import javax.inject.Inject;
 
+import com.tesis.enums.Status;
 import com.tesis.jooq.tables.*;
 import org.jooq.Configuration;
 import com.tesis.jooq.tables.daos.VehiclesDao;
@@ -25,53 +26,22 @@ public class VehicleDaoExt extends VehiclesDao {
     public com.tesis.jooq.tables.pojos.Vehicles createVehicle(com.tesis.jooq.tables.pojos.Vehicles vehicle){
         DSL.using(configuration()).transaction(t -> {
             t.dsl().insertInto(Vehicles.VEHICLES,
+                        Vehicles.VEHICLES.STATUS,
                         Vehicles.VEHICLES.DELETED_AT,
                         Vehicles.VEHICLES.LAST_UPDATED,
                         Vehicles.VEHICLES.USER_ID,
                         Vehicles.VEHICLES.DEVICE_ID,
-                        Vehicles.VEHICLES.TYPE,
                         Vehicles.VEHICLES.PLATE,
-                        Vehicles.VEHICLES.MODEL)
-                    .values(null,
+                        Vehicles.VEHICLES.BRAND,
+                        Vehicles.VEHICLES.BRAND_LINE)
+                    .values(vehicle.getStatus(),
+                            null,
                             null,
                             vehicle.getUserId(),
                             vehicle.getDeviceId(),
-                            vehicle.getType(),
                             vehicle.getPlate(),
-                            vehicle.getModel())
-                    .execute();
-
-            t.dsl().insertInto(SpeedAlerts.SPEED_ALERTS,
-                        SpeedAlerts.SPEED_ALERTS.ACTIVE,
-                        SpeedAlerts.SPEED_ALERTS.DEVICE_ID,
-                        SpeedAlerts.SPEED_ALERTS.SPEED,
-                        SpeedAlerts.SPEED_ALERTS.CREATED_AT,
-                        SpeedAlerts.SPEED_ALERTS.UPDATED_AT,
-                        SpeedAlerts.SPEED_ALERTS.ACTIVATED_AT)
-                    .values(
-                            false,
-                            vehicle.getDeviceId(),
-                            DEFAULT_SPEED_ALERT,
-                            Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
-                            null,
-                            null)
-                    .execute();
-
-            t.dsl().insertInto(MovementAlerts.MOVEMENT_ALERTS,
-                        MovementAlerts.MOVEMENT_ALERTS.ACTIVE,
-                        MovementAlerts.MOVEMENT_ALERTS.LAT,
-                        MovementAlerts.MOVEMENT_ALERTS.LNG,
-                        MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID,
-                        MovementAlerts.MOVEMENT_ALERTS.CREATED_AT,
-                        MovementAlerts.MOVEMENT_ALERTS.UPDATED_AT,
-                        MovementAlerts.MOVEMENT_ALERTS.ACTIVATED_AT)
-                    .values(false,
-                            null,
-                            null,
-                            vehicle.getDeviceId(),
-                            Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
-                            null,
-                            null)
+                            vehicle.getBrand(),
+                            vehicle.getBrandLine())
                     .execute();
         });
 
@@ -123,6 +93,7 @@ public class VehicleDaoExt extends VehiclesDao {
             t.dsl().update(Vehicles.VEHICLES)
                     .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
                     .set(Vehicles.VEHICLES.DEVICE_ID, (Long) null)
+                    .set(Vehicles.VEHICLES.STATUS, Status.DELETED.toString())
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))
                     .execute();
         });

@@ -1,5 +1,6 @@
 package com.tesis.daos;
 
+import com.tesis.exceptions.DataException;
 import com.tesis.jooq.tables.*;
 import com.tesis.jooq.tables.daos.DevicesDao;
 
@@ -9,8 +10,11 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.tesis.jooq.tables.records.DevicesRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DSL;
+
+import static com.tesis.config.Constants.DEFAULT_SPEED_ALERT;
 
 
 public class DeviceDaoExt extends  DevicesDao{
@@ -18,6 +22,70 @@ public class DeviceDaoExt extends  DevicesDao{
     @Inject
     public DeviceDaoExt(Configuration configuration){
         super(configuration);
+    }
+
+    public void insertDevice(com.tesis.jooq.tables.pojos.Devices device) throws DataException{
+        List<com.tesis.jooq.tables.pojos.Devices> devicesList = DSL.using(configuration())
+                .selectFrom(Devices.DEVICES)
+                .where(Devices.DEVICES.PHYSICAL_ID.eq(device.getPhysicalId()))
+                .and(Devices.DEVICES.DELETED_AT.isNull())
+                .fetch()
+                .map(mapper());
+
+        if (devicesList.size() == 0)
+            DSL.using(configuration()).transaction(t -> {
+
+                DevicesRecord deviceRecord = t.dsl().insertInto(Devices.DEVICES,
+                        Devices.DEVICES.PHYSICAL_ID,
+                        Devices.DEVICES.DELETED_AT,
+                        Devices.DEVICES.LAST_UPDATED,
+                        Devices.DEVICES.MODEL,
+                        Devices.DEVICES.SOFTWARE_VERSION)
+                        .values(device.getPhysicalId(),
+                                null,
+                                null,
+                                device.getModel(),
+                                device.getSoftwareVersion())
+                        .returning(Devices.DEVICES.ID)
+                        .fetchOne();
+
+                t.dsl().insertInto(SpeedAlerts.SPEED_ALERTS,
+                        SpeedAlerts.SPEED_ALERTS.ACTIVE,
+                        SpeedAlerts.SPEED_ALERTS.DEVICE_ID,
+                        SpeedAlerts.SPEED_ALERTS.SPEED,
+                        SpeedAlerts.SPEED_ALERTS.CREATED_AT,
+                        SpeedAlerts.SPEED_ALERTS.UPDATED_AT,
+                        SpeedAlerts.SPEED_ALERTS.ACTIVATED_AT)
+                        .values(
+                                false,
+                                deviceRecord.getValue(Devices.DEVICES.ID),
+                                DEFAULT_SPEED_ALERT,
+                                Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
+                                null,
+                                null)
+                        .execute();
+
+                t.dsl().insertInto(MovementAlerts.MOVEMENT_ALERTS,
+                        MovementAlerts.MOVEMENT_ALERTS.ACTIVE,
+                        MovementAlerts.MOVEMENT_ALERTS.LAT,
+                        MovementAlerts.MOVEMENT_ALERTS.LNG,
+                        MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID,
+                        MovementAlerts.MOVEMENT_ALERTS.CREATED_AT,
+                        MovementAlerts.MOVEMENT_ALERTS.UPDATED_AT,
+                        MovementAlerts.MOVEMENT_ALERTS.ACTIVATED_AT)
+                        .values(false,
+                                null,
+                                null,
+                                deviceRecord.getValue(Devices.DEVICES.ID),
+                                Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
+                                null,
+                                null)
+                        .execute();
+            });
+
+        else
+            throw new DataException(String.format("Error al insertar device %s", device.toString()),
+                    String.format("Id fisico %s en uso", device.getPhysicalId().toString()));
     }
 
     public List<com.tesis.jooq.tables.pojos.Devices> findAllActives() {

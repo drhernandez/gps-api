@@ -14,8 +14,12 @@ import java.util.List;
 
 public class DeviceController {
 
+    private DevicesService devicesService;
+
     @Inject
-    DevicesService devicesService;
+    public DeviceController(DevicesService devicesService) {
+        this.devicesService = devicesService;
+    }
 
     public Object createDevice(Request request, Response response) throws ApiException {
         Devices device = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Devices.class);
