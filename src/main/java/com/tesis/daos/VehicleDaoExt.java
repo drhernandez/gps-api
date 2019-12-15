@@ -98,4 +98,11 @@ public class VehicleDaoExt extends VehiclesDao {
                     .execute();
         });
     }
+
+    public Long fetchByIDForUserID(Long vehicleID){
+        return DSL.using(configuration()).select(Vehicles.VEHICLES.USER_ID)
+                .from(Vehicles.VEHICLES)
+                .where(Vehicles.VEHICLES.ID.eq(vehicleID)).fetchOne(Vehicles.VEHICLES.USER_ID);
+    }
+
 }

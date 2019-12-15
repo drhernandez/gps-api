@@ -26,6 +26,7 @@ public class UsersRouter implements RouteGroup {
         logger.info("Loading users routes...");
         Spark.path("/users", () -> {
             Spark.before("/*", middlewares.requiredTokenCheck);
+            Spark.post("", userController::createUser);
             Spark.get("", userController::getUsers);
             Spark.get("/:user_id", userController::getUsersByUserID);
             Spark.put("/:user_id", userController::updateUser);
