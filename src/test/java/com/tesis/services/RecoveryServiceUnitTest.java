@@ -1,6 +1,5 @@
 package com.tesis.services;
 
-import com.tesis.clients.SendGridClient;
 import com.tesis.daos.RecoveryTokensDaoExt;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.enums.ErrorCodes;
@@ -34,9 +33,6 @@ public class RecoveryServiceUnitTest {
 
     @Mock
     UserDaoExt userDao;
-
-    @Mock
-    SendGridClient sendGridClient;
 
     @Mock
     PasswordEncoder passwordEncoder;
@@ -106,7 +102,7 @@ public class RecoveryServiceUnitTest {
         user.setEmail("pedropruebapedro@gmail.com");
 
         Mockito.when(userDao.fetchOneByEmail(any(String.class))).thenReturn(user);
-        Mockito.when(userDao.fetchOneById(any(Long.class))).thenReturn(user);
+//        Mockito.when(userDao.fetchOneById(any(Long.class))).thenReturn(user);
         Mockito.when(recoveryDao.fetchOneByUserId(1L)).thenReturn(recoveryToken);
         Mockito.doThrow(DataAccessException.class).when(recoveryDao).insert(any(RecoveryTokens.class));
 
