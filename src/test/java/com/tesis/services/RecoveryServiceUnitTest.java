@@ -91,7 +91,7 @@ public class RecoveryServiceUnitTest {
         Mockito.when(userDao.fetchOneById(any(Long.class))).thenReturn(user);
         Mockito.when(recoveryDao.fetchOneByUserId(1L)).thenReturn(null);
 
-        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO);
+        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()).plusDays(1)));
         assertNull(responseDTO.getError());
     }
 
@@ -110,7 +110,7 @@ public class RecoveryServiceUnitTest {
         Mockito.when(recoveryDao.fetchOneByUserId(1L)).thenReturn(recoveryToken);
         Mockito.doThrow(DataAccessException.class).when(recoveryDao).insert(any(RecoveryTokens.class));
 
-        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO);
+        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()).plusDays(1)));
 
         Mockito.verify(recoveryDao, times(1)).deleteById(any(Long.class));
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
