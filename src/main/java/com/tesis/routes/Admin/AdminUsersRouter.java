@@ -2,6 +2,7 @@ package com.tesis.routes.Admin;
 
 import com.google.inject.Inject;
 import com.tesis.controllers.AdminUserController;
+import com.tesis.controllers.UserController;
 import com.tesis.controllers.VehicleController;
 import com.tesis.routes.Middlewares;
 import org.slf4j.Logger;
@@ -14,14 +15,14 @@ public class AdminUsersRouter implements RouteGroup {
 
     private static Logger logger = LoggerFactory.getLogger(AdminUsersRouter.class);
 
-    private AdminUserController adminUserController;
     private VehicleController vehicleController;
+    private UserController userController;
     private Middlewares middlewares;
 
     @Inject
-    public AdminUsersRouter(AdminUserController adminUserController, VehicleController vehicleController, Middlewares middlewares) {
-        this.adminUserController = adminUserController;
+    public AdminUsersRouter(VehicleController vehicleController, UserController userController, Middlewares middlewares) {
         this.vehicleController = vehicleController;
+        this.userController = userController;
         this.middlewares = middlewares;
     }
 
@@ -33,14 +34,17 @@ public class AdminUsersRouter implements RouteGroup {
         Spark.path("/admins/users", () -> {
             Spark.before("/*", middlewares.adminAccessTokenFilter);
 
-            Spark.post("", adminUserController::createAdminUser);
-            Spark.get("/:admin_user_id", adminUserController::getAdminUsersByAdminUserID);
-            Spark.put("/:admin_user_id", adminUserController::updateAdminUser);
-            Spark.delete("/:admin_user_id", adminUserController::deleteAdminUser);
+            Spark.post("", userController::createUser);
+            Spark.get("/search", userController::userSearch);
+            Spark.get("/:user_id", userController::getUsersByUserID);
+            Spark.get("/:user_id/vehicles", userController::getVehiclesByUserID);
+            Spark.put("/:user_id", userController::updateUser);
+            Spark.delete("/:user_id", userController::deleteUser);
         });
 
         Spark.path("/admins/vehicles", () -> {
             Spark.before("/*", middlewares.adminAccessTokenFilter);
+
             Spark.post("", vehicleController::createVehicle);
             Spark.get("", vehicleController::getVehicles);
             Spark.put("/:vehicle_id", vehicleController::updateVehicle);

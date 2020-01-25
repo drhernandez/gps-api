@@ -2,11 +2,11 @@ package com.tesis.utils.filters;
 
 public class UserFilters {
 
-    String status;
-    String email;
-    String name;
-    String last_name;
-    String dni;
+    private String status;
+    private String email;
+    private String name;
+    private String last_name;
+    private String dni;
 
     public String getStatus() {
         return status;
