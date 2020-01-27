@@ -10,6 +10,10 @@ import com.tesis.clients.SendSMSCClient;
 import com.tesis.clients.imp.SendGridClientImp;
 import com.tesis.clients.imp.SendSMSCClientImp;
 import com.tesis.routes.*;
+import com.tesis.routes.Admin.AdminAuthRouter;
+import com.tesis.routes.Admin.AdminRecoveryRouter;
+import com.tesis.routes.Admin.AdminRouter;
+import com.tesis.routes.Admin.AdminUsersRouter;
 import com.tesis.server.Server;
 import com.tesis.services.*;
 import com.tesis.services.imp.*;
@@ -46,6 +50,8 @@ public class ConfigModule extends AbstractModule {
         bind(RouteGroup.class).annotatedWith(Names.named("brand-router")).to(BrandRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("admin-users-router")).to(AdminUsersRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("admin-recovery-router")).to(AdminRecoveryRouter.class);
+        bind(RouteGroup.class).annotatedWith(Names.named("admin-router")).to(AdminRouter.class);
+        bind(RouteGroup.class).annotatedWith(Names.named("admin-auth-router")).to(AdminAuthRouter.class);
 
         //bind services
         bind(TrackingService.class).to(TrackingServiceImp.class);

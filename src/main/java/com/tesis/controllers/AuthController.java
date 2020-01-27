@@ -95,4 +95,30 @@ public class AuthController {
 
         return responseDTO.getModelAsJson();
     }
+
+    public Object checkAdminAccess(Request request, Response response) throws ApiException {
+        String adminAccessTocken = request.headers("Authorization");
+        ResponseDTO responseDTO = new ResponseDTO();
+        if (adminAccessTocken != null) {
+            adminAccessTocken = adminAccessTocken.split(" ")[1];
+            try {
+                authAdminService.checkAdminAccessToken(adminAccessTocken);
+                response.status(HttpStatus.OK_200);
+                return responseDTO.getModelAsJson();
+            } catch (Exception e){
+                logger.error("Authorization fail, Reason: " + e.getMessage());
+                response.status(HttpStatus.UNAUTHORIZED_401);
+                responseDTO.error = new ApiException("401", ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
+            }
+        }
+        else {
+            response.status(HttpStatus.BAD_REQUEST_400);
+            responseDTO.error = new ApiException("400", "Auth info is required" , HttpStatus.BAD_REQUEST_400);
+        }
+
+        if (responseDTO.error != null)
+            throw responseDTO.error;
+
+        return responseDTO.getModelAsJson();
+    }
 }
