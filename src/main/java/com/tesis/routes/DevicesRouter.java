@@ -25,7 +25,7 @@ public class DevicesRouter implements RouteGroup {
 
         logger.info("Loading devices routes...");
         Spark.path("/devices", () -> {
-            Spark.before("*", middlewares.adminAccessTokenFilter);
+//            Spark.before("*", middlewares.adminAccessTokenFilter);
             Spark.post("", deviceController::createDevice);
             Spark.get("", deviceController::getDevices);
             Spark.get("/:device_id", deviceController::getDeciveByDeviceID);

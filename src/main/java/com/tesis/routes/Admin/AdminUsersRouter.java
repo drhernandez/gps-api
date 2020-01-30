@@ -32,7 +32,7 @@ public class AdminUsersRouter implements RouteGroup {
         logger.info("Loading admin users routes...");
 
         Spark.path("/admins/users", () -> {
-            Spark.before("/*", middlewares.adminAccessTokenFilter);
+//            Spark.before("/*", middlewares.adminAccessTokenFilter);
 
             Spark.post("", userController::createUser);
             Spark.get("/search", userController::userSearch);
@@ -43,7 +43,7 @@ public class AdminUsersRouter implements RouteGroup {
         });
 
         Spark.path("/admins/vehicles", () -> {
-            Spark.before("/*", middlewares.adminAccessTokenFilter);
+//            Spark.before("/*", middlewares.adminAccessTokenFilter);
 
             Spark.post("", vehicleController::createVehicle);
             Spark.get("", vehicleController::getVehicles);

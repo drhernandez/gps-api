@@ -25,7 +25,7 @@ public class BrandRouter implements RouteGroup {
 
         logger.info("Loading brand routes...");
         Spark.path("/brands", () -> {
-            Spark.before("*", middlewares.adminAccessTokenFilter);
+//            Spark.before("*", middlewares.adminAccessTokenFilter);
 
             Spark.post("", brandController::createBrand);
             Spark.get("", brandController::getBrands);

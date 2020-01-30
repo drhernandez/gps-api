@@ -28,7 +28,7 @@ public class AdminRouter implements RouteGroup {
 
         logger.info("Loading admin routes...");
         Spark.path("/admins", () -> {
-                Spark.before("", middlewares.adminAccessTokenFilter);
+//                Spark.before("", middlewares.adminAccessTokenFilter);
                 Spark.before("/:admin_user_id", middlewares.adminAccessTokenFilter);
 
                 Spark.post("", adminUserController::createAdminUser);
