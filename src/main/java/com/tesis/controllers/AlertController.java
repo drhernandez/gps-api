@@ -12,7 +12,6 @@ import com.tesis.models.SMSRequest;
 import com.tesis.models.SMSResponse;
 import com.tesis.routes.Router;
 import com.tesis.services.AlertService;
-import com.tesis.services.AuthAdminService;
 import com.tesis.services.AuthService;
 import com.tesis.services.UserService;
 import com.tesis.utils.JsonUtils;
@@ -37,19 +36,16 @@ public class AlertController {
     private AlertService alertService;
     private UserService userService;
     private AuthService authService;
-    private AuthAdminService authAdminService;
     private SendSMSCClient sendSMSCClient;
 
     @Inject
     public AlertController(AlertService alertService,
                            UserService userService,
                            AuthService authService,
-                           AuthAdminService authAdminService,
                            SendSMSCClient sendSMSCClient) {
         this.alertService = alertService;
         this.userService = userService;
         this.authService = authService;
-        this.authAdminService = authAdminService;
         this.sendSMSCClient = sendSMSCClient;
     }
 
@@ -60,13 +56,13 @@ public class AlertController {
 
         SpeedAlerts speedAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(speedAlert.getDeviceId()))){
-                logger.error("User access unauthorized [method: AlertController.createSpeedAlert]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(speedAlert.getDeviceId()))){
+//                logger.error("User access unauthorized [method: AlertController.createSpeedAlert]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.createSpeedAlert(speedAlert);
 
@@ -81,11 +77,11 @@ public class AlertController {
         String accessToken = request.headers("Authorization").split(" ")[1];
 
         ResponseDTO<List<SpeedAlerts>> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            logger.error("User access unauthorized [method: AlertController.getSpeedAlerts]");
-            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-            throw responseDTO.error;
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            logger.error("User access unauthorized [method: AlertController.getSpeedAlerts]");
+//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//            throw responseDTO.error;
+//        }
 
         responseDTO = alertService.getSpeedAlerts();
 
@@ -146,13 +142,13 @@ public class AlertController {
         }
 
         ResponseDTO responseDTO = new ResponseDTO();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(deviceID))){
-                logger.error("User access unauthorized [method: AlertController.deleteSpeedAlert]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(deviceID))){
+//                logger.error("User access unauthorized [method: AlertController.deleteSpeedAlert]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.deleteSpeedAlert(deviceID);
         response.status(200);
@@ -172,13 +168,13 @@ public class AlertController {
 
         MovementAlerts movementAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlerts.class);
         ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(movementAlert.getDeviceId()))){
-                logger.error("User access unauthorized [method: AlertController.createMovementAlert]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(movementAlert.getDeviceId()))){
+//                logger.error("User access unauthorized [method: AlertController.createMovementAlert]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.createMovementAlert(movementAlert);
 
@@ -193,11 +189,11 @@ public class AlertController {
         String accessToken = request.headers("Authorization").split(" ")[1];
 
         ResponseDTO<List<MovementAlerts>> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            logger.error("User access unauthorized [method: AlertController.getMovementAlerts]");
-            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-            throw responseDTO.error;
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            logger.error("User access unauthorized [method: AlertController.getMovementAlerts]");
+//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//            throw responseDTO.error;
+//        }
 
         responseDTO = alertService.getMovementAlert();
 
@@ -258,13 +254,13 @@ public class AlertController {
         }
 
         ResponseDTO responseDTO = new ResponseDTO();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(deviceID))){
-                logger.error("User access unauthorized [method: AlertController.deleteMovementAlert]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken, alertService.getUserIDByDeviceID(deviceID))){
+//                logger.error("User access unauthorized [method: AlertController.deleteMovementAlert]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.deleteMovementAlert(deviceID);
         response.status(200);
@@ -285,14 +281,14 @@ public class AlertController {
 
         SpeedAlertsHistory speedAlertsHistory = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlertsHistory.class);
         ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken,
-                    alertService.getUserIDByDeviceID(alertService.getUserIDBySpeedAlertID(speedAlertsHistory.getAlertId())))){
-                logger.error("User access unauthorized [method: AlertController.createSpeedHistory]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken,
+//                    alertService.getUserIDByDeviceID(alertService.getUserIDBySpeedAlertID(speedAlertsHistory.getAlertId())))){
+//                logger.error("User access unauthorized [method: AlertController.createSpeedHistory]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.createSpeedAlertHistory(speedAlertsHistory);
 
@@ -318,14 +314,14 @@ public class AlertController {
         }
 
         ResponseDTO responseDTO = new ResponseDTO();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken,
-                    alertService.getUserIDByDeviceID(deviceID))){
-                logger.error("User access unauthorized [method: AlertController.deleteSpeedHistory]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken,
+//                    alertService.getUserIDByDeviceID(deviceID))){
+//                logger.error("User access unauthorized [method: AlertController.deleteSpeedHistory]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.deleteSpeedAlertHistory(deviceID);
         response.status(200);
@@ -345,14 +341,14 @@ public class AlertController {
 
         MovementAlertsHistory movementAlertsHistory = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlertsHistory.class);
         ResponseDTO<MovementAlertsHistory> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken,
-                    alertService.getUserIDByDeviceID(alertService.getUserIDByMovementAlertID(movementAlertsHistory.getAlertId())))){
-                logger.error("User access unauthorized [method: AlertController.createMovementHistory]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken,
+//                    alertService.getUserIDByDeviceID(alertService.getUserIDByMovementAlertID(movementAlertsHistory.getAlertId())))){
+//                logger.error("User access unauthorized [method: AlertController.createMovementHistory]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.createMovementAlertHistory(movementAlertsHistory);
 
@@ -378,14 +374,14 @@ public class AlertController {
         }
 
         ResponseDTO responseDTO = new ResponseDTO();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken,
-                    alertService.getUserIDByDeviceID(deviceID))){
-                logger.error("User access unauthorized [method: AlertController.deleteMovementHistory]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken,
+//                    alertService.getUserIDByDeviceID(deviceID))){
+//                logger.error("User access unauthorized [method: AlertController.deleteMovementHistory]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = alertService.deleteMovementAlertHistory(deviceID);
         response.status(200);

@@ -5,7 +5,10 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.ResponseDTO;
-import com.tesis.services.*;
+import com.tesis.services.AlertService;
+import com.tesis.services.AuthService;
+import com.tesis.services.TrackingService;
+import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
@@ -23,19 +26,16 @@ public class VehicleController {
     private VehicleService vehicleService;
     private TrackingService trackingService;
     private AlertService alertService;
-    private AuthAdminService authAdminService;
     private AuthService authService;
 
     @Inject
     public VehicleController(VehicleService vehicleService,
                              TrackingService trackingService,
                              AlertService alertService,
-                             AuthAdminService authAdminService,
                              AuthService authService) {
         this.vehicleService = vehicleService;
         this.trackingService = trackingService;
         this.alertService = alertService;
-        this.authAdminService = authAdminService;
         this.authService = authService;
     }
 
@@ -65,13 +65,13 @@ public class VehicleController {
         }
 
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
-                logger.error("User access unauthorized [method: VehicleController.getVehiclesByVehicleID]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+//                logger.error("User access unauthorized [method: VehicleController.getVehiclesByVehicleID]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = vehicleService.getVehiclesByVehicleID(vehicleID);
 
@@ -86,11 +86,11 @@ public class VehicleController {
         String accessToken = request.headers("Authorization").split(" ")[1];
 
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            logger.error("User access unauthorized [method: VehicleController.createVehicle]");
-            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-            throw responseDTO.error;
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            logger.error("User access unauthorized [method: VehicleController.createVehicle]");
+//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//            throw responseDTO.error;
+//        }
 
         Vehicles Vehicle = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Vehicles.class);
         //Agregar validaciones
@@ -119,11 +119,11 @@ public class VehicleController {
         }
 
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            logger.error("User access unauthorized [method: VehicleController.updateVehicle]");
-            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-            throw responseDTO.error;
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            logger.error("User access unauthorized [method: VehicleController.updateVehicle]");
+//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//            throw responseDTO.error;
+//        }
 
         Vehicles Vehicle = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Vehicles.class);
         //Add validations
@@ -152,13 +152,13 @@ public class VehicleController {
         }
 
         ResponseDTO responseDTO = new ResponseDTO();
-        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-            if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
-                logger.error("User access unauthorized [method: VehicleController.deleteVehicle]");
-                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-                throw responseDTO.error;
-            }
-        }
+//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
+//            if (!authService.checkUserPermissions(accessToken, vehicleService.getUserIDByVehicleID(vehicleID))){
+//                logger.error("User access unauthorized [method: VehicleController.deleteVehicle]");
+//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
+//                throw responseDTO.error;
+//            }
+//        }
 
         responseDTO = vehicleService.deleteVehicle(vehicleID);
         response.status(200);
