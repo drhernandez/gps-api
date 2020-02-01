@@ -9,11 +9,9 @@ import com.tesis.exceptions.ApiException;
 import com.tesis.daos.UserDaoExt;
 import com.tesis.jooq.tables.pojos.Users;
 import com.tesis.jooq.tables.pojos.Vehicles;
-import com.tesis.models.CredentialsDTO;
 import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
-import com.tesis.services.RecoveryService;
 import com.tesis.services.UserService;
 
 import com.tesis.utils.filters.UserFilters;
@@ -26,7 +24,6 @@ import java.util.List;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static com.tesis.config.Constants.EXPIRATION_CHANGE_TIME;
 
 @Singleton
 public class UserServiceImp implements UserService {
@@ -42,16 +39,11 @@ public class UserServiceImp implements UserService {
     @Inject
     PasswordEncoder passwordEncoder;
 
-    @Inject
-    RecoveryService recoveryService;
-
     public ResponseDTO<Users> activateUser(Long userId){
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
 
         try {
             Users user = usersDao.fetchOneById(userId);
-            if (user.getStatus().equals(Status.PENDING.toString()))
-                initUserPasswordChange(user);
             user.setStatus(Status.ACTIVE.toString());
             usersDao.update(user);
             responseDTO.model = user;
@@ -153,14 +145,5 @@ public class UserServiceImp implements UserService {
         responseDTO.model = new Search<>(usersDao.findByFilters(filter, pagination), pagination);
 
         return responseDTO;
-    }
-
-    private void initUserPasswordChange(Users user) throws ApiException {
-        CredentialsDTO credentialsDTO = new CredentialsDTO(user.getEmail(), user.getPassword());
-        ResponseDTO responseDTO = recoveryService.createRecoveryToken(credentialsDTO,
-                Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()).plusDays(EXPIRATION_CHANGE_TIME)));
-        if (responseDTO.error != null) {
-            throw responseDTO.error;
-        }
     }
 }

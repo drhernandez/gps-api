@@ -39,20 +39,16 @@ public class ConfigModule extends AbstractModule {
         bind(RouteGroup.class).annotatedWith(Names.named("devices-router")).to(DevicesRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("tracking-router")).to(TrackingRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("user-router")).to(UsersRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("auth-router")).to(AuthRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("vehicle-router")).to(VehicleRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("alert-router")).to(AlertRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("recovery-router")).to(RecoveryRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("brand-router")).to(BrandRouter.class);
 
         //bind services
         bind(TrackingService.class).to(TrackingServiceImp.class);
         bind(DevicesService.class).to(DevicesServiceImp.class);
         bind(UserService.class).to(UserServiceImp.class);
-        bind(AuthService.class).to(AuthServiceImp.class);
         bind(VehicleService.class).to(VehicleServiceImp.class);
         bind(AlertService.class).to(AlertServiceImp.class);
-        bind(RecoveryService.class).to(RecoveryServiceImp.class);
         bind(BrandService.class).to(BrandServiceImp.class);
         bind(BrandLineService.class).to(BrandLineServiceImp.class);
 

@@ -1,19 +1,15 @@
 package com.tesis.controllers;
 
 import com.google.inject.Inject;
-import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Users;
-import com.tesis.models.CredentialsDTO;
 import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
-import com.tesis.services.AuthService;
 import com.tesis.services.UserService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
 import com.tesis.utils.filters.UserFilters;
-import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -28,15 +24,12 @@ public class UserController {
 
     private UserService userService;
     private VehicleService vehicleService;
-    private AuthService authService;
 
     @Inject
     public UserController(UserService userService,
-                          VehicleService vehicleService,
-                          AuthService authService) {
+                          VehicleService vehicleService) {
         this.userService = userService;
         this.vehicleService = vehicleService;
-        this.authService = authService;
     }
 
     public Object activateUser(Request request, Response response) throws ApiException{
@@ -87,12 +80,6 @@ public class UserController {
     public Object getUsers(Request request, Response response) throws ApiException {
 
         ResponseDTO<List<Users>> responseDTO = new ResponseDTO<>();
-        String accessToken = request.headers("Authorization").split(" ")[1];
-//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-//            logger.error("User access unauthorized [method: UserController.getUsers]");
-//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-//            throw responseDTO.error;
-//        }
 
         responseDTO = userService.getUsers();
 
@@ -105,7 +92,6 @@ public class UserController {
 
     public Object getUsersByUserID(Request request, Response response) throws ApiException {
 
-        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("user_id");
         Long userID;
         if (StringUtils.isBlank(param)) {
@@ -120,14 +106,6 @@ public class UserController {
 
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
 
-//        if (!authAdminService.checkAdminUserPermissions(accessToken, userID)) {
-//            if (!authService.checkUserPermissions(accessToken, userID)){
-//                logger.error("User access unauthorized [method: UserController.getUserByUserID]");
-//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-//                throw responseDTO.error;
-//            }
-//        }
-
         responseDTO = userService.getUsersByUserID(userID);
 
         if (responseDTO.error != null) {
@@ -139,15 +117,8 @@ public class UserController {
 
     public Object createUser(Request request, Response response) throws ApiException {
 
-        String accessToken = request.headers("Authorization").split(" ")[1];
 
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
-
-//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-//            logger.error("User access unauthorized [method: UserController.getUsers]");
-//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-//            throw responseDTO.error;
-//        }
 
         Users user = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Users.class);
         //Agregar validaciones
@@ -162,7 +133,6 @@ public class UserController {
     }
 
     public Object updateUser(Request request, Response response) throws ApiException {
-        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("user_id");
         Long userID;
         if (StringUtils.isBlank(param)) {
@@ -176,12 +146,6 @@ public class UserController {
         }
 
         ResponseDTO<Users> responseDTO = new ResponseDTO<>();
-//        if (!authAdminService.checkAdminUserPermissions(accessToken, userID)) {
-//            if (!authService.checkUserPermissions(accessToken, userID)){
-//                logger.error("User access unauthorized [method: UserController.updateUser]");
-//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-//                throw responseDTO.error;
-//            }
 //        }
 
         Users user = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Users.class);
@@ -198,7 +162,6 @@ public class UserController {
     }
 
     public Object deleteUser(Request request, Response response) throws  ApiException {
-        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("user_id");
         Long userID;
         if (StringUtils.isBlank(param)) {
@@ -211,11 +174,6 @@ public class UserController {
         }
 
         ResponseDTO responseDTO = new ResponseDTO();
-//        if (!authAdminService.checkAdminUserPermissions(accessToken, userID)) {
-//            logger.error("User access unauthorized [method: UserController.deleteUser]");
-//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-//            throw responseDTO.error;
-//        }
 
         responseDTO = userService.deleteUser(userID);
         response.status(200);
@@ -229,7 +187,6 @@ public class UserController {
     }
 
     public Object getVehiclesByUserID(Request request, Response response) throws ApiException {
-        String accessToken = request.headers("Authorization").split(" ")[1];
         String param = request.params("user_id");
         Long userID;
         if (StringUtils.isBlank(param)) {
@@ -243,13 +200,6 @@ public class UserController {
         }
 
         ResponseDTO responseDTO = new ResponseDTO();
-//        if (!authAdminService.checkAdminUserPermissions(accessToken, userID)) {
-//            if (!authService.checkUserPermissions(accessToken, userID)){
-//                logger.error("User access unauthorized [method: UserController.getVehiclesByUserID]");
-//                responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-//                throw responseDTO.error;
-//            }
-//        }
 
         responseDTO = vehicleService.getVehiclesByUserID(userID);
         response.status(200);
@@ -264,14 +214,8 @@ public class UserController {
 
     public Object userSearch(Request request, Response response) throws ApiException{
 
-        String accessToken = request.headers("Authorization").split(" ")[1];
 
         ResponseDTO<Search> responseDTO = new ResponseDTO<>();
-//        if (!authAdminService.checkAdminUserPermissions(accessToken, null)) {
-//            logger.error("User access unauthorized [method: UserController.updateUser]");
-//            responseDTO.setError(new ApiException("401", ErrorCodes.unauthorized.name(), HttpStatus.UNAUTHORIZED_401));
-//            throw responseDTO.error;
-//        }
 
         UserFilters filters = new UserFilters();
         Pagination pagination = new Pagination();

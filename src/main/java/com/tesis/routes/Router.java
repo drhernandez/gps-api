@@ -2,12 +2,8 @@ package com.tesis.routes;
 
 import com.google.common.net.MediaType;
 import com.google.inject.*;
-import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.exceptions.ExceptionUtils;
-import com.tesis.models.ResponseDTO;
-import com.tesis.services.AuthService;
-import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.RouteGroup;

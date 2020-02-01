@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.sendgrid.*;
 import com.tesis.clients.SendGridClient;
 import com.tesis.exceptions.ApiException;
-import com.tesis.services.imp.AuthServiceImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +18,7 @@ public class SendGridClientImp implements SendGridClient {
         this.sendGrid = sendGrid;
     }
 
-    Logger logger = LoggerFactory.getLogger(AuthServiceImp.class);
+    Logger logger = LoggerFactory.getLogger(SendGridClientImp.class);
 
     @Override
     public void sendMail(Mail mail) throws IOException, ApiException{
