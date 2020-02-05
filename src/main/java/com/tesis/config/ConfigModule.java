@@ -10,10 +10,6 @@ import com.tesis.clients.SendSMSCClient;
 import com.tesis.clients.imp.SendGridClientImp;
 import com.tesis.clients.imp.SendSMSCClientImp;
 import com.tesis.routes.*;
-import com.tesis.routes.Admin.AdminAuthRouter;
-import com.tesis.routes.Admin.AdminRecoveryRouter;
-import com.tesis.routes.Admin.AdminRouter;
-import com.tesis.routes.Admin.AdminUsersRouter;
 import com.tesis.server.Server;
 import com.tesis.services.*;
 import com.tesis.services.imp.*;
@@ -42,29 +38,17 @@ public class ConfigModule extends AbstractModule {
         //bind routers
         bind(RouteGroup.class).annotatedWith(Names.named("devices-router")).to(DevicesRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("tracking-router")).to(TrackingRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("user-router")).to(UsersRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("auth-router")).to(AuthRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("vehicle-router")).to(VehicleRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("alert-router")).to(AlertRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("recovery-router")).to(RecoveryRouter.class);
         bind(RouteGroup.class).annotatedWith(Names.named("brand-router")).to(BrandRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("admin-users-router")).to(AdminUsersRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("admin-recovery-router")).to(AdminRecoveryRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("admin-router")).to(AdminRouter.class);
-        bind(RouteGroup.class).annotatedWith(Names.named("admin-auth-router")).to(AdminAuthRouter.class);
 
         //bind services
         bind(TrackingService.class).to(TrackingServiceImp.class);
         bind(DevicesService.class).to(DevicesServiceImp.class);
-        bind(UserService.class).to(UserServiceImp.class);
-        bind(AuthService.class).to(AuthServiceImp.class);
         bind(VehicleService.class).to(VehicleServiceImp.class);
         bind(AlertService.class).to(AlertServiceImp.class);
-        bind(RecoveryService.class).to(RecoveryServiceImp.class);
         bind(BrandService.class).to(BrandServiceImp.class);
         bind(BrandLineService.class).to(BrandLineServiceImp.class);
-        bind(AdminUserService.class).to(AdminUserServiceImp.class);
-        bind(AuthAdminService.class).to(AuthAdminServiceImp.class);
 
         //bind clients
         bind(SendGridClient.class).to(SendGridClientImp.class);

@@ -2,7 +2,6 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.tesis.clients.SendSMSCClient;
-import com.tesis.controllers.AlertController;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
@@ -15,7 +14,6 @@ import com.tesis.models.Search;
 import com.tesis.routes.TrackingRouter;
 import com.tesis.services.AlertService;
 import com.tesis.services.TrackingService;
-import com.tesis.services.UserService;
 import com.tesis.utils.filters.TrackingFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +39,6 @@ public class TrackingServiceImp implements TrackingService {
 
     @Inject
     SendSMSCClient smscClient;
-
-    @Inject
-    UserService userService;
 
 
     @Override
@@ -169,9 +164,8 @@ public class TrackingServiceImp implements TrackingService {
     }
 
     private void sendAlarm(Long deviceID, String alertType) throws ApiException {
-        Users user = userService.getUsersByDeviceId(deviceID).getModel();
         SMSRequest alertRequest = new SMSRequest();
-        alertRequest.setReceptor(user.getPhone());
+        alertRequest.setReceptor("3525-480782"); //TODO remove mock
         alertRequest.setMessage((alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT));
 
         try {

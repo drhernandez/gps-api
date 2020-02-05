@@ -89,7 +89,7 @@ public class VehiclesDao extends DAOImpl<VehiclesRecord, com.tesis.jooq.tables.p
     /**
      * Fetch records that have <code>user_id IN (values)</code>
      */
-    public List<com.tesis.jooq.tables.pojos.Vehicles>   fetchByUserId(Long... values) {
+    public List<com.tesis.jooq.tables.pojos.Vehicles> fetchByUserId(Long... values) {
         return fetch(Vehicles.VEHICLES.USER_ID, values);
     }
 

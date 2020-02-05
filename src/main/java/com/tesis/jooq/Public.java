@@ -4,20 +4,14 @@
 package com.tesis.jooq;
 
 
-import com.tesis.jooq.tables.AccessTokens;
-import com.tesis.jooq.tables.AdminAccessTokens;
-import com.tesis.jooq.tables.AdminRecoveryTokens;
-import com.tesis.jooq.tables.AdminUsers;
 import com.tesis.jooq.tables.BrandLines;
 import com.tesis.jooq.tables.Brands;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
-import com.tesis.jooq.tables.RecoveryTokens;
 import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
-import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 
 import java.util.ArrayList;
@@ -45,32 +39,12 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -1414168163;
+    private static final long serialVersionUID = -1365888586;
 
     /**
      * The reference instance of <code>public</code>
      */
     public static final Public PUBLIC = new Public();
-
-    /**
-     * The table <code>public.access_tokens</code>.
-     */
-    public final AccessTokens ACCESS_TOKENS = com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS;
-
-    /**
-     * The table <code>public.admin_access_tokens</code>.
-     */
-    public final AdminAccessTokens ADMIN_ACCESS_TOKENS = com.tesis.jooq.tables.AdminAccessTokens.ADMIN_ACCESS_TOKENS;
-
-    /**
-     * The table <code>public.admin_recovery_tokens</code>.
-     */
-    public final AdminRecoveryTokens ADMIN_RECOVERY_TOKENS = com.tesis.jooq.tables.AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS;
-
-    /**
-     * The table <code>public.admin_users</code>.
-     */
-    public final AdminUsers ADMIN_USERS = com.tesis.jooq.tables.AdminUsers.ADMIN_USERS;
 
     /**
      * The table <code>public.brand_lines</code>.
@@ -98,11 +72,6 @@ public class Public extends SchemaImpl {
     public final MovementAlertsHistory MOVEMENT_ALERTS_HISTORY = com.tesis.jooq.tables.MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY;
 
     /**
-     * The table <code>public.recovery_tokens</code>.
-     */
-    public final RecoveryTokens RECOVERY_TOKENS = com.tesis.jooq.tables.RecoveryTokens.RECOVERY_TOKENS;
-
-    /**
      * The table <code>public.speed_alerts</code>.
      */
     public final SpeedAlerts SPEED_ALERTS = com.tesis.jooq.tables.SpeedAlerts.SPEED_ALERTS;
@@ -116,11 +85,6 @@ public class Public extends SchemaImpl {
      * The table <code>public.trackings</code>.
      */
     public final Trackings TRACKINGS = com.tesis.jooq.tables.Trackings.TRACKINGS;
-
-    /**
-     * The table <code>public.users</code>.
-     */
-    public final Users USERS = com.tesis.jooq.tables.Users.USERS;
 
     /**
      * The table <code>public.vehicles</code>.
@@ -152,16 +116,13 @@ public class Public extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
-            Sequences.ADMIN_USERS_ID_SEQ,
             Sequences.BRAND_LINES_ID_SEQ,
             Sequences.BRANDS_ID_SEQ,
             Sequences.DEVICES_ID_SEQ,
             Sequences.MOVEMENT_ALERTS_ID_SEQ,
             Sequences.SPEED_ALERTS_ID_SEQ,
             Sequences.TRACKINGS_ID_SEQ,
-            Sequences.USERS_ID_SEQ,
-            Sequences.VEHICLES_ID_SEQ,
-            Sequences.VEHICLES_USER_ID_SEQ);
+            Sequences.VEHICLES_ID_SEQ);
     }
 
     @Override
@@ -173,20 +134,14 @@ public class Public extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
-            AccessTokens.ACCESS_TOKENS,
-            AdminAccessTokens.ADMIN_ACCESS_TOKENS,
-            AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS,
-            AdminUsers.ADMIN_USERS,
             BrandLines.BRAND_LINES,
             Brands.BRANDS,
             Devices.DEVICES,
             MovementAlerts.MOVEMENT_ALERTS,
             MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY,
-            RecoveryTokens.RECOVERY_TOKENS,
             SpeedAlerts.SPEED_ALERTS,
             SpeedAlertsHistory.SPEED_ALERTS_HISTORY,
             Trackings.TRACKINGS,
-            Users.USERS,
             Vehicles.VEHICLES);
     }
 }

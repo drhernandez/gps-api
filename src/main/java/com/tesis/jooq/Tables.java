@@ -4,20 +4,14 @@
 package com.tesis.jooq;
 
 
-import com.tesis.jooq.tables.AccessTokens;
-import com.tesis.jooq.tables.AdminAccessTokens;
-import com.tesis.jooq.tables.AdminRecoveryTokens;
-import com.tesis.jooq.tables.AdminUsers;
 import com.tesis.jooq.tables.BrandLines;
 import com.tesis.jooq.tables.Brands;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.MovementAlerts;
 import com.tesis.jooq.tables.MovementAlertsHistory;
-import com.tesis.jooq.tables.RecoveryTokens;
 import com.tesis.jooq.tables.SpeedAlerts;
 import com.tesis.jooq.tables.SpeedAlertsHistory;
 import com.tesis.jooq.tables.Trackings;
-import com.tesis.jooq.tables.Users;
 import com.tesis.jooq.tables.Vehicles;
 
 import javax.annotation.Generated;
@@ -35,26 +29,6 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
-
-    /**
-     * The table <code>public.access_tokens</code>.
-     */
-    public static final AccessTokens ACCESS_TOKENS = com.tesis.jooq.tables.AccessTokens.ACCESS_TOKENS;
-
-    /**
-     * The table <code>public.admin_access_tokens</code>.
-     */
-    public static final AdminAccessTokens ADMIN_ACCESS_TOKENS = com.tesis.jooq.tables.AdminAccessTokens.ADMIN_ACCESS_TOKENS;
-
-    /**
-     * The table <code>public.admin_recovery_tokens</code>.
-     */
-    public static final AdminRecoveryTokens ADMIN_RECOVERY_TOKENS = com.tesis.jooq.tables.AdminRecoveryTokens.ADMIN_RECOVERY_TOKENS;
-
-    /**
-     * The table <code>public.admin_users</code>.
-     */
-    public static final AdminUsers ADMIN_USERS = com.tesis.jooq.tables.AdminUsers.ADMIN_USERS;
 
     /**
      * The table <code>public.brand_lines</code>.
@@ -82,11 +56,6 @@ public class Tables {
     public static final MovementAlertsHistory MOVEMENT_ALERTS_HISTORY = com.tesis.jooq.tables.MovementAlertsHistory.MOVEMENT_ALERTS_HISTORY;
 
     /**
-     * The table <code>public.recovery_tokens</code>.
-     */
-    public static final RecoveryTokens RECOVERY_TOKENS = com.tesis.jooq.tables.RecoveryTokens.RECOVERY_TOKENS;
-
-    /**
      * The table <code>public.speed_alerts</code>.
      */
     public static final SpeedAlerts SPEED_ALERTS = com.tesis.jooq.tables.SpeedAlerts.SPEED_ALERTS;
@@ -100,11 +69,6 @@ public class Tables {
      * The table <code>public.trackings</code>.
      */
     public static final Trackings TRACKINGS = com.tesis.jooq.tables.Trackings.TRACKINGS;
-
-    /**
-     * The table <code>public.users</code>.
-     */
-    public static final Users USERS = com.tesis.jooq.tables.Users.USERS;
 
     /**
      * The table <code>public.vehicles</code>.

@@ -25,7 +25,7 @@ public class AlertRouter implements RouteGroup {
 
         logger.info("Loading alert routes...");
         Spark.path("/alerts", () -> {
-            Spark.before("/*", middlewares.requiredTokenCheck);
+//            Spark.before("/*", middlewares.requiredTokenCheck);
 
             Spark.post("/speeds", alertController::createSpeedAlert);
             Spark.get("/speeds", alertController::getSpeedAlerts);

@@ -24,11 +24,6 @@ import org.jooq.impl.SequenceImpl;
 public class Sequences {
 
     /**
-     * The sequence <code>public.admin_users_id_seq</code>
-     */
-    public static final Sequence<Integer> ADMIN_USERS_ID_SEQ = new SequenceImpl<Integer>("admin_users_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
-
-    /**
      * The sequence <code>public.brand_lines_id_seq</code>
      */
     public static final Sequence<Integer> BRAND_LINES_ID_SEQ = new SequenceImpl<Integer>("brand_lines_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
@@ -59,17 +54,7 @@ public class Sequences {
     public static final Sequence<Integer> TRACKINGS_ID_SEQ = new SequenceImpl<Integer>("trackings_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
 
     /**
-     * The sequence <code>public.users_id_seq</code>
-     */
-    public static final Sequence<Integer> USERS_ID_SEQ = new SequenceImpl<Integer>("users_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
-
-    /**
      * The sequence <code>public.vehicles_id_seq</code>
      */
     public static final Sequence<Integer> VEHICLES_ID_SEQ = new SequenceImpl<Integer>("vehicles_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
-
-    /**
-     * The sequence <code>public.vehicles_user_id_seq</code>
-     */
-    public static final Sequence<Integer> VEHICLES_USER_ID_SEQ = new SequenceImpl<Integer>("vehicles_user_id_seq", Public.PUBLIC, org.jooq.impl.SQLDataType.INTEGER.nullable(false));
 }
