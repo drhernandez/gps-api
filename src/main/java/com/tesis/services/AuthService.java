@@ -3,5 +3,5 @@ package com.tesis.services;
 import com.tesis.exceptions.ApiException;
 
 public interface AuthService {
-    String validateToken(String token, String uri) throws ApiException;
+    void validateToken(String token, String method, String uri) throws ApiException;
 }

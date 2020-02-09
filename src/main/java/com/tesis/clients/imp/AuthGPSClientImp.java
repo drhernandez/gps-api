@@ -26,19 +26,32 @@ public class AuthGPSClientImp implements AuthGPSClient {
     Logger logger = LoggerFactory.getLogger(AuthGPSClientImp.class);
 
     @Override
-    public void validateToken(String token) throws ApiException {
+    public void validateToken(String token, String privileges) throws ApiException {
         try {
-            String url = baseUrl + "/ping";
-            String body =  "{\"privileges\": [ \"GET_CLIENT\", \"GET_VEHICLE\" ]}";
+            String url = baseUrl + "/validate";
+            String body =  "{\"privileges\": " + privileges + "}";
 
             HttpResponse<String> response = unirest.post(url)
                     .header("x-access-token", token)
                     .body(body)
                     .asString();
 
-//            System.out.println(response.getStatus());
+            //            UserDTO user = JsonUtils.INSTANCE.GSON().fromJson(response.getBody(), UserDTO.class); dejo esto por aqui para el futuro
 
-//            UserDTO user = JsonUtils.INSTANCE.GSON().fromJson(response.getBody(), UserDTO.class);
+            switch (response.getStatus()) {
+                case 401:
+                    throw new ApiException(unauthorized.name(),
+                            "[reason: access token expired ] [method: AuthGPSClientImp.validateToken]",
+                            HttpServletResponse.SC_UNAUTHORIZED);
+                case 403:
+                    throw new ApiException(forbidden.name(),
+                            "[reason: forbidden ] [method: AuthGPSClientImp.validateToken]",
+                            HttpServletResponse.SC_FORBIDDEN);
+//                default:
+//                    throw new ApiException(internal_error.name(),
+//                            "[reason: internal server error ] [method: AuthGPSClientImp.validateToken]",
+//                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            }
 
         } catch (UnirestException e) {
             logger.error("Error al solicitar la validación del token.");

@@ -13,6 +13,6 @@ public interface AuthGPSClient {
      * @param token
      * @throws ApiException
      */
-    void validateToken(String token) throws ApiException, IOException, UnirestException;
+    void validateToken(String token, String privileges) throws ApiException, IOException, UnirestException;
 
 }

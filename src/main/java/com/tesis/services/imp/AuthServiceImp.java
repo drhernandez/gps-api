@@ -2,14 +2,13 @@ package com.tesis.services.imp;
 
 import com.google.inject.Inject;
 import com.tesis.clients.imp.AuthGPSClientImp;
-import com.tesis.enums.ErrorCodes;
+import com.tesis.enums.UrlPermissions;
 import com.tesis.exceptions.ApiException;
 import com.tesis.services.AuthService;
-import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.tesis.enums.ErrorCodes.unauthorized;
+import java.util.regex.Pattern;
 
 public class AuthServiceImp implements AuthService {
 
@@ -19,15 +18,22 @@ public class AuthServiceImp implements AuthService {
     AuthGPSClientImp authGPSClient;
 
     @Override
-    public String validateToken(String token, String uri) throws ApiException {
+    public void validateToken(String token, String method, String uri) throws ApiException {
+        Pattern pattern;
+        String privileges = "[]";
+        String operationRequest = method + " " + uri;
+        for (UrlPermissions permission : UrlPermissions.values()){
+            pattern = Pattern.compile(permission.getPatter());
+            if (pattern.matcher(operationRequest).matches()) {
+                privileges = permission.getPrivileges().toString();
+                break;
+            }
+        }
         try {
-            authGPSClient.validateToken("token");
+            authGPSClient.validateToken("token", privileges);
         } catch (ApiException e) {
             logger.error("Validación de token fallida");
-            throw new ApiException(unauthorized.name(), ErrorCodes.unauthorized.name() , HttpStatus.UNAUTHORIZED_401);
+            throw e;
         }
-
-        return null;
     }
-
 }

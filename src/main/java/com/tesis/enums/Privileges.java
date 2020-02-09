@@ -1,6 +1,6 @@
 package com.tesis.enums;
 
-public enum Privilages {
+public enum Privileges {
     CREATE_CLIENT,
     GET_CLIENT,
     UPDATE_CLIENT,

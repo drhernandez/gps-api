@@ -1,6 +1,7 @@
 package com.tesis.routes;
 
 import com.google.inject.Inject;
+import com.tesis.exceptions.ApiException;
 import com.tesis.services.imp.AuthServiceImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import spark.Filter;
 import spark.Request;
 import spark.Response;
 
+import javax.servlet.http.HttpServletResponse;
 import static spark.Spark.halt;
 
 public class Middlewares {
@@ -27,10 +29,17 @@ public class Middlewares {
             accessToken = accessToken.split(" ")[1];
             try {
                 logger.info("Access to " + request.requestMethod() + " " + request.uri());
-                authService.validateToken(accessToken, request.uri());
-            } catch (Exception e){
+                authService.validateToken(accessToken, request.requestMethod(), request.uri());
+            } catch (ApiException e){
                 logger.info("Authorization fail. Reason: " + e.getMessage());
-                halt(401, "Unauthorized");
+                if (e.getStatus() == HttpServletResponse.SC_FORBIDDEN)
+                    halt(403, "Forbidden");
+                if (e.getStatus() == HttpServletResponse.SC_UNAUTHORIZED)
+                    halt(401, "Unauthorized");
+                if (e.getStatus() == HttpServletResponse.SC_SERVICE_UNAVAILABLE)
+                    halt(503, "Service Unavailable");
+                else
+                    halt(500, "Internal Service Error");
             }
         }
         else
