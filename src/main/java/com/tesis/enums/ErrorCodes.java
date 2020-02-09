@@ -18,5 +18,6 @@ public enum ErrorCodes {
     close_inbound,
     unauthorized,
     //Outbounds
-    error_zone_id;
+    error_zone_id,
+    service_unavailable;
 }
