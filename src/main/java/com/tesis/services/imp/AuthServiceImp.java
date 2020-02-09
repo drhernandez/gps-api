@@ -19,7 +19,7 @@ public class AuthServiceImp implements AuthService {
     AuthGPSClientImp authGPSClient;
 
     @Override
-    public String validateToken(String token) throws ApiException {
+    public String validateToken(String token, String uri) throws ApiException {
         try {
             authGPSClient.validateToken("token");
         } catch (ApiException e) {
