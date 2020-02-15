@@ -6,6 +6,8 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tesis.clients.AuthGPSClient;
 import com.tesis.exceptions.ApiException;
+import com.tesis.models.UserDTO;
+import com.tesis.utils.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +38,6 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     .body(body)
                     .asString();
 
-            //            UserDTO user = JsonUtils.INSTANCE.GSON().fromJson(response.getBody(), UserDTO.class); dejo esto por aqui para el futuro
 
             switch (response.getStatus()) {
                 case 401:
@@ -60,5 +61,60 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
 
+    }
+
+    @Override
+    public UserDTO  getUserData(Long userID) throws ApiException {
+
+        String mock = "{\n" +
+                "    \"id\": 13,\n" +
+                "    \"status\": \"INACTIVE\",\n" +
+                "    \"role\":\n" +
+                "      {\n" +
+                "          \"name\": \"ADMIN\",\n" +
+                "          \"privileges\": [\n" +
+                "              {\n" +
+                "                  \"name\": \"GET_CLIENT\"\n" +
+                "              },\n" +
+                "              {\n" +
+                "                  \"name\": \"CREATE_CLIENT\"\n" +
+                "              }\n" +
+                "          ]\n" +
+                "      },\n" +
+                "    \"email\": \"ddrhernandez92@gmail.com\",\n" +
+                "    \"name\": \"Diego\",\n" +
+                "    \"last_name\": \"Hernández\",\n" +
+                "    \"dni\": \"36354805\",\n" +
+                "    \"address\": \"Tomás de Irobi 165\",\n" +
+                "    \"phone\": \"3515495416\"\n" +
+                "}";
+
+        UserDTO user = JsonUtils.INSTANCE.GSON().fromJson(mock, UserDTO.class);
+        System.out.println(user);
+        return user;
+
+        /*
+
+        try {
+            String url = baseUrl + "/users/" + userID;
+            HttpResponse<String> response = unirest.get(url).asString();
+
+
+
+            if (response.getStatus() == 200)
+                return JsonUtils.INSTANCE.GSON().fromJson(response.getBody(), UserDTO.class);
+            else
+                throw new ApiException(unauthorized.name(),
+                        "[reason: access token expired ] [method: AuthGPSClientImp.getUserData]",
+                        HttpServletResponse.SC_UNAUTHORIZED);
+
+        } catch (UnirestException e) {
+            logger.error("Error al solicitar la informacion del usuario.");
+            throw new ApiException(service_unavailable.name(),
+                    "[reason: " + e.getMessage() + " ] [method: AuthGPSClientImp.getUserData]",
+                    HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+        }
+
+         */
     }
 }

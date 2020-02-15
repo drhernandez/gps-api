@@ -2,7 +2,7 @@ package com.tesis.models;
 
 import java.util.List;
 
-public class RolDTO {
+public class RoleDTO {
     private Long id;
     private String name;
     private List<PrivilegesDTO> privileges;

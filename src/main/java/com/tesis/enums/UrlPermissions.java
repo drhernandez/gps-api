@@ -37,7 +37,7 @@ public enum UrlPermissions {
     GETDevicesID("GET /devices/[0-9]*", EnumSet.of(Privileges.GET_DEVICE)),
     POSTDevices("POST /devices/", EnumSet.of(Privileges.CREATE_DEVICE)),
     PUTDevicesID("PUT /devices/[0-9]*", EnumSet.of(Privileges.UPDATE_DEVICE)),
-    DELETEDevicesID("DELETE /devices/{deviceID}", EnumSet.of(Privileges.DELETE_DEVICE)),
+    DELETEDevicesID("DELETE /devices/[0-9]*", EnumSet.of(Privileges.DELETE_DEVICE)),
 
     GETBrands("GET /brands", EnumSet.of(Privileges.GET_BRAND)),
     GETBrandsID("GET /brands/[0-9]*", EnumSet.of(Privileges.GET_BRAND)),

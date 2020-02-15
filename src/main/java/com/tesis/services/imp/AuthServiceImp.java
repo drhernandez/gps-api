@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.tesis.clients.imp.AuthGPSClientImp;
 import com.tesis.enums.UrlPermissions;
 import com.tesis.exceptions.ApiException;
+import com.tesis.models.UserDTO;
 import com.tesis.services.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,17 @@ public class AuthServiceImp implements AuthService {
         } catch (ApiException e) {
             logger.error("Validación de token fallida");
             throw e;
+        }
+    }
+
+    @Override
+    public UserDTO getUser(Long userID) {
+        try {
+            return authGPSClient.getUserData(userID);
+        }
+        catch (ApiException e){
+            logger.error(e.getMessage());
+            return null;
         }
     }
 }

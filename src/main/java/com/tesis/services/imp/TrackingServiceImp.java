@@ -7,10 +7,7 @@ import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.TrackingDaoExt;
 import com.tesis.jooq.tables.pojos.*;
-import com.tesis.models.Pagination;
-import com.tesis.models.ResponseDTO;
-import com.tesis.models.SMSRequest;
-import com.tesis.models.Search;
+import com.tesis.models.*;
 import com.tesis.routes.TrackingRouter;
 import com.tesis.services.AlertService;
 import com.tesis.services.TrackingService;
@@ -39,6 +36,9 @@ public class TrackingServiceImp implements TrackingService {
 
     @Inject
     SendSMSCClient smscClient;
+
+    @Inject
+    AuthServiceImp authService;
 
 
     @Override
@@ -163,18 +163,19 @@ public class TrackingServiceImp implements TrackingService {
 
     }
 
-    private void sendAlarm(Long deviceID, String alertType) throws ApiException {
+    public void sendAlarm(Long deviceID, String alertType) throws ApiException {
         SMSRequest alertRequest = new SMSRequest();
-        alertRequest.setReceptor("3525-480782"); //TODO remove mock
-        alertRequest.setMessage((alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT));
-
-        try {
+        UserDTO user = authService.getUser(vehiclesDao.fetchOneByDeviceId(deviceID).getUserId());
+        if (user != null) {
+            alertRequest.setReceptor(user.getPhone());
+            alertRequest.setMessage((alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT));
+            try {
 //            smscClient.sendSMS(alertRequest);
-            smscClient.sendAlertSMS(alertRequest, alertType);
-        } catch (ApiException e) {
-            throw e;
+                smscClient.sendAlertSMS(alertRequest, alertType);
+            } catch (ApiException e) {
+                throw e;
+            }
         }
-
     }
 }
 
