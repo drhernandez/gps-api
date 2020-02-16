@@ -15,8 +15,12 @@ public class AuthServiceImp implements AuthService {
 
     Logger logger = LoggerFactory.getLogger(AuthServiceImp.class);
 
+    private AuthGPSClientImp authGPSClient;
+
     @Inject
-    AuthGPSClientImp authGPSClient;
+    public AuthServiceImp(AuthGPSClientImp authGPSClient) {
+        this.authGPSClient = authGPSClient;
+    }
 
     @Override
     public void validateToken(String token, String method, String uri) throws ApiException {
@@ -26,7 +30,7 @@ public class AuthServiceImp implements AuthService {
         for (UrlPermissions permission : UrlPermissions.values()){
             pattern = Pattern.compile(permission.getPatter());
             if (pattern.matcher(operationRequest).matches()) {
-                privileges = permission.getPrivileges().toString();
+                privileges = permission.getPrivilegesAsJson();
                 break;
             }
         }

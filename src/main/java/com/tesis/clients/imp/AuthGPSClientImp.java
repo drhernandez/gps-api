@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.tesis.clients.AuthGPSClient;
 import com.tesis.exceptions.ApiException;
 import com.tesis.models.UserDTO;
@@ -24,7 +25,7 @@ public class AuthGPSClientImp implements AuthGPSClient {
         this.unirest = unirest;
     }
 
-    private String baseUrl = "https://gps-auth.herokuapp.com";
+    private static String baseUrl = "https://gps-auth.herokuapp.com";
     Logger logger = LoggerFactory.getLogger(AuthGPSClientImp.class);
 
     @Override
@@ -33,10 +34,11 @@ public class AuthGPSClientImp implements AuthGPSClient {
             String url = baseUrl + "/validate";
             String body =  "{\"privileges\": " + privileges + "}";
 
-            HttpResponse<String> response = unirest.post(url)
+            RequestBodyEntity responseBodyEntity = unirest.post(url)
                     .header("x-access-token", token)
-                    .body(body)
-                    .asString();
+                    .body(body);
+
+            HttpResponse<String> response = responseBodyEntity.asString();
 
 
             switch (response.getStatus()) {

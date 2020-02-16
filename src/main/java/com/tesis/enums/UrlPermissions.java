@@ -1,5 +1,7 @@
 package com.tesis.enums;
 
+import com.google.gson.JsonArray;
+
 import java.util.EnumSet;
 
 public enum UrlPermissions {
@@ -49,10 +51,7 @@ public enum UrlPermissions {
     GETBrandsBrandlines("GET /brands/brandlines", EnumSet.of(Privileges.GET_BRAND_LINE)),
     GETBrandsBrandlinesID("GET /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.GET_BRAND_LINE)),
     PUTBrandsBrandlinesID("PUT /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.UPDATE_BRAND_LINE)),
-    DELETEBrandsBrandlinesID("DELETE /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.DELETE_BRAND_LINE)),
-
-
-    ;
+    DELETEBrandsBrandlinesID("DELETE /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.DELETE_BRAND_LINE));
 
     private String patter;
     private EnumSet<Privileges> privileges;
@@ -68,6 +67,13 @@ public enum UrlPermissions {
 
     public EnumSet<Privileges> getPrivileges() {
         return privileges;
+    }
+
+    public String getPrivilegesAsJson() {
+        JsonArray array = new JsonArray();
+        for(Privileges privilege : privileges)
+            array.add(privilege.name());
+        return array.toString();
     }
 }
 
