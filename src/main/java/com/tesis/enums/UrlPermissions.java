@@ -14,8 +14,8 @@ public enum UrlPermissions {
     GETVehiclesIDLocation("GET /vehicles/[0-9]*/location",EnumSet.of(Privileges.GET_TRACKING)),
     GETVehiclesIDAlertsSpeed("GET /vehicles/[0-9]*/alerts/speed", EnumSet.of(Privileges.GET_ALERT)),
     GETVehiclesIDAlertsMovement("GET /vehicles/[0-9]*/alerts/movement", EnumSet.of(Privileges.GET_ALERT)),
-    GETVehiclesIDAlertsSpeedHistory("GET /vehicles/[0-9]*/alerts/speed/history", EnumSet.of(Privileges.GET_ALERT_HISTORY)),
-    GETVehiclesIDAlertsMovementHistory("GET /vehicles/[0-9]*/alerts/movement/history", EnumSet.of(Privileges.GET_ALERT_HISTORY)),
+    GETVehiclesIDAlertsSpeedHistory("GET /vehicles/[0-9]*/alerts/speed/history", EnumSet.noneOf(Privileges.class)),
+    GETVehiclesIDAlertsMovementHistory("GET /vehicles/[0-9]*/alerts/movement/history", EnumSet.noneOf(Privileges.class)),
 
     POSTAlertsSend("POST /alerts/send", EnumSet.of(Privileges.SEND_ALERT)),
     GETAlertsSpeeds("GET /alerts/speeds", EnumSet.of(Privileges.GET_ALERT)),
@@ -28,12 +28,12 @@ public enum UrlPermissions {
     PUTAlertsMovementsID("PUT /alerts/movements/[0-9]*", EnumSet.of(Privileges.UPDATE_ALERT)),
     DELETEAlertsMovementsID("DELETE /alerts/movements/[0-9]*", EnumSet.of(Privileges.DELETE_ALERT)),
 
-    POSTTrackings("POST /trackings", EnumSet.of(Privileges.CREATE_TRACKING)),
+    POSTTrackings("POST /trackings", EnumSet.noneOf(Privileges.class)),
     GETTrackingsSearch("GET /trackings/search", EnumSet.of(Privileges.GET_TRACKING)),
     GETTrackingsID("GET /trackings/[0-9]*", EnumSet.of(Privileges.GET_TRACKING)),
 
-    POSTAlertsSpeedsHistory("POST /alerts/speeds/history", EnumSet.of(Privileges.CREATE_ALERT_HISTORY)),
-    POSTAlertsMovementHistory("POST /alerts/movement/history", EnumSet.of(Privileges.CREATE_ALERT_HISTORY)),
+    POSTAlertsSpeedsHistory("POST /alerts/speeds/history", EnumSet.noneOf(Privileges.class)),
+    POSTAlertsMovementHistory("POST /alerts/movement/history", EnumSet.noneOf(Privileges.class)),
 
     GETDevices("GET /devices", EnumSet.of(Privileges.GET_DEVICE)),
     GETDevicesID("GET /devices/[0-9]*", EnumSet.of(Privileges.GET_DEVICE)),
@@ -46,12 +46,12 @@ public enum UrlPermissions {
     POSTBrands("POST /brands/", EnumSet.of(Privileges.CREATE_BRAND)),
     PUTBrandsID("PUT /brands/[0-9]*", EnumSet.of(Privileges.UPDATE_BRAND)),
     DELETEBrandsID("DELETE /brands/[0-9]*", EnumSet.of(Privileges.DELETE_BRAND)),
-    GETBrandsIDBrandlines("GET /brands/[0-9]*/brandlines", EnumSet.of(Privileges.GET_BRAND_LINE)),
+    GETBrandsIDBrandlines("GET /brands/[0-9]*/brandlines", EnumSet.of(Privileges.ALL_BRAND)),
 
-    GETBrandsBrandlines("GET /brands/brandlines", EnumSet.of(Privileges.GET_BRAND_LINE)),
-    GETBrandsBrandlinesID("GET /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.GET_BRAND_LINE)),
-    PUTBrandsBrandlinesID("PUT /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.UPDATE_BRAND_LINE)),
-    DELETEBrandsBrandlinesID("DELETE /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.DELETE_BRAND_LINE));
+    GETBrandsBrandlines("GET /brands/brandlines", EnumSet.of(Privileges.ALL_BRAND)),
+    GETBrandsBrandlinesID("GET /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.ALL_BRAND)),
+    PUTBrandsBrandlinesID("PUT /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.ALL_BRAND)),
+    DELETEBrandsBrandlinesID("DELETE /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.ALL_BRAND));
 
     private String patter;
     private EnumSet<Privileges> privileges;
