@@ -1,46 +1,67 @@
 package com.tesis.services;
 
-import com.mashape.unirest.http.HttpMethod;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.HttpRequestWithBody;
-import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.tesis.clients.imp.AuthGPSClientImp;
-import com.tesis.configs.UnitTestConfigs;
+import com.tesis.exceptions.ApiException;
 import com.tesis.services.imp.AuthServiceImp;
+import kong.unirest.HttpMethod;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AuthServiceUnitTest  extends UnitTestConfigs {
+import javax.servlet.http.HttpServletResponse;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-    private Unirest unirest = Mockito.mock(Unirest.class);
-    private AuthGPSClientImp authClient = new AuthGPSClientImp(unirest);
-    private AuthServiceImp authService = new AuthServiceImp(authClient);
+import static com.tesis.enums.ErrorCodes.unauthorized;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+public class AuthServiceUnitTest {
+
+    private AuthGPSClientImp client;
+    private AuthService authService;
+
+    @Before
+    public void setUp() {
+        client = mock(AuthGPSClientImp.class);
+        authService = new AuthServiceImp(client);
+    }
 
     @Test
     public void validateTokenTest_ok(){
-        String token = "token";
-        String url = "/validate";
-
-        RequestBodyEntity requestBodyEntityMock = Mockito.mock(RequestBodyEntity.class);
-        HttpRequestWithBody httpRequestWithBodyMock = Mockito.mock(HttpRequestWithBody.class);
-        HttpResponse<String> responseMock = Mockito.mock(HttpResponse.class);
-
-
-        Mockito.when(unirest.post(Mockito.anyString())).thenReturn(httpRequestWithBodyMock);
-
-        Mockito.when(responseMock.getStatus()).thenReturn(200);
-
         try {
-            Mockito.when(requestBodyEntityMock.asString()).thenReturn(responseMock);
-            authService.validateToken(token, HttpMethod.POST.name(), url);
+
+            Pattern patternMock = mock(Pattern.class);
+            Matcher matcherMock = mock(Matcher.class);
+
+            when(patternMock.matcher(anyString())).thenReturn(matcherMock);
+            when(matcherMock.matches()).thenReturn(true);
+            doNothing().when(client).validateToken(anyString(), anyString());
+
+            authService.validateToken("token", HttpMethod.POST.name(), "/validate");
+
         } catch (Exception e) {
-            e.printStackTrace();
+            fail("Should not throw any exception");
         }
     }
 
+    @Test
+    public void validateTokenTest_error(){
+        try {
+            Pattern patternMock = mock(Pattern.class);
+            Matcher matcherMock = mock(Matcher.class);
+
+            when(patternMock.matcher(anyString())).thenReturn(matcherMock);
+            when(matcherMock.matches()).thenReturn(true);
+            doThrow(new ApiException(unauthorized.name(),
+                    "[reason: access token expired ] [method: AuthGPSClientImp.validateToken]",
+                    HttpServletResponse.SC_UNAUTHORIZED)).when(client).validateToken(anyString(), anyString());
+
+            authService.validateToken("token", HttpMethod.POST.name(), "/validate");
+
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "[reason: access token expired ] [method: AuthGPSClientImp.validateToken]");
+        }
+    }
 }

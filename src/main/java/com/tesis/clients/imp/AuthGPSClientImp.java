@@ -1,14 +1,11 @@
 package com.tesis.clients.imp;
 
 import com.google.inject.Inject;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.request.body.RequestBodyEntity;
 import com.tesis.clients.AuthGPSClient;
 import com.tesis.exceptions.ApiException;
 import com.tesis.models.UserDTO;
 import com.tesis.utils.JsonUtils;
+import kong.unirest.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,10 +15,10 @@ import static com.tesis.enums.ErrorCodes.*;
 
 public class AuthGPSClientImp implements AuthGPSClient {
 
-    private Unirest unirest;
+    private final UnirestInstance unirest;
 
     @Inject
-    public AuthGPSClientImp (Unirest unirest){
+    public AuthGPSClientImp (UnirestInstance unirest){
         this.unirest = unirest;
     }
 
@@ -38,8 +35,7 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     .header("x-access-token", token)
                     .body(body);
 
-            HttpResponse<String> response = responseBodyEntity.asString();
-
+            HttpResponse response = responseBodyEntity.asEmpty();
 
             switch (response.getStatus()) {
                 case 401:
@@ -55,14 +51,12 @@ public class AuthGPSClientImp implements AuthGPSClient {
 //                            "[reason: internal server error ] [method: AuthGPSClientImp.validateToken]",
 //                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
-
         } catch (UnirestException e) {
             logger.error("Error al solicitar la validación del token.");
             throw new ApiException(service_unavailable.name(),
                     "[reason: " + e.getMessage() + " ] [method: AuthGPSClientImp.validateToken]",
                     HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
-
     }
 
     @Override
@@ -95,19 +89,19 @@ public class AuthGPSClientImp implements AuthGPSClient {
         System.out.println(user);
         return user;
 
-        /*
-
+// ------------- TODO remove mock --------------
+/*
         try {
             String url = baseUrl + "/users/" + userID;
-            HttpResponse<String> response = unirest.get(url).asString();
 
-
+            GetRequest request = unirest.get(url);
+            HttpResponse<String> response = request.asString();
 
             if (response.getStatus() == 200)
                 return JsonUtils.INSTANCE.GSON().fromJson(response.getBody(), UserDTO.class);
             else
                 throw new ApiException(unauthorized.name(),
-                        "[reason: access token expired ] [method: AuthGPSClientImp.getUserData]",
+                        "[reason: unauthorized ] [method: AuthGPSClientImp.getUserData]",
                         HttpServletResponse.SC_UNAUTHORIZED);
 
         } catch (UnirestException e) {
@@ -116,7 +110,6 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     "[reason: " + e.getMessage() + " ] [method: AuthGPSClientImp.getUserData]",
                     HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
-
          */
     }
 }

@@ -1,11 +1,11 @@
 package com.tesis.clients;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
+
 import com.tesis.exceptions.ApiException;
 import com.tesis.models.UserDTO;
+import kong.unirest.UnirestException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public interface AuthGPSClient {
 

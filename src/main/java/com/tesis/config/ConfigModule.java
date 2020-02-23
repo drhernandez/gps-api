@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import com.mashape.unirest.http.Unirest;
 import com.sendgrid.SendGrid;
 import com.tesis.clients.AuthGPSClient;
 import com.tesis.clients.SendGridClient;
@@ -58,11 +57,6 @@ public class ConfigModule extends AbstractModule {
         bind(SendGridClient.class).to(SendGridClientImp.class);
         bind(SendSMSCClient.class).to(SendSMSCClientImp.class);
         bind(AuthGPSClient.class).to(AuthGPSClientImp.class);
-    }
-
-    @Provides
-    Unirest UnirestProvider(){
-        return new Unirest();
     }
 
     @Provides

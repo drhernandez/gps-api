@@ -1,15 +1,18 @@
 package com.tesis.controllers;
 
 import com.google.inject.Inject;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tesis.clients.SendSMSCClient;
 import com.tesis.exceptions.ApiException;
-import com.tesis.jooq.tables.pojos.*;
+import com.tesis.jooq.tables.pojos.MovementAlerts;
+import com.tesis.jooq.tables.pojos.MovementAlertsHistory;
+import com.tesis.jooq.tables.pojos.SpeedAlerts;
+import com.tesis.jooq.tables.pojos.SpeedAlertsHistory;
 import com.tesis.models.ResponseDTO;
 import com.tesis.models.SMSRequest;
 import com.tesis.routes.Router;
 import com.tesis.services.AlertService;
 import com.tesis.utils.JsonUtils;
+import kong.unirest.UnirestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -17,10 +20,6 @@ import spark.Response;
 import spark.utils.StringUtils;
 
 import java.util.List;
-
-import static com.tesis.config.Constants.DEFAULT_TEXT_MOVEMENT_ALERT;
-import static com.tesis.config.Constants.DEFAULT_TEXT_SPEED_ALERT;
-import static com.tesis.enums.ErrorCodes.invalid_data;
 
 public class AlertController {
 
