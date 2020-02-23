@@ -170,7 +170,6 @@ public class TrackingServiceImp implements TrackingService {
             alertRequest.setReceptor(user.getPhone());
             alertRequest.setMessage((alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT));
             try {
-//            smscClient.sendSMS(alertRequest);
                 smscClient.sendAlertSMS(alertRequest, alertType);
             } catch (ApiException e) {
                 throw e;
@@ -180,7 +179,7 @@ public class TrackingServiceImp implements TrackingService {
 }
 
 
-//normal alert
+//no alert
 //10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00
 
 

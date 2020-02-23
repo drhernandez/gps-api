@@ -82,7 +82,7 @@ public class AuthGPSClientImp implements AuthGPSClient {
                 "    \"last_name\": \"Hernández\",\n" +
                 "    \"dni\": \"36354805\",\n" +
                 "    \"address\": \"Tomás de Irobi 165\",\n" +
-                "    \"phone\": \"3515495416\"\n" +
+                "    \"phone\": \"3525-480782\"\n" +
                 "}";
 
         UserDTO user = JsonUtils.INSTANCE.GSON().fromJson(mock, UserDTO.class);
