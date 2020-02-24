@@ -3,6 +3,7 @@ package com.tesis;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.tesis.config.ConfigModule;
+import com.tesis.config.UnirestConfig;
 import com.tesis.server.Server;
 import spark.Spark;
 import spark.servlet.SparkApplication;
@@ -12,7 +13,10 @@ public class Application implements SparkApplication {
     @Override
     public void init() {
 
-        Injector injector = Guice.createInjector(new ConfigModule());
+        Injector injector = Guice.createInjector(
+                new ConfigModule(),
+                new UnirestConfig());
+
         Server server  = injector.getInstance(Server.class);
         server.run();
 

@@ -5,8 +5,10 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.sendgrid.SendGrid;
+import com.tesis.clients.AuthGPSClient;
 import com.tesis.clients.SendGridClient;
 import com.tesis.clients.SendSMSCClient;
+import com.tesis.clients.imp.AuthGPSClientImp;
 import com.tesis.clients.imp.SendGridClientImp;
 import com.tesis.clients.imp.SendSMSCClientImp;
 import com.tesis.routes.*;
@@ -49,10 +51,12 @@ public class ConfigModule extends AbstractModule {
         bind(AlertService.class).to(AlertServiceImp.class);
         bind(BrandService.class).to(BrandServiceImp.class);
         bind(BrandLineService.class).to(BrandLineServiceImp.class);
+        bind(AuthService.class).to(AuthServiceImp.class);
 
         //bind clients
         bind(SendGridClient.class).to(SendGridClientImp.class);
         bind(SendSMSCClient.class).to(SendSMSCClientImp.class);
+        bind(AuthGPSClient.class).to(AuthGPSClientImp.class);
     }
 
     @Provides

@@ -1,12 +1,13 @@
 package com.tesis.clients.imp;
 
-import com.mashape.unirest.http.Unirest;
+import com.google.inject.Inject;
 import com.tesis.clients.SendSMSCClient;
 import com.tesis.exceptions.ApiException;
 import com.tesis.models.SMSRequest;
 import com.tesis.models.SMSResponse;
 import com.tesis.routes.Router;
 import com.tesis.utils.JsonUtils;
+import kong.unirest.UnirestInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,12 @@ import static com.tesis.enums.ErrorCodes.invalid_data;
 public class SendSMSCClientImp implements SendSMSCClient {
 
     private static final Logger logger = LoggerFactory.getLogger(Router.class);
+    private final UnirestInstance instance;
 
+    @Inject
+    public SendSMSCClientImp(UnirestInstance instance) {
+        this.instance = instance;
+    }
 
     @Override
     public void sendSMS(SMSRequest smsRequest) throws ApiException {
@@ -31,7 +37,7 @@ public class SendSMSCClientImp implements SendSMSCClient {
                     smsRequest.getReceptor(),
                     smsRequest.getMessage());
 
-            String result = Unirest.get(url).asJson().getBody().toString();
+            String result = instance.get(url).asJson().getBody().toString();
 
             SMSResponse resp = JsonUtils.INSTANCE.GSON().fromJson(result, SMSResponse.class);
 
@@ -68,7 +74,7 @@ public class SendSMSCClientImp implements SendSMSCClient {
         try {
 
             if (alertType.equals("SPEED"))
-                result = Unirest.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
+                result = instance.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
                         "&apikey=" + System.getenv("SMSC_API_KEY") +
                         "&cmd=enviar&num=" + smsRequest.getReceptor() +
                         "&msj=ALERTA%20DE%20VELOCIDAD!!%20se%20ha%20sobrepasado%20el%20límite%20de%20la%20alerta%20de%20velocidad.")
@@ -80,7 +86,7 @@ public class SendSMSCClientImp implements SendSMSCClient {
 //                        smsRequest.getReceptor(),
 //                        "ALERTA%20DE%20VELOCIDAD!!%20se%20ha%20sobrepasado%20el%20límite%20de%20la%20alerta%20de%20velocidad.");
             else
-                result = Unirest.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
+                result = instance.get("https://www.smsc.com.ar/api/0.3/?alias=" + System.getenv("SMSC_ALIAS") +
                         "&apikey=" + System.getenv("SMSC_API_KEY") +
                         "&cmd=enviar&num=" + smsRequest.getReceptor() +
                         "&msj=ALERTA%20DE%20MOVIMIENTO!!%20se%20ha%20desplazado%20el%20vehiculo%20durante%20una%20alerta.")

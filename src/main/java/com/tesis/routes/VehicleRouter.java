@@ -25,7 +25,8 @@ public class VehicleRouter implements RouteGroup {
 
         logger.info("Loading Vehicles routes...");
         Spark.path("/vehicles", () -> {
-//            Spark.before("/*", middlewares.requiredTokenCheck);
+            Spark.before("", middlewares.accessTokenFilter);
+            Spark.before("/*", middlewares.accessTokenFilter);
 
             Spark.post("", vehicleController::createVehicle);
             Spark.get("", vehicleController::getVehicles);

@@ -12,10 +12,12 @@ public class TrackingRouter implements RouteGroup {
     Logger logger = LoggerFactory.getLogger(TrackingRouter.class);
 
     private TrackingController trackingController;
+    private Middlewares middlewares;
 
     @Inject
-    public TrackingRouter(TrackingController trackingController) {
+    public TrackingRouter(TrackingController trackingController, Middlewares middlewares) {
         this.trackingController = trackingController;
+        this.middlewares = middlewares;
     }
 
     @Override
@@ -23,7 +25,8 @@ public class TrackingRouter implements RouteGroup {
 
         logger.info("Loading Tracking routes...");
         Spark.path("/trackings", () -> {
-//            Spark.before("/*", middlewares.accessTokenFilter);
+            Spark.before("", middlewares.accessTokenFilter);
+            Spark.before("/*", middlewares.accessTokenFilter);
 
             Spark.post("", trackingController::saveTracking);
             Spark.get("/search", trackingController::trackingSearch);
