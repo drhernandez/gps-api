@@ -28,18 +28,12 @@ public class BrandRouter implements RouteGroup {
             Spark.before("", middlewares.accessTokenFilter);
             Spark.before("*", middlewares.accessTokenFilter);
 
-            Spark.post("", brandController::createBrand);
             Spark.get("", brandController::getBrands);
             Spark.get("/brandlines", brandController::getBrandLines);
             Spark.get("/:brand_id", brandController::getBrandByBrandID);
-            Spark.put("/:brand_id", brandController::updateBrand);
-            Spark.delete("/:brand_id", brandController::deleteBrand);
 
-            Spark.post("/:brand_id/brandlines", brandController::createBrandLine);
             Spark.get("/:brand_id/brandlines", brandController::getBrandLineByBrandID);
             Spark.get("/:brand_id/brandlines/:brand_line_id", brandController::getBrandLineByBrandLineID);
-            Spark.put("/:brand_id/brandlines/:brand_line_id", brandController::updateBrandLine);
-            Spark.delete("/:brand_id/brandlines/:brand_line_id", brandController::deleteBrandLine);
         });
     }
 }
