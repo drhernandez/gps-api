@@ -35,7 +35,7 @@ public class AuthServiceImp implements AuthService {
             }
         }
         try {
-            authGPSClient.validateToken("token", privileges);
+            authGPSClient.validateToken(token, privileges);
         } catch (ApiException e) {
             logger.error("Validación de token fallida");
             throw e;
