@@ -22,22 +22,24 @@ public class AuthGPSClientImp implements AuthGPSClient {
         this.unirest = unirest;
     }
 
-    private static String baseUrl = "https://gps-auth.herokuapp.com";
+    private static String baseUrl = System.getenv("AUTH_API_BASE_URL");
     Logger logger = LoggerFactory.getLogger(AuthGPSClientImp.class);
 
     @Override
     public void validateToken(String token, String privileges) throws ApiException {
         try {
-            String url = baseUrl + "/validate";
-            String body =  "{\"privileges\": " + privileges + "}";
+            String url = baseUrl + "/authentication/validate";
 
             RequestBodyEntity responseBodyEntity = unirest.post(url)
                     .header("x-access-token", token)
-                    .body(body);
+                    .header("Content-Type", "application/json")
+                    .body(privileges);
 
             HttpResponse response = responseBodyEntity.asEmpty();
 
             switch (response.getStatus()) {
+                case 200:
+                    break;
                 case 401:
                     throw new ApiException(unauthorized.name(),
                             "[reason: access token expired ] [method: AuthGPSClientImp.validateToken]",
@@ -46,10 +48,10 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     throw new ApiException(forbidden.name(),
                             "[reason: forbidden ] [method: AuthGPSClientImp.validateToken]",
                             HttpServletResponse.SC_FORBIDDEN);
-//                default:
-//                    throw new ApiException(internal_error.name(),
-//                            "[reason: internal server error ] [method: AuthGPSClientImp.validateToken]",
-//                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                default:
+                    throw new ApiException(internal_error.name(),
+                            "[reason: internal server error ] [method: AuthGPSClientImp.validateToken]",
+                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         } catch (UnirestException e) {
             logger.error("Error al solicitar la validación del token.");
@@ -60,41 +62,13 @@ public class AuthGPSClientImp implements AuthGPSClient {
     }
 
     @Override
-    public UserDTO  getUserData(Long userID) throws ApiException {
+    public UserDTO getUserData(Long userID) throws ApiException {
 
-        String mock = "{\n" +
-                "    \"id\": 13,\n" +
-                "    \"status\": \"INACTIVE\",\n" +
-                "    \"role\":\n" +
-                "      {\n" +
-                "          \"name\": \"ADMIN\",\n" +
-                "          \"privileges\": [\n" +
-                "              {\n" +
-                "                  \"name\": \"GET_CLIENT\"\n" +
-                "              },\n" +
-                "              {\n" +
-                "                  \"name\": \"CREATE_CLIENT\"\n" +
-                "              }\n" +
-                "          ]\n" +
-                "      },\n" +
-                "    \"email\": \"ddrhernandez92@gmail.com\",\n" +
-                "    \"name\": \"Diego\",\n" +
-                "    \"last_name\": \"Hernández\",\n" +
-                "    \"dni\": \"36354805\",\n" +
-                "    \"address\": \"Tomás de Irobi 165\",\n" +
-                "    \"phone\": \"3525-480782\"\n" +
-                "}";
-
-        UserDTO user = JsonUtils.INSTANCE.GSON().fromJson(mock, UserDTO.class);
-        System.out.println(user);
-        return user;
-
-// ------------- TODO remove mock --------------
-/*
         try {
             String url = baseUrl + "/users/" + userID;
 
-            GetRequest request = unirest.get(url);
+            GetRequest request = unirest.get(url)
+                .header("Content-Type", "application/json");
             HttpResponse<String> response = request.asString();
 
             if (response.getStatus() == 200)
@@ -110,6 +84,6 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     "[reason: " + e.getMessage() + " ] [method: AuthGPSClientImp.getUserData]",
                     HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
-         */
+
     }
 }
