@@ -62,37 +62,8 @@ public class AuthGPSClientImp implements AuthGPSClient {
     }
 
     @Override
-    public UserDTO  getUserData(Long userID) throws ApiException {
+    public UserDTO getUserData(Long userID) throws ApiException {
 
-        String mock = "{\n" +
-                "    \"id\": 13,\n" +
-                "    \"status\": \"INACTIVE\",\n" +
-                "    \"role\":\n" +
-                "      {\n" +
-                "          \"name\": \"ADMIN\",\n" +
-                "          \"privileges\": [\n" +
-                "              {\n" +
-                "                  \"name\": \"GET_CLIENT\"\n" +
-                "              },\n" +
-                "              {\n" +
-                "                  \"name\": \"CREATE_CLIENT\"\n" +
-                "              }\n" +
-                "          ]\n" +
-                "      },\n" +
-                "    \"email\": \"ddrhernandez92@gmail.com\",\n" +
-                "    \"name\": \"Diego\",\n" +
-                "    \"last_name\": \"Hernández\",\n" +
-                "    \"dni\": \"36354805\",\n" +
-                "    \"address\": \"Tomás de Irobi 165\",\n" +
-                "    \"phone\": \"3525-480782\"\n" +
-                "}";
-
-        UserDTO user = JsonUtils.INSTANCE.GSON().fromJson(mock, UserDTO.class);
-        System.out.println(user);
-        return user;
-
-// ------------- TODO remove mock --------------
-/*
         try {
             String url = baseUrl + "/users/" + userID;
 
@@ -113,6 +84,6 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     "[reason: " + e.getMessage() + " ] [method: AuthGPSClientImp.getUserData]",
                     HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
-         */
+
     }
 }
