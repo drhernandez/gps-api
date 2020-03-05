@@ -1,15 +1,11 @@
 package com.tesis.controllers;
 
-import com.google.common.collect.Lists;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestParsingException;
-import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 public class TestController {
 
@@ -19,7 +15,7 @@ public class TestController {
 
         String tillUrl = System.getenv("TILL_URL");
         String body = "{\n" +
-                "    \"phone\": [\"5493515495416\", \"3515495416\"],\n" +
+                "    \"phone\": [\"15558675309\"],\n" +
 //                "    \"method\" : \"SMS\"\n" +
                 "    \"text\" : \"Hello Heroku!\"\n" +
                 "}";
