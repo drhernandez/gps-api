@@ -18,11 +18,13 @@ public class TestController {
     public void sendSms() {
 
         String tillUrl = System.getenv("TILL_URL");
-        logger.info("SENDING TEST SMS WITH URL {}", tillUrl);
-        HttpResponse<JsonNode> response = Unirest.post(tillUrl).body("{\n" +
-                "    \"phone\": [\"+5493515495416\", \"5493515495416\", \"3515495416\"],\n" +
+        String body = "{\n" +
+                "    \"phone\": [\"5493515495416\", \"3515495416\"],\n" +
+//                "    \"method\" : \"SMS\"\n" +
                 "    \"text\" : \"Hello Heroku!\"\n" +
-                "}")
+                "}";
+        logger.info("SENDING TEST SMS WITH URL {} BODY {}", tillUrl, body);
+        HttpResponse<JsonNode> response = Unirest.post(tillUrl).body(body)
                 .asJson();
 
         logger.info("RESPONSE >>>>> STATUS: {}", response.getStatus());
