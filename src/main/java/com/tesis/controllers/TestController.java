@@ -1,10 +1,15 @@
 package com.tesis.controllers;
 
+import com.google.common.collect.Lists;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
+import kong.unirest.UnirestParsingException;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 public class TestController {
 
@@ -21,5 +26,10 @@ public class TestController {
                 .asJson();
 
         logger.info("RESPONSE >>>>> STATUS: {}", response.getStatus());
+
+        if (response.getParsingError().isPresent()) {
+            UnirestParsingException error = response.getParsingError().get();
+            throw error;
+        }
     }
 }
