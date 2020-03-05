@@ -1,7 +1,11 @@
 package com.tesis.routes;
 
 import com.google.common.net.MediaType;
-import com.google.inject.*;
+import com.google.inject.Binding;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.TypeLiteral;
+import com.tesis.controllers.TestController;
 import com.tesis.exceptions.ApiException;
 import com.tesis.exceptions.ExceptionUtils;
 import org.slf4j.Logger;
@@ -10,12 +14,10 @@ import spark.RouteGroup;
 import spark.Spark;
 
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
 
 import static com.tesis.enums.ErrorCodes.internal_error;
 import static com.tesis.enums.ErrorCodes.route_not_found;
-import static spark.Spark.halt;
 
 public class Router {
 
@@ -23,6 +25,8 @@ public class Router {
 
     @Inject
     Injector injector;
+    @Inject
+    TestController testController;
 
     public void init() {
 
@@ -48,6 +52,14 @@ public class Router {
             response.status(apiException.getStatus());
             response.header("Content-Type", MediaType.JSON_UTF_8.toString());
             response.body(apiException.toJson());
+        });
+
+        Spark.get("/sms", (request, response) -> {
+            testController.sendSms();
+            response.status(HttpServletResponse.SC_OK);
+            response.header("Content-Type", MediaType.PLAIN_TEXT_UTF_8.toString());
+
+            return "ok";
         });
 
         Spark.get("/ping", (request, response) -> {
