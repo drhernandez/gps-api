@@ -20,6 +20,6 @@ public class TestController {
                 "}")
                 .asJson();
 
-        logger.info("RESPONSE >>>>> STATUS: {}, BODY: {}", response.getStatus(), response.getBody().toPrettyString());
+        logger.info("RESPONSE >>>>> STATUS: {}", response.getStatus());
     }
 }
