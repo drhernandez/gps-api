@@ -15,7 +15,7 @@ public class TestController {
 
         String tillUrl = System.getenv("TILL_URL");
         String body = "{\n" +
-                "    \"phone\": [\"15558675309\"],\n" +
+                "    \"phone\": [\"5493515495416\"],\n" +
 //                "    \"method\" : \"SMS\"\n" +
                 "    \"text\" : \"Hello Heroku!\"\n" +
                 "}";
