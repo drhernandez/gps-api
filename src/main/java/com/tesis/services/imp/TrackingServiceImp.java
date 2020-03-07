@@ -1,7 +1,7 @@
 package com.tesis.services.imp;
 
 import com.google.inject.Inject;
-import com.tesis.clients.SendSMSCClient;
+import com.tesis.clients.SMSClient;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
@@ -35,7 +35,7 @@ public class TrackingServiceImp implements TrackingService {
     AlertService alertService;
 
     @Inject
-    SendSMSCClient smscClient;
+    SMSClient smsClient;
 
     @Inject
     AuthServiceImp authService;
@@ -71,7 +71,7 @@ public class TrackingServiceImp implements TrackingService {
                             }
                         } catch (Exception e) {
                             logger.error("Error en la comprobacion de alertas de velocidad de trakings");
-                            halt(500, e.getMessage());
+                            throw e;
                         }
                     }
                 }
@@ -170,7 +170,7 @@ public class TrackingServiceImp implements TrackingService {
             alertRequest.setReceptor(user.getPhone());
             alertRequest.setMessage((alertType.equals("SPEED") ? DEFAULT_TEXT_SPEED_ALERT : DEFAULT_TEXT_MOVEMENT_ALERT));
             try {
-                smscClient.sendAlertSMS(alertRequest, alertType);
+                smsClient.sendSMS(alertRequest);
             } catch (ApiException e) {
                 throw e;
             }
