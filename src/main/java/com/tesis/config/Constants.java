@@ -9,8 +9,8 @@ public class Constants {
 
     public static final float DEFAULT_SPEED_ALERT = 60;
     public static final double DEFAULT_MOVEMENT_ALERT_KM = 0.02; // 20 mts
-    public static final String DEFAULT_TEXT_SPEED_ALERT = "ALERTA%20DE%20VELOCIDAD!!%20se%20ha%20sobrepasado%20el%20límite%20de%20la%20alerta%20de%20velocidad.";
-    public static final String DEFAULT_TEXT_MOVEMENT_ALERT = "ALERTA%20DE%20MOVIMIENTO!!%20se%20ha%20desplazado%20el%20vehiculo%20durante%20una%20alerta.";
+    public static final String DEFAULT_TEXT_SPEED_ALERT = "ALERTA DE VELOCIDAD!! se ha sobrepasado el límite de la alerta de velocidad.";
+    public static final String DEFAULT_TEXT_MOVEMENT_ALERT = "ALERTA DE MOVIMIENTO!! se ha desplazado el vehiculo durante una alerta.";
 
     public static final double EARTH_RADIUS_KM = 6371;
     public static final double EARTH_RADIUS_MILES = 3958.8;
