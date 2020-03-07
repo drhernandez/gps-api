@@ -8,11 +8,9 @@ import com.sendgrid.SendGrid;
 import com.tesis.clients.AuthGPSClient;
 import com.tesis.clients.SMSClient;
 import com.tesis.clients.SendGridClient;
-import com.tesis.clients.SendSMSCClient;
 import com.tesis.clients.imp.AuthGPSClientImp;
 import com.tesis.clients.imp.SMSClientImp;
 import com.tesis.clients.imp.SendGridClientImp;
-import com.tesis.clients.imp.SendSMSCClientImp;
 import com.tesis.routes.*;
 import com.tesis.server.Server;
 import com.tesis.services.*;
@@ -57,7 +55,6 @@ public class ConfigModule extends AbstractModule {
 
         //bind clients
         bind(SendGridClient.class).to(SendGridClientImp.class);
-        bind(SendSMSCClient.class).to(SendSMSCClientImp.class);
         bind(AuthGPSClient.class).to(AuthGPSClientImp.class);
         bind(SMSClient.class).to(SMSClientImp.class);
     }

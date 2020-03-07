@@ -2,7 +2,6 @@ package com.tesis.controllers;
 
 import com.google.inject.Inject;
 import com.tesis.clients.SMSClient;
-import com.tesis.clients.SendSMSCClient;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.MovementAlerts;
 import com.tesis.jooq.tables.pojos.MovementAlertsHistory;
@@ -27,14 +26,11 @@ public class AlertController {
     private static final Logger logger = LoggerFactory.getLogger(Router.class);
 
     private AlertService alertService;
-    private SendSMSCClient sendSMSCClient;
     private SMSClient smsClient;
 
     @Inject
-    public AlertController(AlertService alertService,
-                           SendSMSCClient sendSMSCClient, SMSClient smsClient) {
+    public AlertController(AlertService alertService, SMSClient smsClient) {
         this.alertService = alertService;
-        this.sendSMSCClient = sendSMSCClient;
         this.smsClient = smsClient;
     }
 

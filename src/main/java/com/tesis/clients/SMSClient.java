@@ -6,5 +6,4 @@ import com.tesis.models.SMSRequest;
 public interface SMSClient {
 
     void sendSMS(SMSRequest smsRequest) throws ApiException;
-    void sendAlertSMS(SMSRequest smsRequest, String alertType) throws ApiException;
 }
