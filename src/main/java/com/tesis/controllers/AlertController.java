@@ -1,6 +1,7 @@
 package com.tesis.controllers;
 
 import com.google.inject.Inject;
+import com.tesis.clients.SMSClient;
 import com.tesis.clients.SendSMSCClient;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.MovementAlerts;
@@ -27,12 +28,14 @@ public class AlertController {
 
     private AlertService alertService;
     private SendSMSCClient sendSMSCClient;
+    private SMSClient smsClient;
 
     @Inject
     public AlertController(AlertService alertService,
-                           SendSMSCClient sendSMSCClient) {
+                           SendSMSCClient sendSMSCClient, SMSClient smsClient) {
         this.alertService = alertService;
         this.sendSMSCClient = sendSMSCClient;
+        this.smsClient = smsClient;
     }
 
     //  ----------------  Speed Alert methods ----------------
@@ -290,13 +293,13 @@ public class AlertController {
     }
 
 
-    //  ----------------  SMSC Api methods ----------------
+    //  ----------------  SMS Api methods ----------------
 
     public Object sendSMS(Request request, Response response) throws ApiException, UnirestException {
         SMSRequest smsRequest = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SMSRequest.class);
 
         try {
-            sendSMSCClient.sendSMS(smsRequest);
+            smsClient.sendSMS(smsRequest);
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw e;
