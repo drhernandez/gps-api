@@ -29,7 +29,6 @@ public class VehicleRouter implements RouteGroup {
             Spark.before("/*", middlewares.accessTokenFilter);
 
             Spark.post("", vehicleController::createVehicle);
-            Spark.get("", vehicleController::getVehicles);
             Spark.get("/:vehicle_id", vehicleController::getVehiclesByVehicleID);
             Spark.put("/:vehicle_id", vehicleController::updateVehicle);
             Spark.delete("/:vehicle_id", vehicleController::deleteVehicle);
