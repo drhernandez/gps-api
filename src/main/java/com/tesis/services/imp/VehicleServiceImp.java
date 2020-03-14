@@ -7,8 +7,11 @@ import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.jooq.tables.pojos.Vehicles;
+import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.Search;
 import com.tesis.services.VehicleService;
+import com.tesis.utils.filters.VehicleFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +94,13 @@ public class VehicleServiceImp implements VehicleService {
 
     public Long getUserIDByVehicleID(Long vehicleID){
         return vehiclesDao.fetchByIDForUserID(vehicleID);
+    }
+
+    @Override
+    public ResponseDTO<Search> vehicleSearch(VehicleFilters filters, Pagination pagination) {
+        ResponseDTO<Search> responseDTO = new ResponseDTO<>();
+        responseDTO.model = new Search<Vehicles>(vehiclesDao.findByFilters(filters, pagination), pagination);
+        return responseDTO;
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.EnumSet;
 public enum UrlPermissions {
     GETVehicles ("GET /vehicles", EnumSet.of(Privileges.GET_VEHICLE)),
     GETVehiclesID ("GET /vehicles/[0-9]*", EnumSet.of(Privileges.GET_VEHICLE)),
+    GETVehicleSearch("GET /vehicles/search", EnumSet.of(Privileges.GET_VEHICLE)),
     POSTVehicles("POST /vehicles", EnumSet.of(Privileges.CREATE_VEHICLE)),
     PUTVehiclesID("PUT /vehicles/[0-9]*", EnumSet.of(Privileges.UPDATE_VEHICLE)),
     DELETEVehiclesID("DELETE /vehicles/[0-9]*", EnumSet.of(Privileges.DELETE_VEHICLE)),
