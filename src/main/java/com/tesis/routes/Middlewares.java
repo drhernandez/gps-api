@@ -24,9 +24,8 @@ public class Middlewares {
     }
 
     public Filter accessTokenFilter = (Request request, Response response) -> {
-        String accessToken = request.headers("Authorization");
+        String accessToken = request.headers("x-access-token");
         if (accessToken != null) {
-            accessToken = accessToken.split(" ")[1];
             try {
                 logger.info("Access to " + request.requestMethod() + " " + request.uri());
                 authService.validateToken(accessToken, request.requestMethod(), request.uri());
