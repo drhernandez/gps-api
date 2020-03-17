@@ -4,6 +4,9 @@ import javax.inject.Inject;
 
 import com.tesis.enums.Status;
 import com.tesis.jooq.tables.*;
+import com.tesis.models.Pagination;
+import com.tesis.utils.filters.VehicleFilters;
+import org.jooq.Condition;
 import org.jooq.Configuration;
 import com.tesis.jooq.tables.daos.VehiclesDao;
 
@@ -103,6 +106,36 @@ public class VehicleDaoExt extends VehiclesDao {
         return DSL.using(configuration()).select(Vehicles.VEHICLES.USER_ID)
                 .from(Vehicles.VEHICLES)
                 .where(Vehicles.VEHICLES.ID.eq(vehicleID)).fetchOne(Vehicles.VEHICLES.USER_ID);
+    }
+
+    public List<com.tesis.jooq.tables.pojos.Vehicles> findByFilters(VehicleFilters filters, Pagination pagination) {
+        Condition searchCondition = DSL.trueCondition();
+
+        if (filters.getStatus() != null)
+            searchCondition = searchCondition.and(Vehicles.VEHICLES.STATUS.eq(filters.getStatus()));
+        if (filters.getUserId() != null)
+            searchCondition = searchCondition.and(Vehicles.VEHICLES.USER_ID.eq(filters.getUserId()));
+        if (filters.getDeviceId() != null)
+            searchCondition = searchCondition.and(Vehicles.VEHICLES.DEVICE_ID.eq(filters.getDeviceId()));
+        if (filters.getPlate() != null)
+            searchCondition = searchCondition.and(Vehicles.VEHICLES.PLATE.eq(filters.getPlate()));
+        if (filters.getBrand() != null)
+            searchCondition = searchCondition.and(Vehicles.VEHICLES.BRAND.eq(filters.getBrand()));
+        if (filters.getBrandLine() != null)
+            searchCondition = searchCondition.and(Vehicles.VEHICLES.BRAND_LINE.eq(filters.getBrandLine()));
+        searchCondition = searchCondition.and(Vehicles.VEHICLES.DELETED_AT.isNull());
+
+        int count = DSL.using(configuration())
+                .fetchCount(DSL.selectFrom(Vehicles.VEHICLES).where(searchCondition));
+        pagination.setTotal(count);
+
+        return DSL.using(configuration())
+                .selectFrom(Vehicles.VEHICLES)
+                .where(searchCondition)
+                .limit(pagination.getLimit())
+                .offset((pagination.getPage()-1)*pagination.getLimit())
+                .fetch()
+                .map(mapper());
     }
 
 }
