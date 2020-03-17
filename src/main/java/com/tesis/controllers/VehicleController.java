@@ -3,17 +3,21 @@ package com.tesis.controllers;
 import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.*;
+import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
+import com.tesis.models.Search;
 import com.tesis.services.AlertService;
 import com.tesis.services.TrackingService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
+import com.tesis.utils.filters.VehicleFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class VehicleController {
@@ -275,6 +279,34 @@ public class VehicleController {
         ResponseDTO<List<MovementAlertsHistory>> responseDTO = new ResponseDTO<>();
 
         responseDTO = alertService.getMovementHistoryByVehicleID(vehicleID);
+
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
+    }
+
+    public Object vehicleSearch(Request request, Response response) throws ApiException {
+        VehicleFilters vehicleFilters = new VehicleFilters();
+        Pagination pagination = new Pagination();
+
+        try{
+            vehicleFilters.setStatus(request.queryParams("status"));
+            vehicleFilters.setUserId(request.queryParams("user_id") != null ? Long.valueOf(request.queryParams("user_id")) : null);
+            vehicleFilters.setDeviceId(request.queryParams("device_id") != null ? Long.valueOf(request.queryParams("device_id")) : null);
+            vehicleFilters.setPlate(request.queryParams("plate"));
+            vehicleFilters.setBrand(request.queryParams("brand"));
+            vehicleFilters.setBrandLine(request.queryParams("brand_line"));
+
+            pagination.setPage(request.queryParams("page") != null ? Integer.parseInt(request.queryParams("page")) : 1);
+            pagination.setLimit(request.queryParams("limit") != null ? Integer.parseInt(request.queryParams("limit")) : 10);
+
+        } catch (NumberFormatException e) {
+            throw new ApiException("invalid_data", "[reason: invalid_params] [method: VehicleController.vehicleSearch]");
+        }
+
+        ResponseDTO<Search> responseDTO = vehicleService.vehicleSearch(vehicleFilters, pagination);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
