@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'war'
     id 'idea'
     id 'application'
 }
@@ -43,6 +42,11 @@ dependencies {
         exclude(module: 'httpclient')
         exclude(module: 'httpmime')
     }
+}
+
+jar {
+    baseName = 'application'
+    version =  '0.1.0'
 }
 
 
