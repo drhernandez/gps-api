@@ -24,7 +24,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class VehicleServiceUnitTest extends UnitTestConfigs {
+public class VehicleServiceUnitTest {
 
     @Mock
     VehicleDaoExt vehicleDao;
