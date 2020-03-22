@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BrandServiceUnitTest extends UnitTestConfigs {
+public class BrandServiceUnitTest {
 
     @Mock
     BrandDaoExt brandDao;

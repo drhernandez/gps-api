@@ -27,7 +27,7 @@ public class Middlewares {
         String accessToken = request.headers("x-access-token");
         if (accessToken != null) {
             try {
-                logger.info("Access to " + request.requestMethod() + " " + request.uri());
+                logger.info(String.format("Access to %s %s - from %s", request.requestMethod(), request.uri(), request.ip()));
                 authService.validateToken(accessToken, request.requestMethod(), request.uri());
             } catch (ApiException e){
                 logger.info("Authorization fail. Reason: " + e.getMessage());

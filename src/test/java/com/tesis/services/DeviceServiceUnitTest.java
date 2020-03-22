@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DeviceServiceUnitTest extends UnitTestConfigs {
+public class DeviceServiceUnitTest {
 
 
     @Mock

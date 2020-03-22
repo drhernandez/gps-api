@@ -1,6 +1,5 @@
 package com.tesis.services;
 
-import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.*;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.jooq.tables.pojos.*;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AlertServiceUnitTest extends UnitTestConfigs {
+public class AlertServiceUnitTest {
 
 
     @Mock
@@ -337,7 +336,6 @@ public class AlertServiceUnitTest extends UnitTestConfigs {
 
     @Test
     public void deleteSpeedAlertHistoryTest_error(){
-//        Mockito.doThrow(DataAccessException.class).when(speedAlertsHistoryDao).deleteSpeedAlertHistory(any(Long.class));
         ResponseDTO<SpeedAlertsHistory> responseDTO = alertService.deleteSpeedAlertHistory(1L);
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
@@ -411,7 +409,6 @@ public class AlertServiceUnitTest extends UnitTestConfigs {
 
     @Test
     public void deleteMovementAlertHistoryTest_error(){
-//        Mockito.doThrow(DataAccessException.class).when(movementAlertsHistoryDao).deleteMovementsAlertHistory(any(Long.class));
         ResponseDTO<MovementAlertsHistory> responseDTO = alertService.deleteMovementAlertHistory(1L);
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
