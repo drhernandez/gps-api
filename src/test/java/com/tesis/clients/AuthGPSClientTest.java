@@ -128,13 +128,14 @@ public class AuthGPSClientTest {
                 "    \"last_name\": \"Hernández\",\n" +
                 "    \"dni\": \"36354805\",\n" +
                 "    \"address\": \"Tomás de Irobi 165\",\n" +
-                "    \"phone\": \"3515495416\"\n" +
+                "    \"phone\": \"+543515495416\"\n" +
                 "}";
 
         GetRequest getRequestMock = mock(GetRequest.class);
         HttpResponse httpResponseMock = mock(HttpResponse.class);
 
         when(instance.get(anyString())).thenReturn(getRequestMock);
+        when(getRequestMock.header(anyString(), anyString())).thenReturn(getRequestMock);
         when(getRequestMock.asString()).thenReturn(httpResponseMock);
         when(httpResponseMock.getStatus()).thenReturn(200);
         when(httpResponseMock.getBody()).thenReturn(userMock);
@@ -155,6 +156,7 @@ public class AuthGPSClientTest {
         HttpResponse httpResponseMock = mock(HttpResponse.class);
 
         when(instance.get(anyString())).thenReturn(getRequestMock);
+        when(getRequestMock.header(anyString(), anyString())).thenReturn(getRequestMock);
         when(getRequestMock.asString()).thenReturn(httpResponseMock);
         when(httpResponseMock.getStatus()).thenReturn(503);
 
