@@ -1,6 +1,5 @@
 package com.tesis.services;
 
-import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.TrackingDaoExt;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.jooq.tables.pojos.Trackings;
@@ -24,10 +23,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TrackingServiceUnitTest extends UnitTestConfigs {
+public class TrackingServiceUnitTest {
+
+    @Mock
+    AlertService alertService;
 
     @Mock
     VehicleDaoExt vehiclesDao;
@@ -41,23 +44,35 @@ public class TrackingServiceUnitTest extends UnitTestConfigs {
     @Test
     public void saveTrackingTest_ok(){
 
-        Mockito.doNothing().when(trackingsDao).insert(any(Trackings.class));
         List<Trackings> trackingsList = new ArrayList<>();
-        trackingsList.add(Mockito.mock(Trackings.class));
+        Trackings trackingMock = Mockito.mock(Trackings.class);
+        trackingMock.setDeviceId(1L);
+        trackingsList.add(trackingMock);
+
+        Mockito.when(trackingsDao.getDeviceIDFromPhysicalID(anyLong())).thenReturn(1L);
+        Mockito.when(alertService.getSpeedIfActive(any())).thenReturn(null);
+        Mockito.when(alertService.getMovementIfActive(any())).thenReturn(null);
 
         ResponseDTO responseDTO = trackingService.saveTracking(trackingsList);
-        Mockito.verify(trackingsDao, times(trackingsList.size())).insert(any(Trackings.class));
+        Mockito.verify(trackingsDao, times(trackingsList.size())).saveTracking(any(Trackings.class));
         assertEquals(trackingsList.toString(), responseDTO.getModel().toString());
     }
     @Test
     public void saveTrackingTest_error(){
 
-        Mockito.doThrow(DataAccessException.class).when(trackingsDao).insert(any(Trackings.class));
         List<Trackings> trackingsList = new ArrayList<>();
-        trackingsList.add(Mockito.mock(Trackings.class));
+        Trackings trackingMock = Mockito.mock(Trackings.class);
+        trackingMock.setDeviceId(1L);
+        trackingsList.add(trackingMock);
+
+        Mockito.when(trackingsDao.getDeviceIDFromPhysicalID(anyLong())).thenReturn(1L);
+        Mockito.when(alertService.getSpeedIfActive(any())).thenReturn(null);
+        Mockito.when(alertService.getMovementIfActive(any())).thenReturn(null);
+
+        Mockito.doThrow(DataAccessException.class).when(trackingsDao).saveTracking(any(Trackings.class));
 
         ResponseDTO responseDTO = trackingService.saveTracking(trackingsList);
-        assertEquals(responseDTO.getError().getMessage(), "Error inserting tracking data");
+        assertEquals(responseDTO.getError().getMessage(), "Error al guardar el tracking");
     }
 
     @Test
