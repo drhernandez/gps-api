@@ -86,9 +86,9 @@ public class ConfigModule extends AbstractModule {
     @Provides @Singleton
     Configuration provideDBConfiguration() throws SQLException {
 
-        String userName = "ferjobfmeqjprm";
-        String password = "ec949c7ef858b46668966285a5cfa165e42d8a481444c6f8a42b0f1c0b481076";
-        String url = "jdbc:postgresql://ec2-23-21-128-35.compute-1.amazonaws.com:5432/d6em601ppakco6?sslmode=require";
+        String userName = "pghsyfxpwngpkt";
+        String password = "52887b909f5712c835806b4ee0bbd5524a5a29985ce9489d6981c4e10d5fc938";
+        String url = "jdbc:postgresql://ec2-34-200-101-236.compute-1.amazonaws.com:5432/d4cam14ljmf6nh?sslmode=require";
         Connection connection =  DriverManager.getConnection(url, userName, password);
 
         return new DefaultConfiguration().set(connection).set(SQLDialect.POSTGRES_10);
