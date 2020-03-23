@@ -28,12 +28,11 @@ public class VehicleServiceImp implements VehicleService {
     VehicleDaoExt vehiclesDao;
 
     public ResponseDTO<List<Vehicles>> getVehicles() {
-        return new ResponseDTO(vehiclesDao.findAllActives(), null);
+        return new ResponseDTO<>(vehiclesDao.findAllActives(), null);
     }
 
     public ResponseDTO<Vehicles> getVehiclesByVehicleID(Long VehicleID) {
-        ResponseDTO<Vehicles> responseDTO = new ResponseDTO(vehiclesDao.fetchOneById(VehicleID), null);
-        return responseDTO;
+        return new ResponseDTO<>(vehiclesDao.fetchOneById(VehicleID), null);
     }
 
     @Override
@@ -45,8 +44,8 @@ public class VehicleServiceImp implements VehicleService {
             vehiclesDao.createVehicle(vehicle);
             responseDTO.model = vehicle;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el vehiculo %s", vehicle.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el vehiculo.");
+            logger.error("[message: No se pudo guardar el vhículo {}] [error: {}]", vehicle.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el vehiculo.", e);
         }
 
         return responseDTO;
