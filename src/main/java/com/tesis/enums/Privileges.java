@@ -28,6 +28,4 @@ public enum Privileges {
     CREATE_BRAND,
     UPDATE_BRAND,
     DELETE_BRAND,
-
-    ALL_BRAND;
 }
