@@ -1,23 +1,28 @@
 package com.tesis.controllers;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.inject.Inject;
+import com.tesis.enums.ErrorCodes;
+import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.*;
 import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
 import com.tesis.services.AlertService;
+import com.tesis.services.DeviceService;
 import com.tesis.services.TrackingService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
 import com.tesis.utils.filters.VehicleFilters;
+import com.tesis.utils.filters.vehicleActivateBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public class VehicleController {
@@ -27,14 +32,17 @@ public class VehicleController {
     private VehicleService vehicleService;
     private TrackingService trackingService;
     private AlertService alertService;
+    private DeviceService deviceService;
 
     @Inject
     public VehicleController(VehicleService vehicleService,
                              TrackingService trackingService,
-                             AlertService alertService) {
+                             AlertService alertService,
+                             DeviceService deviceService) {
         this.vehicleService = vehicleService;
         this.trackingService = trackingService;
         this.alertService = alertService;
+        this.deviceService = deviceService;
     }
 
     public Object getVehicles(Request request, Response response) throws ApiException {
@@ -90,6 +98,10 @@ public class VehicleController {
 
     public  Object updateVehicle(Request request, Response response) throws ApiException {
         String param = request.params("Vehicle_id");
+
+
+
+
         Long VehicleID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data", "[reason: invalid_Vehicle_id] [method: VehicleController.updateVehicle]");
@@ -195,13 +207,13 @@ public class VehicleController {
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedAlertByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getSpeedAlertByVehicleID]");
         }
 
         try {
             vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedAlertByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getSpeedAlertByVehicleID]");
         }
 
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
@@ -219,13 +231,13 @@ public class VehicleController {
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementAlertByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getMovementAlertByVehicleID]");
         }
 
         try {
             vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementAlertByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getMovementAlertByVehicleID]");
         }
 
         ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
@@ -243,13 +255,13 @@ public class VehicleController {
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedHistoryByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getSpeedHistoryByVehicleID]");
         }
 
         try {
             vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getSpeedHistoryByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getSpeedHistoryByVehicleID]");
         }
 
         ResponseDTO<List<SpeedAlertsHistory>> responseDTO = new ResponseDTO<>();
@@ -267,13 +279,13 @@ public class VehicleController {
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementHistoryByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getMovementHistoryByVehicleID]");
         }
 
         try {
             vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: AlertController.getMovementHistoryByVehicleID]");
+            throw new ApiException("invalid_data", "[reason: vehicle_id] [method: VehicleController.getMovementHistoryByVehicleID]");
         }
 
         ResponseDTO<List<MovementAlertsHistory>> responseDTO = new ResponseDTO<>();
@@ -315,4 +327,50 @@ public class VehicleController {
         return responseDTO.getModelAsJson();
     }
 
+    public Object vehicleActivate(Request request, Response response) throws ApiException {
+        String param = request.params("vehicle_id");
+        Long vehicleID;
+        Long physicalID;
+        if (StringUtils.isBlank(param)) {
+            throw new ApiException(ErrorCodes.invalid_data.toString(), "[reason: vehicle_id] [method: VehicleController.vehicleActivate]");
+        }
+        try {
+            vehicleID = Long.valueOf(param);
+        } catch (NumberFormatException e) {
+            throw new ApiException(ErrorCodes.invalid_data.toString(), "[reason: vehicle_id] [method: VehicleController.vehicleActivate]");
+        }
+
+        physicalID = JsonUtils.INSTANCE.GSON().fromJson(request.body(), vehicleActivateBody.class).getPhysicalId();
+
+        Vehicles vehicle = vehicleService.getVehiclesByVehicleID(vehicleID).getModel();
+        if (vehicle == null)
+            throw new ApiException(ErrorCodes.not_found.toString(),
+                    "Vehiculo no encontrado");
+
+        ResponseDTO<Devices> responseDTO = deviceService.getDeviceByPhysicalID(physicalID);
+
+        if (responseDTO.error != null)
+            throw new ApiException(ErrorCodes.internal_error.toString(),
+                    "No se pudo activar el vehiculo. Reason: " + responseDTO.error.getMessage());
+
+        Devices device = responseDTO.getModel();
+        if(device != null) {
+            device.setPhysicalId(physicalID);
+            device.setDeletedAt(null);
+            deviceService.updateDevice(device.getId(), device);
+        }
+        else {
+            device = new Devices();
+            device.setPhysicalId(physicalID);
+            device.setModel(System.getenv("DEFALUT_DEVICE_MODEL"));
+            device.setSoftwareVersion(System.getenv("DEFAULT_DEVICE_SOFTWARE_VERSION"));
+            deviceService.createDevice(device);
+        }
+
+        vehicle.setStatus(Status.ACTIVE.toString());
+        vehicle.setDeviceId(device.getId());
+        vehicleService.updateVehicle(vehicleID, vehicle);
+
+        return JsonUtils.INSTANCE.GSON().toJson(vehicle);
+    }
 }

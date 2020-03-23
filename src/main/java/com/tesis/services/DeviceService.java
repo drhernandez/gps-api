@@ -6,10 +6,11 @@ import com.tesis.models.ResponseDTO;
 import javax.xml.ws.Response;
 import java.util.List;
 
-public interface DevicesService {
+public interface DeviceService {
     ResponseDTO<Devices> createDevice(Devices device);
     ResponseDTO<List<Devices>> getDevices();
     ResponseDTO<Devices> getDeciveByDeviceID(Long deviceID);
     ResponseDTO<Devices> updateDevice(Long deviceID, Devices newDevice);
     ResponseDTO<Devices> deleteDevice(Long deviceId);
+    ResponseDTO<Devices> getDeviceByPhysicalID(Long physicalID);
 }

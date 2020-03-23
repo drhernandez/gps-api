@@ -7,7 +7,7 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.models.ResponseDTO;
-import com.tesis.services.DevicesService;
+import com.tesis.services.DeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Singleton
-public class DevicesServiceImp implements DevicesService {
+public class DeviceServiceImp implements DeviceService {
 
-    Logger logger = LoggerFactory.getLogger(DevicesServiceImp.class);
+    Logger logger = LoggerFactory.getLogger(DeviceServiceImp.class);
 
     @Inject
     DeviceDaoExt devicesDao;
@@ -76,6 +76,17 @@ public class DevicesServiceImp implements DevicesService {
         }catch (Exception e) {
             logger.error(String.format("No se pudo eliminar el device %s", deviceId));
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el device.");
+        }
+        return responseDTO;
+    }
+
+    public ResponseDTO<Devices> getDeviceByPhysicalID(Long physicalID){
+        ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
+        try {
+            responseDTO.setModel(devicesDao.getDeviceByPhysicalID(physicalID));
+        } catch (Exception e) {
+            logger.error(String.format("No se pudo obtener el device con id fisico %s", physicalID));
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), e.getMessage());
         }
         return responseDTO;
     }
