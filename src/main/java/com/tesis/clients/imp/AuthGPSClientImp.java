@@ -35,29 +35,17 @@ public class AuthGPSClientImp implements AuthGPSClient {
                     .header("Content-Type", "application/json")
                     .body(privileges);
 
-            HttpResponse response = responseBodyEntity.asEmpty();
-
-            switch (response.getStatus()) {
-                case 200:
-                    break;
-                case 401:
-                    throw new ApiException(unauthorized.name(),
-                            "[reason: access token expired ] [method: AuthGPSClientImp.validateToken]",
-                            HttpServletResponse.SC_UNAUTHORIZED);
-                case 403:
-                    throw new ApiException(forbidden.name(),
-                            "[reason: forbidden ] [method: AuthGPSClientImp.validateToken]",
-                            HttpServletResponse.SC_FORBIDDEN);
-                default:
-                    throw new ApiException(internal_error.name(),
-                            "[reason: internal server error ] [method: AuthGPSClientImp.validateToken]",
-                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            HttpResponse<JsonNode> response = responseBodyEntity.asJson();
+            if (response.getStatus() != 200) {
+                logger.error("[message: Invalid response validating token] [status: {}] [response: {}]", response.getStatus(), response.getBody());
+                throw new ApiException(unauthorized.name(), "Unauthorized", HttpServletResponse.SC_UNAUTHORIZED);
             }
+
         } catch (UnirestException e) {
-            logger.error("Error al solicitar la validación del token.");
+            logger.error("[message: Error al solicitar la validación del token] [error: {}]", e.getMessage());
             throw new ApiException(service_unavailable.name(),
                     "[reason: " + e.getMessage() + " ] [method: AuthGPSClientImp.validateToken]",
-                    HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                    HttpServletResponse.SC_SERVICE_UNAVAILABLE, e);
         }
     }
 

@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import com.tesis.enums.Status;
 import com.tesis.jooq.tables.*;
+import com.tesis.jooq.tables.records.VehiclesRecord;
 import com.tesis.models.Pagination;
 import com.tesis.utils.filters.VehicleFilters;
 import org.jooq.Condition;
@@ -15,6 +16,7 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.jooq.Result;
 import org.jooq.impl.DSL;
 
 import static com.tesis.config.Constants.DEFAULT_SPEED_ALERT;
@@ -22,21 +24,21 @@ import static com.tesis.config.Constants.DEFAULT_SPEED_ALERT;
 public class VehicleDaoExt extends VehiclesDao {
 
     @Inject
-    public VehicleDaoExt(Configuration configuration){
+    public VehicleDaoExt(Configuration configuration) {
         super(configuration);
     }
 
-    public com.tesis.jooq.tables.pojos.Vehicles createVehicle(com.tesis.jooq.tables.pojos.Vehicles vehicle){
+    public com.tesis.jooq.tables.pojos.Vehicles createVehicle(com.tesis.jooq.tables.pojos.Vehicles vehicle) {
         DSL.using(configuration()).transaction(t -> {
-            t.dsl().insertInto(Vehicles.VEHICLES,
-                        Vehicles.VEHICLES.STATUS,
-                        Vehicles.VEHICLES.DELETED_AT,
-                        Vehicles.VEHICLES.LAST_UPDATED,
-                        Vehicles.VEHICLES.USER_ID,
-                        Vehicles.VEHICLES.DEVICE_ID,
-                        Vehicles.VEHICLES.PLATE,
-                        Vehicles.VEHICLES.BRAND,
-                        Vehicles.VEHICLES.BRAND_LINE)
+            Result<VehiclesRecord> result = t.dsl().insertInto(Vehicles.VEHICLES,
+                    Vehicles.VEHICLES.STATUS,
+                    Vehicles.VEHICLES.DELETED_AT,
+                    Vehicles.VEHICLES.LAST_UPDATED,
+                    Vehicles.VEHICLES.USER_ID,
+                    Vehicles.VEHICLES.DEVICE_ID,
+                    Vehicles.VEHICLES.PLATE,
+                    Vehicles.VEHICLES.BRAND,
+                    Vehicles.VEHICLES.BRAND_LINE)
                     .values(vehicle.getStatus(),
                             null,
                             null,
@@ -45,13 +47,16 @@ public class VehicleDaoExt extends VehiclesDao {
                             vehicle.getPlate(),
                             vehicle.getBrand(),
                             vehicle.getBrandLine())
-                    .execute();
+                    .returning(Vehicles.VEHICLES.ID)
+                    .fetch();
+
+            vehicle.setId(result.get(0).getId());
         });
 
         return vehicle;
     }
 
-    public List<com.tesis.jooq.tables.pojos.Vehicles> findAllActives(){
+    public List<com.tesis.jooq.tables.pojos.Vehicles> findAllActives() {
         return DSL
                 .using(configuration())
                 .selectFrom(Vehicles.VEHICLES)
@@ -60,7 +65,7 @@ public class VehicleDaoExt extends VehiclesDao {
                 .map(mapper());
     }
 
-    public void deleteVehicle(Long vehicleID){
+    public void deleteVehicle(Long vehicleID) {
         DSL.using(configuration()).transaction(t -> {
 
             Long deviceID = t.dsl().selectFrom(Vehicles.VEHICLES)
@@ -102,7 +107,7 @@ public class VehicleDaoExt extends VehiclesDao {
         });
     }
 
-    public Long fetchByIDForUserID(Long vehicleID){
+    public Long fetchByIDForUserID(Long vehicleID) {
         return DSL.using(configuration()).select(Vehicles.VEHICLES.USER_ID)
                 .from(Vehicles.VEHICLES)
                 .where(Vehicles.VEHICLES.ID.eq(vehicleID)).fetchOne(Vehicles.VEHICLES.USER_ID);
@@ -133,7 +138,7 @@ public class VehicleDaoExt extends VehiclesDao {
                 .selectFrom(Vehicles.VEHICLES)
                 .where(searchCondition)
                 .limit(pagination.getLimit())
-                .offset((pagination.getPage()-1)*pagination.getLimit())
+                .offset((pagination.getPage() - 1) * pagination.getLimit())
                 .fetch()
                 .map(mapper());
     }

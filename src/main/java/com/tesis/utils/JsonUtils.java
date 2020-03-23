@@ -2,6 +2,7 @@ package com.tesis.utils;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import io.jsonwebtoken.Claims;
 import org.codehaus.jackson.type.TypeReference;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public enum JsonUtils {
     }
 
     public <T> T parseJson(JsonElement json, Class<T> clazz) {
+        return gson.fromJson(json, clazz);
+    }
+
+    public <T> T parseJson(String json, Class<T> clazz) {
         return gson.fromJson(json, clazz);
     }
 }
