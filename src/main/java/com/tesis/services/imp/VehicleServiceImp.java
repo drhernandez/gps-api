@@ -44,7 +44,7 @@ public class VehicleServiceImp implements VehicleService {
             vehiclesDao.createVehicle(vehicle);
             responseDTO.model = vehicle;
         } catch (Exception e) {
-            logger.error("[message: No se pudo guardar el vhículo {}] [error: {}]", vehicle.toString(), e.getMessage());
+            logger.error("[message: No se pudo guardar el vehículo {}] [error: {}]", vehicle.toString(), e.getMessage());
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el vehiculo.", e);
         }
 
