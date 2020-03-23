@@ -1,12 +1,11 @@
 package com.tesis.services;
 
-import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.DeviceDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.exceptions.DataException;
 import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.models.ResponseDTO;
-import com.tesis.services.imp.DevicesServiceImp;
+import com.tesis.services.imp.DeviceServiceImp;
 import org.jooq.exception.DataAccessException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +30,7 @@ public class DeviceServiceUnitTest {
     DeviceDaoExt deviceDao;
 
     @InjectMocks
-    DevicesServiceImp deviceService;
+    DeviceServiceImp deviceService;
 
     @Test
     public void createDeviceTest_ok(){

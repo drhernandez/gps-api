@@ -35,6 +35,8 @@ public class VehicleRouter implements RouteGroup {
             Spark.put("/:vehicle_id", vehicleController::updateVehicle);
             Spark.delete("/:vehicle_id", vehicleController::deleteVehicle);
 
+            Spark.put("/:vehicle_id/activate", vehicleController::vehicleActivate);
+
             Spark.get("/:vehicle_id/trackings", vehicleController::getTrackingsByVehicleID);
             Spark.get("/:vehicle_id/location", vehicleController::getLocationByVehicleID);
 

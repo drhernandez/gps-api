@@ -12,6 +12,7 @@ public enum UrlPermissions {
     PUTVehiclesID("PUT /vehicles/[0-9]*", EnumSet.of(Privileges.UPDATE_VEHICLE)),
     DELETEVehiclesID("DELETE /vehicles/[0-9]*", EnumSet.of(Privileges.DELETE_VEHICLE)),
     GETVehiclesIDTrackings("GET /vehicles/[0-9]*/trackings", EnumSet.of(Privileges.GET_TRACKING)),
+    PUTVehiclesIDActivate("GET /vehicles/[0-9]*/activate", EnumSet.of(Privileges.UPDATE_VEHICLE, Privileges.UPDATE_DEVICE)),
     GETVehiclesIDLocation("GET /vehicles/[0-9]*/location",EnumSet.of(Privileges.GET_TRACKING)),
     GETVehiclesIDAlertsSpeed("GET /vehicles/[0-9]*/alerts/speed", EnumSet.of(Privileges.GET_ALERT)),
     GETVehiclesIDAlertsMovement("GET /vehicles/[0-9]*/alerts/movement", EnumSet.of(Privileges.GET_ALERT)),

@@ -17,7 +17,7 @@ import org.jooq.impl.DSL;
 import static com.tesis.config.Constants.DEFAULT_SPEED_ALERT;
 
 
-public class DeviceDaoExt extends  DevicesDao{
+public class DeviceDaoExt extends DevicesDao{
 
     @Inject
     public DeviceDaoExt(Configuration configuration){
@@ -137,5 +137,13 @@ public class DeviceDaoExt extends  DevicesDao{
                     .where(Vehicles.VEHICLES.DEVICE_ID.eq(deviceID))
                     .execute();
         });
+    }
+
+    public com.tesis.jooq.tables.pojos.Devices getDeviceByPhysicalID(Long physicalID){
+        return DSL
+                .using(configuration())
+                .selectFrom(Devices.DEVICES)
+                .where(Devices.DEVICES.PHYSICAL_ID.eq(physicalID).and(Devices.DEVICES.DELETED_AT.isNull()))
+                .fetchOneInto(com.tesis.jooq.tables.pojos.Devices.class);
     }
 }

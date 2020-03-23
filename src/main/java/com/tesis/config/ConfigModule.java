@@ -46,7 +46,7 @@ public class ConfigModule extends AbstractModule {
 
         //bind services
         bind(TrackingService.class).to(TrackingServiceImp.class);
-        bind(DevicesService.class).to(DevicesServiceImp.class);
+        bind(DeviceService.class).to(DeviceServiceImp.class);
         bind(VehicleService.class).to(VehicleServiceImp.class);
         bind(AlertService.class).to(AlertServiceImp.class);
         bind(BrandService.class).to(BrandServiceImp.class);

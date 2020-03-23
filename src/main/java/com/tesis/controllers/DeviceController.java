@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.models.ResponseDTO;
-import com.tesis.services.DevicesService;
+import com.tesis.services.DeviceService;
 import com.tesis.utils.JsonUtils;
 import spark.Request;
 import spark.Response;
@@ -14,10 +14,10 @@ import java.util.List;
 
 public class DeviceController {
 
-    private DevicesService devicesService;
+    private DeviceService devicesService;
 
     @Inject
-    public DeviceController(DevicesService devicesService) {
+    public DeviceController(DeviceService devicesService) {
         this.devicesService = devicesService;
     }
 
