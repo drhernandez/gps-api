@@ -47,12 +47,12 @@ public enum UrlPermissions {
     POSTBrands("POST /brands/", EnumSet.of(Privileges.CREATE_BRAND)),
     PUTBrandsID("PUT /brands/[0-9]*", EnumSet.of(Privileges.UPDATE_BRAND)),
     DELETEBrandsID("DELETE /brands/[0-9]*", EnumSet.of(Privileges.DELETE_BRAND)),
-    GETBrandsIDBrandlines("GET /brands/[0-9]*/brandlines", EnumSet.of(Privileges.ALL_BRAND)),
 
-    GETBrandsBrandlines("GET /brands/brandlines", EnumSet.of(Privileges.ALL_BRAND)),
-    GETBrandsBrandlinesID("GET /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.ALL_BRAND)),
-    PUTBrandsBrandlinesID("PUT /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.ALL_BRAND)),
-    DELETEBrandsBrandlinesID("DELETE /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.ALL_BRAND));
+    GETBrandsIDBrandlines("GET /brands/[0-9]*/brandlines", EnumSet.of(Privileges.GET_BRAND)),
+    GETBrandsBrandlines("GET /brands/brandlines", EnumSet.of(Privileges.GET_BRAND)),
+    GETBrandsBrandlinesID("GET /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.GET_BRAND)),
+    PUTBrandsBrandlinesID("PUT /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.UPDATE_BRAND)),
+    DELETEBrandsBrandlinesID("DELETE /brands/[0-9]*/brandlines/[0-9]*", EnumSet.of(Privileges.DELETE_BRAND));
 
     private String patter;
     private EnumSet<Privileges> privileges;
