@@ -42,7 +42,7 @@ public class VehicleDaoExt extends VehiclesDao {
                             null,
                             null,
                             vehicle.getUserId(),
-                            vehicle.getDeviceId(),
+                            null,
                             vehicle.getPlate(),
                             vehicle.getBrand(),
                             vehicle.getBrandLine())
@@ -88,7 +88,8 @@ public class VehicleDaoExt extends VehiclesDao {
 
             t.dsl().delete(Trackings.TRACKINGS).where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID)).execute();
             t.dsl().update(Devices.DEVICES)
-                    .set(Devices.DEVICES.STATUS, Status.INACTIVE.toString())
+                    .set(Devices.DEVICES.STATUS, Status.DELETED.toString())
+                    .set(Devices.DEVICES.DELETED_AT, LocalDateTime.now(Clock.systemUTC()))
                     .where(Devices.DEVICES.ID.eq(deviceID))
                     .execute();
 

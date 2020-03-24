@@ -15,6 +15,7 @@ import com.tesis.services.DeviceService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
 import com.tesis.utils.filters.VehicleFilters;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,39 +110,53 @@ public class VehicleServiceImp implements VehicleService {
 
     @Override
     public ResponseDTO<Vehicles> activateVehicle(Long vehicleId, Long physicalId) {
+        ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
 
-        Vehicles vehicle = getVehiclesByVehicleID(vehicleId).getModel();
-        if (vehicle == null) {
-            throw new ApiException(ErrorCodes.not_found.toString(),
-                    "Vehiculo no encontrado");
+        try {
+            Vehicles vehicle = getVehiclesByVehicleID(vehicleId).getModel();
+
+            if (vehicle == null)
+                throw new ApiException(ErrorCodes.not_found.toString(),
+                        "Vehiculo no encontrado",
+                        HttpStatus.SC_NOT_FOUND);
+
+            if (vehicle.getStatus().equals(Status.ACTIVE.name()))
+                throw new ApiException(ErrorCodes.bad_request.toString(),
+                        "Vehiculo actualente activado",
+                        HttpStatus.SC_BAD_REQUEST);
+
+            ResponseDTO<Devices> deviceDTO = deviceService.getDeviceByPhysicalID(physicalId);
+            if (deviceDTO.error != null)
+                throw new ApiException(ErrorCodes.internal_error.toString(),
+                        "No se pudo activar el vehiculo. Reason: " + deviceDTO.error.getMessage(),
+                        HttpStatus.SC_INTERNAL_SERVER_ERROR);
+
+            Devices device = deviceDTO.getModel();
+            if (device == null)
+                throw new ApiException(ErrorCodes.bad_request.name(),
+                        "No se pudo activar el vehiculo. Reason: Physical id inválido",
+                        HttpStatus.SC_BAD_REQUEST);
+
+            if (device.getStatus().equals(Status.ACTIVE.name()))
+                throw new ApiException(ErrorCodes.bad_request.name(),
+                        "No se pudo activar el vehiculo. Reason: El physical id ingresado ya está en uso",
+                        HttpStatus.SC_BAD_REQUEST);
+
+
+            if (device.getStatus().equals(Status.INACTIVE.name())) {
+                device.setStatus(Status.ACTIVE.name());
+                deviceService.updateDevice(device.getId(), device);
+            }
+
+            vehicle.setStatus(Status.ACTIVE.toString());
+            vehicle.setDeviceId(device.getId());
+            updateVehicle(vehicleId, vehicle);
+            responseDTO.model = vehicle;
+
+        } catch (ApiException e) {
+            responseDTO.error = e;
         }
 
-        ResponseDTO<Devices> responseDTO = deviceService.getDeviceByPhysicalID(physicalId);
-        if (responseDTO.error != null) {
-            throw new ApiException(ErrorCodes.internal_error.toString(),
-                    "No se pudo activar el vehiculo. Reason: " + responseDTO.error.getMessage());
-        }
-
-        Devices device = responseDTO.getModel();
-        if (device == null) {
-            throw new ApiException(ErrorCodes.bad_request.name(),
-                    "No se pudo activar el vehiculo. Reason: Physical id inválido");
-        }
-
-//        if (device.status == 'ACTIVE') {
-//            throw new ApiException(ErrorCodes.bad_request.name(),
-//                    "No se pudo activar el vehiculo. Reason: El physical id ingresado ya está en uso");
-//        }
-
-        /**
-         * Cuando se de de baja un vehículo hay que crear un nuevo device y asociarle el physical_id de la plaquita.
-         * No deberíamos hacer esa lógica en la activación.
-         */
-
-        vehicle.setStatus(Status.ACTIVE.toString());
-        vehicle.setDeviceId(device.getId());
-        updateVehicle(vehicleId, vehicle);
-
-        return new ResponseDTO<>(vehicle, null);
+        return responseDTO;
     }
 }
