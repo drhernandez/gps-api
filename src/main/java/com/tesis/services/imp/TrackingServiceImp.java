@@ -59,7 +59,7 @@ public class TrackingServiceImp implements TrackingService {
                 // Control de alerta de velocidad
                 if(speedAlert != null) {
                     if(tracking.getSpeed() > speedAlert.getSpeed() &&
-                            tracking.getTime().after(speedAlert.getActivatedAt())) {
+                            tracking.getTime().isAfter(speedAlert.getActivatedAt())) {
                         try {
                             if (!speedAlertSend) {
                                 alertService.createSpeedAlertHistory(new SpeedAlertsHistory(
@@ -78,7 +78,7 @@ public class TrackingServiceImp implements TrackingService {
 
                 // Control de alerta de movimiento
                 if(movementAlert != null) {
-                    if(tracking.getTime().after(movementAlert.getActivatedAt()) &&
+                    if(tracking.getTime().isAfter(movementAlert.getActivatedAt()) &&
                             checkDistance(tracking, movementAlert)){
                         try {
                             if (!movementAlertSend) {

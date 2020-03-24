@@ -6,6 +6,7 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
 import com.tesis.utils.filters.VehicleFilters;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 public interface VehicleService {
@@ -18,4 +19,5 @@ public interface VehicleService {
     ResponseDTO<List<Vehicles>> getVehiclesByUserID(Long userID);
     Long getUserIDByVehicleID(Long vehicleID);
     ResponseDTO<Search> vehicleSearch(VehicleFilters filters, Pagination pagination);
+    ResponseDTO<Vehicles> activateVehicle(Long vehicleId, Long physicalId);
 }

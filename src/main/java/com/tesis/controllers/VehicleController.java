@@ -17,6 +17,7 @@ import com.tesis.services.VehicleService;
 import com.tesis.utils.JsonUtils;
 import com.tesis.utils.filters.VehicleFilters;
 import com.tesis.utils.filters.vehicleActivateBody;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -332,45 +333,25 @@ public class VehicleController {
         Long vehicleID;
         Long physicalID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException(ErrorCodes.invalid_data.toString(), "[reason: vehicle_id] [method: VehicleController.vehicleActivate]");
+            throw new ApiException(ErrorCodes.invalid_data.toString(), "[reason: vehicle_id]", HttpStatus.SC_BAD_REQUEST);
         }
         try {
             vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException(ErrorCodes.invalid_data.toString(), "[reason: vehicle_id] [method: VehicleController.vehicleActivate]");
+            throw new ApiException(ErrorCodes.invalid_data.toString(), "[reason: vehicle_id]", HttpStatus.SC_BAD_REQUEST);
         }
 
         physicalID = JsonUtils.INSTANCE.GSON().fromJson(request.body(), vehicleActivateBody.class).getPhysicalId();
-
-        Vehicles vehicle = vehicleService.getVehiclesByVehicleID(vehicleID).getModel();
-        if (vehicle == null)
-            throw new ApiException(ErrorCodes.not_found.toString(),
-                    "Vehiculo no encontrado");
-
-        ResponseDTO<Devices> responseDTO = deviceService.getDeviceByPhysicalID(physicalID);
-
-        if (responseDTO.error != null)
-            throw new ApiException(ErrorCodes.internal_error.toString(),
-                    "No se pudo activar el vehiculo. Reason: " + responseDTO.error.getMessage());
-
-        Devices device = responseDTO.getModel();
-        if(device != null) {
-            device.setPhysicalId(physicalID);
-            device.setDeletedAt(null);
-            deviceService.updateDevice(device.getId(), device);
-        }
-        else {
-            device = new Devices();
-            device.setPhysicalId(physicalID);
-            device.setModel(System.getenv("DEFALUT_DEVICE_MODEL"));
-            device.setSoftwareVersion(System.getenv("DEFAULT_DEVICE_SOFTWARE_VERSION"));
-            deviceService.createDevice(device);
+        if (physicalID == null) {
+            throw new ApiException(ErrorCodes.invalid_data.toString(), "[reason: vehicle_id]", HttpStatus.SC_BAD_REQUEST);
         }
 
-        vehicle.setStatus(Status.ACTIVE.toString());
-        vehicle.setDeviceId(device.getId());
-        vehicleService.updateVehicle(vehicleID, vehicle);
+        ResponseDTO<Vehicles> responseDTO = vehicleService.activateVehicle(vehicleID, physicalID);
 
-        return JsonUtils.INSTANCE.GSON().toJson(vehicle);
+        if (responseDTO.error != null) {
+            throw responseDTO.error;
+        }
+
+        return responseDTO.getModelAsJson();
     }
 }

@@ -15,7 +15,8 @@ create table DEVICES(
 	deleted_at timestamp,
 	last_updated timestamp,
 	model varchar not null,
-	software_version varchar
+	software_version varchar,
+	status varchar
 );
 ALTER TABLE public.devices ADD UNIQUE (physical_id, deleted_at);
 ALTER TABLE public.devices ALTER COLUMN id TYPE int8 USING id::int8;
