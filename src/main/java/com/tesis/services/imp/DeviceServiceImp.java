@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.tesis.daos.DeviceDaoExt;
 import com.tesis.enums.ErrorCodes;
+import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.models.ResponseDTO;
@@ -28,6 +29,7 @@ public class DeviceServiceImp implements DeviceService {
         ResponseDTO<Devices> responseDTO = new ResponseDTO<>();
 
         try {
+            device.setStatus(Status.INACTIVE.toString());
             devicesDao.insertDevice(device);
             responseDTO.model = device;
         } catch (Exception e) {
@@ -57,6 +59,7 @@ public class DeviceServiceImp implements DeviceService {
             device.setLastUpdated(LocalDateTime.now(Clock.systemUTC()));
             device.setModel(newDevice.getModel());
             device.setSoftwareVersion(newDevice.getSoftwareVersion());
+            device.setStatus(newDevice.getStatus());
 
             devicesDao.update(device);
             responseDTO.model = device;

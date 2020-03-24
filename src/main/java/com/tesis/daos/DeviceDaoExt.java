@@ -1,5 +1,6 @@
 package com.tesis.daos;
 
+import com.tesis.enums.Status;
 import com.tesis.exceptions.DataException;
 import com.tesis.jooq.tables.*;
 import com.tesis.jooq.tables.daos.DevicesDao;
@@ -39,12 +40,14 @@ public class DeviceDaoExt extends DevicesDao{
                         Devices.DEVICES.DELETED_AT,
                         Devices.DEVICES.LAST_UPDATED,
                         Devices.DEVICES.MODEL,
-                        Devices.DEVICES.SOFTWARE_VERSION)
+                        Devices.DEVICES.SOFTWARE_VERSION,
+                        Devices.DEVICES.STATUS)
                         .values(device.getPhysicalId(),
                                 null,
                                 null,
                                 device.getModel(),
-                                device.getSoftwareVersion())
+                                device.getSoftwareVersion(),
+                                device.getStatus())
                         .returning(Devices.DEVICES.ID)
                         .fetchOne();
 
@@ -92,6 +95,7 @@ public class DeviceDaoExt extends DevicesDao{
                 .using(configuration())
                 .selectFrom(Devices.DEVICES)
                 .where(Devices.DEVICES.DELETED_AT.isNull())
+                .and(Devices.DEVICES.STATUS.eq(Status.ACTIVE.toString()))
                 .fetch()
                 .map(mapper());
     }
@@ -129,6 +133,7 @@ public class DeviceDaoExt extends DevicesDao{
                     .execute();
             t.dsl().update(Devices.DEVICES)
                    .set(Devices.DEVICES.DELETED_AT, LocalDateTime.now(Clock.systemUTC()))
+                   .set(Devices.DEVICES.STATUS, Status.DELETED.toString())
                    .where(Devices.DEVICES.ID.eq(deviceID))
                    .execute();
             t.dsl().update(Vehicles.VEHICLES)
@@ -142,7 +147,9 @@ public class DeviceDaoExt extends DevicesDao{
         return DSL
                 .using(configuration())
                 .selectFrom(Devices.DEVICES)
-                .where(Devices.DEVICES.PHYSICAL_ID.eq(physicalID).and(Devices.DEVICES.DELETED_AT.isNull()))
+                .where(Devices.DEVICES.PHYSICAL_ID.eq(physicalID)
+                        .and(Devices.DEVICES.DELETED_AT.isNull()))
+                        .and(Devices.DEVICES.STATUS.notEqual(Status.DELETED.toString()))
                 .fetchOneInto(com.tesis.jooq.tables.pojos.Devices.class);
     }
 }
