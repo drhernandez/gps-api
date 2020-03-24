@@ -15,7 +15,6 @@ import com.tesis.utils.filters.VehicleFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class VehicleServiceImp implements VehicleService {
 
             Vehicles vehicle = vehiclesDao.fetchOneById(VehicleID);
             vehicle.setStatus(newData.getStatus());
-            vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            vehicle.setLastUpdated(LocalDateTime.now());
             vehicle.setDeletedAt(null);
             vehicle.setUserId(newData.getUserId());
             vehicle.setPlate(newData.getPlate());

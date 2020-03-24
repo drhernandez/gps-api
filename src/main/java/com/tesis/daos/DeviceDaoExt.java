@@ -5,7 +5,6 @@ import com.tesis.jooq.tables.*;
 import com.tesis.jooq.tables.daos.DevicesDao;
 
 import javax.inject.Inject;
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,7 +59,7 @@ public class DeviceDaoExt extends DevicesDao{
                                 false,
                                 deviceRecord.getValue(Devices.DEVICES.ID),
                                 DEFAULT_SPEED_ALERT,
-                                Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
+                                LocalDateTime.now(Clock.systemUTC()),
                                 null,
                                 null)
                         .execute();
@@ -77,7 +76,7 @@ public class DeviceDaoExt extends DevicesDao{
                                 null,
                                 null,
                                 deviceRecord.getValue(Devices.DEVICES.ID),
-                                Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())),
+                                LocalDateTime.now(Clock.systemUTC()),
                                 null,
                                 null)
                         .execute();
@@ -129,7 +128,7 @@ public class DeviceDaoExt extends DevicesDao{
                     .where(MovementAlerts.MOVEMENT_ALERTS.DEVICE_ID.eq(deviceID))
                     .execute();
             t.dsl().update(Devices.DEVICES)
-                   .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                   .set(Devices.DEVICES.DELETED_AT, LocalDateTime.now(Clock.systemUTC()))
                    .where(Devices.DEVICES.ID.eq(deviceID))
                    .execute();
             t.dsl().update(Vehicles.VEHICLES)

@@ -25,9 +25,9 @@ dependencies {
             // Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
             //'org.bouncycastle:bcprov-jdk15on:1.60',
             'io.jsonwebtoken:jjwt-jackson:0.10.7'
-    compile "org.jooq:jooq:3.11.9"
-    compile "org.jooq:jooq-meta:3.11.9"
-    compile "org.jooq:jooq-codegen:3.11.9"
+    compile "org.jooq:jooq:3.13.1"
+    compile "org.jooq:jooq-meta:3.13.1"
+    compile "org.jooq:jooq-codegen:3.13.1"
     compile "org.postgresql:postgresql:42.2.5"
     compile 'com.sendgrid:sendgrid-java:3.0.9'
     runtime "org.slf4j:slf4j-simple:1.7.25"

@@ -16,7 +16,7 @@ import spark.Response;
 import spark.utils.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,7 +83,7 @@ public class TrackingController {
         Long deviceId;
         Float speed;
         Integer sat, hdop;
-        Timestamp timeStart, timeEnd;
+        LocalDateTime timeStart, timeEnd;
         TrackingFilters filters = new TrackingFilters();
         Pagination pagination = new Pagination();
 
@@ -97,9 +97,9 @@ public class TrackingController {
             filters.setSat(sat);
             hdop = request.queryParams("hdop") != null ? Integer.valueOf(request.queryParams("hdop")) : null;
             filters.setHdop(hdop);
-            timeStart = request.queryParams("time_start") != null ? Timestamp.valueOf(request.queryParams("time_start")) : null;
+            timeStart = request.queryParams("time_start") != null ? LocalDateTime.parse(request.queryParams("time_start")) : null;
             filters.setTimeStart(timeStart);
-            timeEnd = request.queryParams("time_end") != null ? Timestamp.valueOf(request.queryParams("time_end")) : null;
+            timeEnd = request.queryParams("time_end") != null ? LocalDateTime.parse(request.queryParams("time_end")) : null;
             filters.setTimeEnd(timeEnd);
 
             pagination.setPage(request.queryParams("page") != null ? Integer.valueOf(request.queryParams("page")) : 1);

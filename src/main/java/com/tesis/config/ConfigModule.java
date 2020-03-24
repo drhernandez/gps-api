@@ -91,6 +91,6 @@ public class ConfigModule extends AbstractModule {
         String url = "jdbc:postgresql://ec2-34-200-101-236.compute-1.amazonaws.com:5432/d4cam14ljmf6nh?sslmode=require";
         Connection connection =  DriverManager.getConnection(url, userName, password);
 
-        return new DefaultConfiguration().set(connection).set(SQLDialect.POSTGRES_10);
+        return new DefaultConfiguration().set(connection).set(SQLDialect.POSTGRES);
     }
 }

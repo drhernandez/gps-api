@@ -11,7 +11,6 @@ import org.jooq.Condition;
 import org.jooq.Configuration;
 import com.tesis.jooq.tables.daos.VehiclesDao;
 
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -89,7 +88,7 @@ public class VehicleDaoExt extends VehiclesDao {
 
             t.dsl().delete(Trackings.TRACKINGS).where(Trackings.TRACKINGS.DEVICE_ID.eq(deviceID)).execute();
             t.dsl().update(Devices.DEVICES)
-                    .set(Devices.DEVICES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                    .set(Devices.DEVICES.DELETED_AT, LocalDateTime.now(Clock.systemUTC()))
                     .where(Devices.DEVICES.ID.eq(deviceID))
                     .execute();
 
@@ -99,7 +98,7 @@ public class VehicleDaoExt extends VehiclesDao {
                     .execute();
 
             t.dsl().update(Vehicles.VEHICLES)
-                    .set(Vehicles.VEHICLES.DELETED_AT, Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())))
+                    .set(Vehicles.VEHICLES.DELETED_AT, LocalDateTime.now(Clock.systemUTC()))
                     .set(Vehicles.VEHICLES.DEVICE_ID, (Long) null)
                     .set(Vehicles.VEHICLES.STATUS, Status.DELETED.toString())
                     .where(Vehicles.VEHICLES.ID.eq(vehicleID))

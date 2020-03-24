@@ -11,7 +11,6 @@ import com.tesis.services.DeviceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +54,7 @@ public class DeviceServiceImp implements DeviceService {
             Devices device = devicesDao.fetchOneById(deviceID);
             device.setPhysicalId(newDevice.getPhysicalId());
             device.setDeletedAt(null);
-            device.setLastUpdated(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+            device.setLastUpdated(LocalDateTime.now(Clock.systemUTC()));
             device.setModel(newDevice.getModel());
             device.setSoftwareVersion(newDevice.getSoftwareVersion());
 
