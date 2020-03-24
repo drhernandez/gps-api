@@ -33,7 +33,7 @@ public class AuthGPSClientTest {
         when(instance.post(anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
+        when(requestBodyEntity.asJson()).thenReturn(httpResponse);
         when(httpResponse.getStatus()).thenReturn(200);
 
         try {
@@ -42,7 +42,6 @@ public class AuthGPSClientTest {
             fail("Should not throw any exception");
         }
     }
-
 
     @Test
     public void validateToken_unauthorized() {
@@ -54,13 +53,13 @@ public class AuthGPSClientTest {
         when(instance.post(anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
+        when(requestBodyEntity.asJson()).thenReturn(httpResponse);
         when(httpResponse.getStatus()).thenReturn(401);
 
         try {
             client.validateToken("token", "privileges");
         } catch (Exception e) {
-            assertEquals(e.getMessage(), "[reason: access token expired ] [method: AuthGPSClientImp.validateToken]");
+            assertEquals(e.getMessage(), "Unauthorized");
         }
     }
 
@@ -74,13 +73,13 @@ public class AuthGPSClientTest {
         when(instance.post(anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
+        when(requestBodyEntity.asJson()).thenReturn(httpResponse);
         when(httpResponse.getStatus()).thenReturn(403);
 
         try {
             client.validateToken("token", "privileges");
         } catch (Exception e) {
-            assertEquals(e.getMessage(), "[reason: forbidden ] [method: AuthGPSClientImp.validateToken]");
+            assertEquals(e.getMessage(), "Unauthorized");
         }
     }
 
@@ -94,13 +93,13 @@ public class AuthGPSClientTest {
         when(instance.post(anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
+        when(requestBodyEntity.asJson()).thenReturn(httpResponse);
         when(httpResponse.getStatus()).thenReturn(503);
 
         try {
             client.validateToken("token", "privileges");
         } catch (Exception e) {
-            assertEquals(e.getMessage(), "[reason: internal server error ] [method: AuthGPSClientImp.validateToken]");
+            assertEquals(e.getMessage(), "Unauthorized");
         }
     }
 
