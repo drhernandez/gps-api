@@ -6,7 +6,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ApiException extends Exception {
+public class ApiException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     private static final Gson gson = new Gson();

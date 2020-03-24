@@ -6,15 +6,19 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.VehicleDaoExt;
+import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
+import com.tesis.services.DeviceService;
 import com.tesis.services.VehicleService;
+import com.tesis.utils.JsonUtils;
 import com.tesis.utils.filters.VehicleFilters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.ws.Response;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +30,8 @@ public class VehicleServiceImp implements VehicleService {
 
     @Inject
     VehicleDaoExt vehiclesDao;
+    @Inject
+    DeviceService deviceService;
 
     public ResponseDTO<List<Vehicles>> getVehicles() {
         return new ResponseDTO<>(vehiclesDao.findAllActives(), null);
@@ -102,4 +108,41 @@ public class VehicleServiceImp implements VehicleService {
         return responseDTO;
     }
 
+    @Override
+    public ResponseDTO<Vehicles> activateVehicle(Long vehicleId, Long physicalId) {
+
+        Vehicles vehicle = getVehiclesByVehicleID(vehicleId).getModel();
+        if (vehicle == null) {
+            throw new ApiException(ErrorCodes.not_found.toString(),
+                    "Vehiculo no encontrado");
+        }
+
+        ResponseDTO<Devices> responseDTO = deviceService.getDeviceByPhysicalID(physicalId);
+        if (responseDTO.error != null) {
+            throw new ApiException(ErrorCodes.internal_error.toString(),
+                    "No se pudo activar el vehiculo. Reason: " + responseDTO.error.getMessage());
+        }
+
+        Devices device = responseDTO.getModel();
+        if (device == null) {
+            throw new ApiException(ErrorCodes.bad_request.name(),
+                    "No se pudo activar el vehiculo. Reason: Physical id inválido");
+        }
+
+//        if (device.status == 'ACTIVE') {
+//            throw new ApiException(ErrorCodes.bad_request.name(),
+//                    "No se pudo activar el vehiculo. Reason: El physical id ingresado ya está en uso");
+//        }
+
+        /**
+         * Cuando se de de baja un vehículo hay que crear un nuevo device y asociarle el physical_id de la plaquita.
+         * No deberíamos hacer esa lógica en la activación.
+         */
+
+        vehicle.setStatus(Status.ACTIVE.toString());
+        vehicle.setDeviceId(device.getId());
+        updateVehicle(vehicleId, vehicle);
+
+        return new ResponseDTO<>(vehicle, null);
+    }
 }
