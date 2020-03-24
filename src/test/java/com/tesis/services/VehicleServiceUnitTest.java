@@ -4,9 +4,13 @@ import com.tesis.configs.UnitTestConfigs;
 import com.tesis.daos.VehicleDaoExt;
 import com.tesis.enums.ErrorCodes;
 import com.tesis.enums.Status;
+import com.tesis.jooq.tables.pojos.Trackings;
 import com.tesis.jooq.tables.pojos.Vehicles;
+import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
 import com.tesis.services.imp.VehicleServiceImp;
+import com.tesis.utils.filters.TrackingFilters;
+import com.tesis.utils.filters.VehicleFilters;
 import org.jooq.exception.DataAccessException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +19,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -123,7 +128,6 @@ public class VehicleServiceUnitTest {
         Vehicles vehicle = mock(Vehicles.class);
         vehicle.setPlate("ABC-123");
         vehicle.setUserId(1L);
-//        Mockito.when(vehicleDao.fetchOneById(any())).thenReturn(vehicle);
         Long userId = vehicleService.getUserIDByVehicleID(1L);
 
         assertEquals(userId, vehicle.getUserId());
@@ -136,6 +140,19 @@ public class VehicleServiceUnitTest {
         Long userId = vehicleService.getUserIDByVehicleID(1L);
 
         assertNull(userId);
+    }
+
+    @Test
+    public void vehicleSearchTest_ok(){
+
+        List<Vehicles> vehicleList = new ArrayList<>();
+        vehicleList.add(Mockito.mock(Vehicles.class));
+        Pagination pag = Mockito.mock(Pagination.class);
+
+        Mockito.when(vehicleDao.findByFilters(any(VehicleFilters.class), any(Pagination.class))).thenReturn(vehicleList);
+        ResponseDTO responseDTO = vehicleService.vehicleSearch(Mockito.mock(VehicleFilters.class), pag);
+
+        assertNotNull(responseDTO.getModel());
     }
 
 }
