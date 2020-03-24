@@ -42,7 +42,6 @@ public class AuthGPSClientTest {
         }
     }
 
-
     @Test
     public void validateToken_unauthorized() {
 
@@ -55,6 +54,26 @@ public class AuthGPSClientTest {
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
         when(requestBodyEntity.asJson()).thenReturn(httpResponse);
         when(httpResponse.getStatus()).thenReturn(401);
+
+        try {
+            client.validateToken("token", "privileges");
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "Unauthorized");
+        }
+    }
+
+    @Test
+    public void validateToken_forbidden() {
+
+        HttpRequestWithBody httpRequestWithBody = mock(HttpRequestWithBody.class);
+        RequestBodyEntity requestBodyEntity = mock(RequestBodyEntity.class);
+        HttpResponse httpResponse = mock(HttpResponse.class);
+
+        when(instance.post(anyString())).thenReturn(httpRequestWithBody);
+        when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
+        when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
+        when(requestBodyEntity.asJson()).thenReturn(httpResponse);
+        when(httpResponse.getStatus()).thenReturn(403);
 
         try {
             client.validateToken("token", "privileges");
