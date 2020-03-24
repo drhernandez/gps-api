@@ -13,17 +13,10 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
 import com.tesis.services.DeviceService;
 import com.tesis.services.VehicleService;
-import com.tesis.utils.JsonUtils;
 import com.tesis.utils.filters.VehicleFilters;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.xml.ws.Response;
-<<<<<<< HEAD
-=======
-import java.sql.Timestamp;
->>>>>>> bce7209bd47b20d5d2ed31ac69909773d08b03e4
 import java.time.LocalDateTime;
 import java.util.List;
 
