@@ -9,8 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class AuthGPSClientTest {
 
@@ -28,12 +27,12 @@ public class AuthGPSClientTest {
 
         HttpRequestWithBody httpRequestWithBody = mock(HttpRequestWithBody.class);
         RequestBodyEntity requestBodyEntity = mock(RequestBodyEntity.class);
-        HttpResponse httpResponse = mock(HttpResponse.class);
+        HttpResponse<JsonNode> httpResponse = mock(HttpResponse.class);
 
         when(instance.post(anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
+        when(requestBodyEntity.asJson()).thenReturn(httpResponse);
         when(httpResponse.getStatus()).thenReturn(200);
 
         try {
@@ -49,38 +48,18 @@ public class AuthGPSClientTest {
 
         HttpRequestWithBody httpRequestWithBody = mock(HttpRequestWithBody.class);
         RequestBodyEntity requestBodyEntity = mock(RequestBodyEntity.class);
-        HttpResponse httpResponse = mock(HttpResponse.class);
+        HttpResponse<JsonNode> httpResponse = mock(HttpResponse.class);
 
         when(instance.post(anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
+        when(requestBodyEntity.asJson()).thenReturn(httpResponse);
         when(httpResponse.getStatus()).thenReturn(401);
 
         try {
             client.validateToken("token", "privileges");
         } catch (Exception e) {
-            assertEquals(e.getMessage(), "[reason: access token expired ] [method: AuthGPSClientImp.validateToken]");
-        }
-    }
-
-    @Test
-    public void validateToken_forbidden() {
-
-        HttpRequestWithBody httpRequestWithBody = mock(HttpRequestWithBody.class);
-        RequestBodyEntity requestBodyEntity = mock(RequestBodyEntity.class);
-        HttpResponse httpResponse = mock(HttpResponse.class);
-
-        when(instance.post(anyString())).thenReturn(httpRequestWithBody);
-        when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
-        when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
-        when(httpResponse.getStatus()).thenReturn(403);
-
-        try {
-            client.validateToken("token", "privileges");
-        } catch (Exception e) {
-            assertEquals(e.getMessage(), "[reason: forbidden ] [method: AuthGPSClientImp.validateToken]");
+            assertEquals(e.getMessage(), "Unauthorized");
         }
     }
 
@@ -89,13 +68,11 @@ public class AuthGPSClientTest {
 
         HttpRequestWithBody httpRequestWithBody = mock(HttpRequestWithBody.class);
         RequestBodyEntity requestBodyEntity = mock(RequestBodyEntity.class);
-        HttpResponse httpResponse = mock(HttpResponse.class);
 
         when(instance.post(anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.header(anyString(), anyString())).thenReturn(httpRequestWithBody);
         when(httpRequestWithBody.body(anyString())).thenReturn(requestBodyEntity);
-        when(requestBodyEntity.asEmpty()).thenReturn(httpResponse);
-        when(httpResponse.getStatus()).thenReturn(503);
+        doThrow(new UnirestException("internal server error")).when(requestBodyEntity).asJson();
 
         try {
             client.validateToken("token", "privileges");
