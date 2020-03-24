@@ -11,7 +11,6 @@ import com.tesis.services.AlertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Timestamp;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class AlertServiceImp implements AlertService {
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
 
         try {
-            speedAlert.setCreatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+            speedAlert.setCreatedAt(LocalDateTime.now(Clock.systemUTC()));
             speedAlert.setUpdatedAt(null);
             speedAlert.setActivatedAt(null);
             speedAlertsDao.insert(speedAlert);
@@ -74,9 +73,9 @@ public class AlertServiceImp implements AlertService {
         speedAlert.setActive(newSpeedAlert.getActive());
         speedAlert.setSpeed(newSpeedAlert.getSpeed());
         speedAlert.setDeviceId(newSpeedAlert.getDeviceId());
-        speedAlert.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+        speedAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
         if(newSpeedAlert.getActive())
-            speedAlert.setActivatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+            speedAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
 
         try {
             speedAlertsDao.update(speedAlert);
@@ -110,7 +109,7 @@ public class AlertServiceImp implements AlertService {
     @Override
     public ResponseDTO<MovementAlerts> createMovementAlert(MovementAlerts movementAlert) {
         ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
-        movementAlert.setCreatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+        movementAlert.setCreatedAt(LocalDateTime.now(Clock.systemUTC()));
         movementAlert.setUpdatedAt(null);
         movementAlert.setActivatedAt(null);
         try {
@@ -147,9 +146,9 @@ public class AlertServiceImp implements AlertService {
         momovementAlert.setLat(newMovementAlert.getLat());
         momovementAlert.setLng(newMovementAlert.getLng());
         momovementAlert.setDeviceId(newMovementAlert.getDeviceId());
-        momovementAlert.setUpdatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+        momovementAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
         if(newMovementAlert.getActive())
-            momovementAlert.setActivatedAt(Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC())));
+            momovementAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
 
         try {
             movementAlertDao.update(momovementAlert);

@@ -1,5 +1,6 @@
 package com.tesis.daos;
 
+import com.tesis.enums.Status;
 import com.tesis.jooq.tables.Devices;
 import com.tesis.jooq.tables.Trackings;
 import com.tesis.jooq.tables.daos.TrackingsDao;
@@ -44,6 +45,7 @@ public class TrackingDaoExt extends TrackingsDao {
         return DSL.using(configuration())
                 .selectFrom(Devices.DEVICES)
                 .where(Devices.DEVICES.PHYSICAL_ID.eq(physicalID))
+                .and(Devices.DEVICES.STATUS.eq(Status.ACTIVE.toString()))
                 .and(Devices.DEVICES.DELETED_AT.isNull())
                 .fetchOne().getId();
     }

@@ -20,7 +20,9 @@ import java.util.Random;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DeviceServiceUnitTest {
@@ -96,6 +98,28 @@ public class DeviceServiceUnitTest {
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
         assertEquals(responseDTO.getError().getMessage(), "Error al modificar el device.");
+
+    }
+
+    @Test
+    public void getDeviceByPhysicalIDTest_ok(){
+        Devices devicesMock = mock(Devices.class);
+        devicesMock.setId(1L);
+
+        Mockito.when(deviceDao.getDeviceByPhysicalID(anyLong())).thenReturn(devicesMock);
+
+        assertEquals(devicesMock.getId(), deviceService.getDeviceByPhysicalID(1L).getModel().getId());
+    }
+
+    @Test
+    public void getDeviceByPhysicalIDTest_error(){
+
+        Mockito.doThrow(DataAccessException.class).when(deviceDao).getDeviceByPhysicalID(anyLong());
+        try {
+            deviceService.getDeviceByPhysicalID(1L);
+        } catch (Exception e) {
+            assertEquals("internal error", e.getMessage());
+        }
 
     }
 }

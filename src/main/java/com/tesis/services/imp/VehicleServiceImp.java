@@ -6,16 +6,17 @@ import com.tesis.enums.ErrorCodes;
 import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.VehicleDaoExt;
+import com.tesis.jooq.tables.pojos.Devices;
 import com.tesis.jooq.tables.pojos.Vehicles;
 import com.tesis.models.Pagination;
 import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
+import com.tesis.services.DeviceService;
 import com.tesis.services.VehicleService;
 import com.tesis.utils.filters.VehicleFilters;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class VehicleServiceImp implements VehicleService {
 
     @Inject
     VehicleDaoExt vehiclesDao;
+    @Inject
+    DeviceService deviceService;
 
     public ResponseDTO<List<Vehicles>> getVehicles() {
         return new ResponseDTO<>(vehiclesDao.findAllActives(), null);
@@ -58,7 +61,7 @@ public class VehicleServiceImp implements VehicleService {
 
             Vehicles vehicle = vehiclesDao.fetchOneById(VehicleID);
             vehicle.setStatus(newData.getStatus());
-            vehicle.setLastUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            vehicle.setLastUpdated(LocalDateTime.now());
             vehicle.setDeletedAt(null);
             vehicle.setUserId(newData.getUserId());
             vehicle.setPlate(newData.getPlate());
@@ -102,4 +105,55 @@ public class VehicleServiceImp implements VehicleService {
         return responseDTO;
     }
 
+    @Override
+    public ResponseDTO<Vehicles> activateVehicle(Long vehicleId, Long physicalId) {
+        ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
+
+        try {
+            Vehicles vehicle = getVehiclesByVehicleID(vehicleId).getModel();
+
+            if (vehicle == null)
+                throw new ApiException(ErrorCodes.not_found.toString(),
+                        "Vehiculo no encontrado",
+                        HttpStatus.SC_NOT_FOUND);
+
+            if (vehicle.getStatus().equals(Status.ACTIVE.name()))
+                throw new ApiException(ErrorCodes.bad_request.toString(),
+                        "Vehiculo actualente activado",
+                        HttpStatus.SC_BAD_REQUEST);
+
+            ResponseDTO<Devices> deviceDTO = deviceService.getDeviceByPhysicalID(physicalId);
+            if (deviceDTO.error != null)
+                throw new ApiException(ErrorCodes.internal_error.toString(),
+                        "No se pudo activar el vehiculo. Reason: " + deviceDTO.error.getMessage(),
+                        HttpStatus.SC_INTERNAL_SERVER_ERROR);
+
+            Devices device = deviceDTO.getModel();
+            if (device == null)
+                throw new ApiException(ErrorCodes.bad_request.name(),
+                        "No se pudo activar el vehiculo. Reason: Physical id inválido",
+                        HttpStatus.SC_BAD_REQUEST);
+
+            if (device.getStatus().equals(Status.ACTIVE.name()))
+                throw new ApiException(ErrorCodes.bad_request.name(),
+                        "No se pudo activar el vehiculo. Reason: El physical id ingresado ya está en uso",
+                        HttpStatus.SC_BAD_REQUEST);
+
+
+            if (device.getStatus().equals(Status.INACTIVE.name())) {
+                device.setStatus(Status.ACTIVE.name());
+                deviceService.updateDevice(device.getId(), device);
+            }
+
+            vehicle.setStatus(Status.ACTIVE.toString());
+            vehicle.setDeviceId(device.getId());
+            updateVehicle(vehicleId, vehicle);
+            responseDTO.model = vehicle;
+
+        } catch (ApiException e) {
+            responseDTO.error = e;
+        }
+
+        return responseDTO;
+    }
 }
