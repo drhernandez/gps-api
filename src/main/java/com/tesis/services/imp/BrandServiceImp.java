@@ -27,8 +27,8 @@ public class BrandServiceImp implements BrandService {
             brandDao.insert(brand);
             responseDTO.model = brand;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar la brand %s", brand.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar la brand.");
+            logger.error("[message: No se pudo guardar la brand {}] [error: {}]", brand.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar la brand.", e);
         }
 
         return responseDTO;
@@ -53,8 +53,8 @@ public class BrandServiceImp implements BrandService {
             brandDao.update(brand);
             responseDTO.model = brand;
         } catch (Exception e){
-            logger.error("No se pudo modificar la brand");
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar la brand.");
+            logger.error("[message: No se pudo modificar la brand] [error: {}]", e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar la brand.", e);
         }
         return responseDTO;
     }
@@ -65,8 +65,8 @@ public class BrandServiceImp implements BrandService {
         try {
             brandDao.deleteById(brandID);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar la brand %s", brandID));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar la brand.");
+            logger.error("[message: No se pudo eliminar la brand {}] [error: {}]", brandID, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar la brand.", e);
         }
         return responseDTO;
     }

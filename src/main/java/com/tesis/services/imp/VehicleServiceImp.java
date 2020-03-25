@@ -55,11 +55,11 @@ public class VehicleServiceImp implements VehicleService {
     }
 
     @Override
-    public ResponseDTO<Vehicles> updateVehicle(Long VehicleID, Vehicles newData) {
+    public ResponseDTO<Vehicles> updateVehicle(Long vehicleID, Vehicles newData) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
         try {
 
-            Vehicles vehicle = vehiclesDao.fetchOneById(VehicleID);
+            Vehicles vehicle = vehiclesDao.fetchOneById(vehicleID);
             vehicle.setStatus(newData.getStatus());
             vehicle.setLastUpdated(LocalDateTime.now());
             vehicle.setDeletedAt(null);
@@ -72,8 +72,8 @@ public class VehicleServiceImp implements VehicleService {
             vehiclesDao.update(vehicle);
             responseDTO.model = vehicle;
         } catch (Exception e) {
-            logger.error("No se pudo modificar el vahiculo");
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el vehiculo.");
+            logger.error("[message: No se pudo modificar el vahiculo {}] [error: {}]", vehicleID, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el vehiculo.", e);
         }
         return responseDTO;
     }
@@ -84,8 +84,8 @@ public class VehicleServiceImp implements VehicleService {
         try {
             vehiclesDao.deleteVehicle(vehicleID);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar el vehiculo %s", vehicleID));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el vehiculo.");
+            logger.error("[message: No se pudo eliminar el vehiculo {}] [error: {}]", vehicleID, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el vehiculo.", e);
         }
         return responseDTO;
     }
@@ -106,11 +106,11 @@ public class VehicleServiceImp implements VehicleService {
     }
 
     @Override
-    public ResponseDTO<Vehicles> activateVehicle(Long vehicleId, Long physicalId) {
+    public ResponseDTO<Vehicles> activateVehicle(Long vehicleID, Long physicalId) {
         ResponseDTO<Vehicles> responseDTO = new ResponseDTO<>();
 
         try {
-            Vehicles vehicle = getVehiclesByVehicleID(vehicleId).getModel();
+            Vehicles vehicle = getVehiclesByVehicleID(vehicleID).getModel();
 
             if (vehicle == null)
                 throw new ApiException(ErrorCodes.not_found.toString(),
@@ -147,10 +147,11 @@ public class VehicleServiceImp implements VehicleService {
 
             vehicle.setStatus(Status.ACTIVE.toString());
             vehicle.setDeviceId(device.getId());
-            updateVehicle(vehicleId, vehicle);
+            updateVehicle(vehicleID, vehicle);
             responseDTO.model = vehicle;
 
         } catch (ApiException e) {
+            logger.error("[message: No se pudo activar el vehiculo {}] [error: {}]", vehicleID, e.getMessage());
             responseDTO.error = e;
         }
 
