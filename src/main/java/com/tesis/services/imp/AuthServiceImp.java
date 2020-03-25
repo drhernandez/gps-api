@@ -37,7 +37,7 @@ public class AuthServiceImp implements AuthService {
         try {
             authGPSClient.validateToken(token, privileges);
         } catch (ApiException e) {
-            logger.error("Validación de token fallida");
+            logger.error("[message: Validación de token fallida] [error: {}]", e.getMessage());
             throw e;
         }
     }
@@ -48,7 +48,7 @@ public class AuthServiceImp implements AuthService {
             return authGPSClient.getUserData(userID);
         }
         catch (ApiException e){
-            logger.error(e.getMessage());
+            logger.error("[message: Error al obtener la informacion del usuario {}] [error: {}]", userID, e.getMessage());
             return null;
         }
     }

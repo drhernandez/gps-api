@@ -33,8 +33,8 @@ public class DeviceServiceImp implements DeviceService {
             devicesDao.insertDevice(device);
             responseDTO.model = device;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el device %s. Razon: %s", device.toString(), e.getMessage()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el device.");
+            logger.error("[message: No se pudo guardar el device {}] [error: {}]", device.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el device.", e);
         }
 
         return responseDTO;
@@ -64,8 +64,8 @@ public class DeviceServiceImp implements DeviceService {
             devicesDao.update(device);
             responseDTO.model = device;
         } catch (Exception e){
-            logger.error("No se pudo modificar el device");
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el device.");
+            logger.error("[message: No se pudo modificar el device] [error: {}]", e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el device.", e);
         }
         return responseDTO;
     }
@@ -76,8 +76,8 @@ public class DeviceServiceImp implements DeviceService {
         try {
             devicesDao.deleteDevice(deviceId);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar el device %s", deviceId));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el device.");
+            logger.error("[message: No se pudo eliminar el device {}] [error: {}]}", deviceId, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el device.", e);
         }
         return responseDTO;
     }
@@ -87,7 +87,7 @@ public class DeviceServiceImp implements DeviceService {
         try {
             responseDTO.setModel(devicesDao.getDeviceByPhysicalID(physicalID));
         } catch (Exception e) {
-            logger.error(String.format("No se pudo obtener el device con id fisico %s", physicalID));
+            logger.error("[message: No se pudo obtener el device con id fisico {}] [error: {}]}", physicalID, e.getMessage());
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), e.getMessage());
         }
         return responseDTO;

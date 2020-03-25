@@ -28,8 +28,8 @@ public class BrandLineServiceImp implements BrandLineService {
             brandLineDao.insert(brandLine);
             responseDTO.model = brandLine;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar la brandLine %s", brandLine.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar la brandLine.");
+            logger.error("[message: No se pudo guardar la brandLine {}] [error: {}]", brandLine.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar la brandLine.", e);
         }
 
         return responseDTO;
@@ -52,8 +52,8 @@ public class BrandLineServiceImp implements BrandLineService {
         try {
             responseDTO.setModel(brandLineDao.fetchByBrandId(brandID));
         }catch (Exception e){
-            logger.error("No se pudo encontrar las brandLines");
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al buscar las brandLines.");
+            logger.error("[message: No se pudo encontrar las brandLines ] [error: {}]", e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al buscar las brandLines.", e);
         }
         return responseDTO;
     }
@@ -69,8 +69,8 @@ public class BrandLineServiceImp implements BrandLineService {
             brandLineDao.update(brandLine);
             responseDTO.model = brandLine;
         } catch (Exception e){
-            logger.error("No se pudo modificar la brandLine");
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar la brandLine.");
+            logger.error("[message: No se pudo modificar la brandLine] [error: {}]", e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar la brandLine.", e);
         }
         return responseDTO;
     }
@@ -81,8 +81,8 @@ public class BrandLineServiceImp implements BrandLineService {
         try {
             brandLineDao.deleteById(brandLineID);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar la brandLine %s", brandLineID));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar la brandLine.");
+            logger.error("[message: No se pudo eliminar la brandLine {}] [error: {}]}", brandLineID, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar la brandLine.", e);
         }
         return responseDTO;
     }

@@ -70,7 +70,7 @@ public class TrackingServiceImp implements TrackingService {
                                 speedAlertSend = true;
                             }
                         } catch (Exception e) {
-                            logger.error("Error en la comprobacion de alertas de velocidad de trakings");
+                            logger.error("[message: Error en la comprobacion de alertas de velocidad de trakings] [error: {}]", e.getMessage());
                             throw e;
                         }
                     }
@@ -92,7 +92,7 @@ public class TrackingServiceImp implements TrackingService {
                                 movementAlertSend = true;
                             }
                         } catch (Exception e) {
-                            logger.error("Error en la comprobacion de alertas de movimineto de trakings");
+                            logger.error("[message: Error en la comprobacion de alertas de movimineto de trakings] [error: {}]", e.getMessage());
                             halt(500, e.getMessage());
                         }
                     }
@@ -101,7 +101,7 @@ public class TrackingServiceImp implements TrackingService {
             responseDTO.model = trackings;
 
         } catch (Exception e) {
-            logger.error("Error al guardar el tracking. Reason: " + e.getMessage());
+            logger.error("[message: Error al guardar el tracking] [error: {}]", e.getMessage());
             responseDTO.error = new ApiException("db_error", "Error al guardar el tracking", e);
         }
 
@@ -111,7 +111,7 @@ public class TrackingServiceImp implements TrackingService {
     @Override
     public ResponseDTO<List<Trackings>> getTrackingsByDeviceID(Long deviceID) {
 
-        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO();
+        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO<>();
         responseDTO.model = trakingsDao.findAllActivesByDeviceID(deviceID);
         return responseDTO;
     }
@@ -119,7 +119,7 @@ public class TrackingServiceImp implements TrackingService {
     public ResponseDTO<List<Trackings>> getTrackingsByVehicleID(Long vehicleID) {
         Vehicles vehicle = vehiclesDao.fetchOneById(vehicleID);
 
-        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO();
+        ResponseDTO<List<Trackings>> responseDTO = new ResponseDTO<>();
         responseDTO.model = trakingsDao.fetchByDeviceId(vehicle.getDeviceId());
         return responseDTO;
     }
@@ -128,7 +128,7 @@ public class TrackingServiceImp implements TrackingService {
     public ResponseDTO<Trackings> getLocationByVehicleID(Long vehicleID) {
         Vehicles vehicle = vehiclesDao.fetchOneById(vehicleID);
 
-        ResponseDTO<Trackings> responseDTO = new ResponseDTO();
+        ResponseDTO<Trackings> responseDTO = new ResponseDTO<>();
         if (vehicle != null){
             responseDTO.model = trakingsDao.findLocationByDeviceID(vehicle.getDeviceId());
         }

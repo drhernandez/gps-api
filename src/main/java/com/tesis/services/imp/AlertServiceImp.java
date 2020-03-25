@@ -46,8 +46,8 @@ public class AlertServiceImp implements AlertService {
             speedAlertsDao.insert(speedAlert);
             responseDTO.model = speedAlert;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el speedAlert %s", speedAlert.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el speedAlert.");
+            logger.error("[message: No se pudo guardar el speedAlert {}] [error: {}]", speedAlert.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el speedAlert.", e);
         }
 
         return responseDTO;
@@ -81,8 +81,8 @@ public class AlertServiceImp implements AlertService {
             speedAlertsDao.update(speedAlert);
             responseDTO.model = speedAlert;
         } catch (Exception e){
-            logger.error(String.format("No se pudo modificar el speedAlert %s", speedAlert.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el speedAlert.");
+            logger.error("[message: No se pudo modificar el speedAlert {}] [error: {}]", speedAlert.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el speedAlert.", e);
         }
         return responseDTO;
     }
@@ -93,8 +93,8 @@ public class AlertServiceImp implements AlertService {
         try {
             speedAlertsDao.deleteSpeedAlert(deviceID);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar el speedAlert %s", deviceID));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el speedAlert.");
+            logger.error("[message: No se pudo eliminar el speedAlert {}] [error: {}]", deviceID, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el speedAlert.", e);
         }
         return responseDTO;
     }
@@ -116,8 +116,8 @@ public class AlertServiceImp implements AlertService {
             movementAlertDao.insert(movementAlert);
             responseDTO.model = movementAlert;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el movementAlert %s", movementAlert.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el movementAlert.");
+            logger.error("[message: No se pudo guardar el movementAlert {}] [error: {}]", movementAlert.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el movementAlert.", e);
         }
 
         return responseDTO;
@@ -154,8 +154,8 @@ public class AlertServiceImp implements AlertService {
             movementAlertDao.update(momovementAlert);
             responseDTO.model = momovementAlert;
         } catch (Exception e){
-            logger.error(String.format("No se pudo modificar el momovementAlert %s", momovementAlert.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el movementAlert.");
+            logger.error("[message: No se pudo modificar el momovementAlert {}] [error: {}]", momovementAlert.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el movementAlert.", e);
         }
         return responseDTO;
     }
@@ -166,15 +166,15 @@ public class AlertServiceImp implements AlertService {
         try {
             movementAlertDao.deleteMovementAlert(deviceId);
         }catch (Exception e) {
-            logger.error(String.format("No se pudo eliminar el speedAlert %s", deviceId));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el movementAlert.");
+            logger.error("[message: No se pudo eliminar el speedAlert {}] [error: {}]", deviceId, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar el movementAlert.", e);
         }
         return responseDTO;
     }
 
 
-    public MovementAlerts getMovementIfActive(Long devideId){
-        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(devideId);
+    public MovementAlerts getMovementIfActive(Long deviceID){
+        MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceID);
         return movementAlert.getActive() ? movementAlert : null;
     }
 
@@ -186,8 +186,8 @@ public class AlertServiceImp implements AlertService {
             speedAlertsHistoryDao.insert(speedAlertsHistory);
             responseDTO.model = speedAlertsHistory;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el speedAlertsHistory %s", speedAlertsHistory.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el speedAlertHistory.");
+            logger.error("[message: No se pudo guardar el speedAlertsHistory {}] [error: {}]", speedAlertsHistory.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el speedAlertHistory.", e);
         }
 
         return responseDTO;
@@ -207,15 +207,15 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<SpeedAlertsHistory> deleteSpeedAlertHistory(Long deviceId) {
+    public ResponseDTO<SpeedAlertsHistory> deleteSpeedAlertHistory(Long deviceID) {
         ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
 
         try {
-            SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceId);
+            SpeedAlerts speedAlert = speedAlertsDao.fetchOneByDeviceId(deviceID);
             speedAlertsHistoryDao.deleteSpeedAlertHistory(speedAlert.getId());
         } catch (Exception e){
-            logger.error(String.format("No se pudo eliminar los speedAlertsHistory del device  %s", deviceId));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los speedAlertHistory.");
+            logger.error("[message: No se pudo eliminar los speedAlertsHistory del device {}] [error: {}]", deviceID, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los speedAlertHistory.", e);
         }
         return responseDTO;
     }
@@ -228,8 +228,8 @@ public class AlertServiceImp implements AlertService {
             movementAlertsHistoryDao.insert(movementAlertsHistory);
             responseDTO.model = movementAlertsHistory;
         } catch (Exception e) {
-            logger.error(String.format("No se pudo guardar el movementAlertsHistory %s", movementAlertsHistory.toString()));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el movementAlertHistory.");
+            logger.error("[message: No se pudo guardar el movementAlertsHistory {}] [error: {}]", movementAlertsHistory.toString(), e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar el movementAlertHistory.", e);
         }
 
         return responseDTO;
@@ -249,15 +249,15 @@ public class AlertServiceImp implements AlertService {
     }
 
     @Override
-    public ResponseDTO<MovementAlertsHistory> deleteMovementAlertHistory(Long deviceId) {
+    public ResponseDTO<MovementAlertsHistory> deleteMovementAlertHistory(Long deviceID) {
         ResponseDTO<MovementAlertsHistory> responseDTO = new ResponseDTO<>();
 
         try {
-            MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceId);
+            MovementAlerts movementAlert = movementAlertDao.fetchOneByDeviceId(deviceID);
             movementAlertsHistoryDao.deleteMovementsAlertHistory(movementAlert.getId());
         } catch (Exception e){
-            logger.error(String.format("No se pudo eliminar los speedAlertsHistory del device  %s", deviceId));
-            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los movementAlertHistory.");
+            logger.error("[message: No se pudo eliminar los speedAlertsHistory del device {}] [error: {}]", deviceID, e.getMessage());
+            responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al eliminar los movementAlertHistory.", e);
         }
 
         return responseDTO;
