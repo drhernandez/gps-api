@@ -8,6 +8,7 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.services.imp.BrandLineServiceImp;
 import com.tesis.services.imp.BrandServiceImp;
 import com.tesis.utils.JsonUtils;
+import org.apache.http.HttpStatus;
 import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
@@ -54,13 +55,17 @@ public class BrandController {
         String param = request.params("brand_id");
         Long brandID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_brand_id] [method: BrandController.getDeciveByBrandID]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_brand_id] [method: BrandController.getDeciveByBrandID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
             brandID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_brand_id] [method: BrandController.getDeciveByBrandID]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_brand_id] [method: BrandController.getDeciveByBrandID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         ResponseDTO<Brands> responseDTO = brandService.getBrandByBrandID(brandID);
 
@@ -75,13 +80,17 @@ public class BrandController {
         String param = request.params("brand_id");
         Long brandID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: BrandController.updateBrand]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: BrandController.updateBrand]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
             brandID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: BrandController.updateBrand]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: BrandController.updateBrand]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         Brands newBrand = JsonUtils.INSTANCE.GSON().fromJson(request.body(), Brands.class);
@@ -101,14 +110,18 @@ public class BrandController {
         String param = request.params("brand_id");
         Long brandID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: brandController.deleteBrand]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: brandController.deleteBrand]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         try {
             brandID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: brandController.deleteBrand]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: brandController.deleteBrand]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
-        ResponseDTO responseDTO = brandService.deleteBrand(brandID);
+        ResponseDTO<Brands> responseDTO = brandService.deleteBrand(brandID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -149,13 +162,17 @@ public class BrandController {
         String param = request.params("brand_line_id");
         Long brandLineID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_brand_line_id] [method: BrandController.getBrandLineByBrandLineID]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_brand_line_id] [method: BrandController.getBrandLineByBrandLineID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
             brandLineID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_brand_line_id] [method: BrandController.getBrandLineByBrandLineID]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_brand_line_id] [method: BrandController.getBrandLineByBrandLineID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         ResponseDTO<BrandLines> responseDTO = brandLineService.getBrandLineByBrandLineID(brandLineID);
 
@@ -170,13 +187,17 @@ public class BrandController {
         String param = request.params("brand_line_id");
         Long brandLineID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: BrandController.updateBrandLine]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: BrandController.updateBrandLine]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
             brandLineID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: BrandController.updateBrandLine]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: BrandController.updateBrandLine]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         BrandLines newBrand = JsonUtils.INSTANCE.GSON().fromJson(request.body(), BrandLines.class);
@@ -196,14 +217,18 @@ public class BrandController {
         String param = request.params("brand_line_id");
         Long brandLineID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: brandController.deleteBrandLine]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: brandController.deleteBrandLine]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         try {
             brandLineID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: brandController.deleteBrandLine]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: brandController.deleteBrandLine]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
-        ResponseDTO responseDTO = brandLineService.deleteBrandLine(brandLineID);
+        ResponseDTO<BrandLines> responseDTO = brandLineService.deleteBrandLine(brandLineID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -219,13 +244,17 @@ public class BrandController {
         String param = request.params("brand_id");
         Long brandID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_brand_id] [method: BrandController.getBrandLineByBrandID]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_brand_id] [method: BrandController.getBrandLineByBrandID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
             brandID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_brand_id] [method: BrandController.getBrandLineByBrandID]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_brand_id] [method: BrandController.getBrandLineByBrandID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         ResponseDTO<List<BrandLines>> responseDTO = brandLineService.getBrandLineByBrandID(brandID);
 
