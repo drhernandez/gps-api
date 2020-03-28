@@ -183,21 +183,21 @@ public class VehicleController {
         String param = request.params("vehicle_id");
         Long vehicleID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getLocationByVehicleID]");
+            throw new ApiException(ErrorCodes.invalid_data.name(),
+                    "[reason: invalid_vehicle_id] [method: VehicleController.getLocationByVehicleID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         try {
             vehicleID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_vehicle_id] [method: VehicleController.getLocationByVehicleID]");
+            throw new ApiException(ErrorCodes.invalid_data.name(),
+                    "[reason: invalid_vehicle_id] [method: VehicleController.getLocationByVehicleID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
-        ResponseDTO responseDTO = new ResponseDTO();
-
-        responseDTO = trackingService.getLocationByVehicleID(vehicleID);
-        response.status(200);
+        ResponseDTO<Trackings> responseDTO = trackingService.getLocationByVehicleID(vehicleID);
 
         if (responseDTO.error != null) {
-            response.status(500);
             throw responseDTO.error;
         }
 

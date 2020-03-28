@@ -3,6 +3,7 @@ package com.tesis.services.imp;
 import com.google.inject.Inject;
 import com.tesis.clients.SMSClient;
 import com.tesis.daos.VehicleDaoExt;
+import com.tesis.enums.ErrorCodes;
 import com.tesis.enums.Status;
 import com.tesis.exceptions.ApiException;
 import com.tesis.daos.TrackingDaoExt;
@@ -12,6 +13,7 @@ import com.tesis.routes.TrackingRouter;
 import com.tesis.services.AlertService;
 import com.tesis.services.TrackingService;
 import com.tesis.utils.filters.TrackingFilters;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,7 +133,16 @@ public class TrackingServiceImp implements TrackingService {
         ResponseDTO<Trackings> responseDTO = new ResponseDTO<>();
         if (vehicle != null){
             responseDTO.model = trakingsDao.findLocationByDeviceID(vehicle.getDeviceId());
+            if (responseDTO.model == null)
+                responseDTO.error = new ApiException(ErrorCodes.not_found.toString(),
+                        "[reason: tracking_not_found] [method: TrackingServiceImp.getLocationByVehicleID]",
+                        HttpStatus.SC_NOT_FOUND);
         }
+        else
+            responseDTO.error = new ApiException(ErrorCodes.bad_request.toString(),
+                    "[reason: invalid_vehicle_id] [method: TrackingServiceImp.getLocationByVehicleID]",
+                    HttpStatus.SC_BAD_REQUEST);
+
         return responseDTO;
     }
 
@@ -177,15 +188,3 @@ public class TrackingServiceImp implements TrackingService {
         }
     }
 }
-
-
-//no alert
-//10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,1.0,8,246,25-09-2019T20:51:09:000-03:00
-
-
-//movement alert
-//10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,10.0,8,246,25-09-2019T20:51:09:000-03:00
-
-
-//speed alert
-//10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00;10001,-31.4109,-64.1897,100.0,8,246,25-09-2019T20:51:09:000-03:00
