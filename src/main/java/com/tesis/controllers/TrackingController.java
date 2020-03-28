@@ -9,6 +9,7 @@ import com.tesis.models.ResponseDTO;
 import com.tesis.models.Search;
 import com.tesis.services.TrackingService;
 import com.tesis.utils.filters.TrackingFilters;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -39,7 +40,9 @@ public class TrackingController {
 
         String body = request.body();
         if (StringUtils.isBlank(body)) {
-            throw new ApiException("invalid_data", "[reason: invalid_body] [method: TrackingController.saveTracking]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_body] [method: TrackingController.saveTracking]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         List<Trackings> trackingList = getTrackingFromWeft(body);
@@ -48,7 +51,7 @@ public class TrackingController {
                     HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
-        ResponseDTO responseDTO = trackingService.saveTracking(getTrackingFromWeft(body));
+        ResponseDTO<List<Trackings>> responseDTO = trackingService.saveTracking(getTrackingFromWeft(body));
         if (responseDTO.error != null) {
             throw responseDTO.error;
         }
@@ -61,7 +64,9 @@ public class TrackingController {
         String param = request.params("device_id");
         Long deviceID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: TrackingController.getTrackingsByDeviceID]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: TrackingController.getTrackingsByDeviceID]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
@@ -106,7 +111,9 @@ public class TrackingController {
             pagination.setLimit(request.queryParams("limit") != null ? Integer.valueOf(request.queryParams("limit")) : 10);
 
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_params] [method: TrackingController.trackingSearch]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_params] [method: TrackingController.trackingSearch]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         ResponseDTO<Search> responseDTO = trackingService.trackingSearch(filters, pagination);
