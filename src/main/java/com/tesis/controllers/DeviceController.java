@@ -11,7 +11,9 @@ import spark.Request;
 import spark.Response;
 import spark.utils.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DeviceController {
 
@@ -20,6 +22,25 @@ public class DeviceController {
     @Inject
     public DeviceController(DeviceService devicesService) {
         this.devicesService = devicesService;
+    }
+
+    public Object bulkCreate(Request request, Response response){
+        String body = request.body();
+        if (StringUtils.isBlank(body)) {
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_body] [method: DeviceController.bulkCreate]",
+                    HttpStatus.SC_BAD_REQUEST);
+        }
+        body = body.replace("[", "")
+                .replace("]", "")
+                .replace(" ", "");
+        List<Long> idList = getDeviceIdsFromBody(body);
+
+        ResponseDTO<List<Devices>> responseDTO = devicesService.bulkCreate(idList);
+        if (responseDTO.error != null)
+            throw responseDTO.error;
+
+        return responseDTO.getModelAsJson();
     }
 
     public Object createDevice(Request request, Response response) throws ApiException {
@@ -49,7 +70,7 @@ public class DeviceController {
         Long deviceID;
         if (StringUtils.isBlank(param)) {
             throw new ApiException("invalid_data",
-                    "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]",
+                    "[reason: invalid_Vehicle_id] [method: deviceController.getDeciveByDeviceID]",
                     HttpStatus.SC_BAD_REQUEST);
         }
 
@@ -57,7 +78,7 @@ public class DeviceController {
             deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
             throw new ApiException("invalid_data",
-                    "[reason: invalid_Vehicle_id] [method: VehicleController.getVehicleByVehicleID]",
+                    "[reason: invalid_Vehicle_id] [method: deviceController.getDeciveByDeviceID]",
                     HttpStatus.SC_BAD_REQUEST);
         }
         ResponseDTO<Devices> responseDTO = devicesService.getDeciveByDeviceID(deviceID);
@@ -123,5 +144,9 @@ public class DeviceController {
         }
 
         return responseDTO.getModelAsJson();
+    }
+
+    private List<Long> getDeviceIdsFromBody(String body){
+        return Arrays.stream(body.split(",")).map(Long::valueOf).collect(Collectors.toList());
     }
 }
