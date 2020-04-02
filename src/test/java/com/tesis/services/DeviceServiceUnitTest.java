@@ -15,10 +15,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
@@ -27,12 +28,39 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DeviceServiceUnitTest {
 
-
     @Mock
     DeviceDaoExt deviceDao;
 
     @InjectMocks
     DeviceServiceImp deviceService;
+
+    @Test
+    public void bulkCreateTest_ok(){
+        List<Long> idListMock = new ArrayList<Long>();
+        idListMock.add(10025L);
+
+        try {
+            Mockito.when(deviceDao.createDevice(anyLong())).thenReturn(Mockito.mock(Devices.class));
+            deviceService.bulkCreate(idListMock);
+        } catch (DataException e) {
+            fail("Should not throw exception");
+        }
+    }
+
+    @Test
+    public void bulkCreateTest_error(){
+        List<Long> idListMock = new ArrayList<Long>();
+        idListMock.add(10025L);
+        ResponseDTO<List<Devices>> responseDTO = new ResponseDTO<>();
+        try {
+            Mockito.doThrow(DataException.class).when(deviceDao).createDevice(anyLong());
+            responseDTO = deviceService.bulkCreate(idListMock);
+        } catch (DataException e) {
+            fail("Should not throw exception");
+        }
+
+        assertEquals(responseDTO.getError().getMessage(), "Error al guardar los devices.");
+    }
 
     @Test
     public void createDeviceTest_ok(){
@@ -42,7 +70,6 @@ public class DeviceServiceUnitTest {
         ResponseDTO<Devices> responseDTO = deviceService.createDevice(device);
 
         assertEquals(responseDTO.getModel().getModel(), device.getModel());
-
     }
 
     @Test
