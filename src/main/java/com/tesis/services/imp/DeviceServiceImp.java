@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
@@ -23,6 +24,24 @@ public class DeviceServiceImp implements DeviceService {
 
     @Inject
     DeviceDaoExt devicesDao;
+
+    @Override
+    public ResponseDTO<List<Devices>> bulkCreate(List<Long> idList) {
+        ResponseDTO<List<Devices>> responseDTO = new ResponseDTO<>();
+        responseDTO.setModel(new ArrayList<Devices>());
+
+        for (Long id : idList) {
+            try {
+                responseDTO.model.add(devicesDao.createDevice(id));
+            } catch (Exception e) {
+                logger.error("[message: No se pudo guardar el device con physical_id {}] [error: {}]", id, e.getMessage());
+                responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al guardar los devices.", e);
+                break;
+            }
+        };
+
+        return responseDTO;
+    }
 
     @Override
     public ResponseDTO<Devices> createDevice(Devices device) {

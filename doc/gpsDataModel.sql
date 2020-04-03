@@ -18,8 +18,8 @@ create table DEVICES(
 	software_version varchar,
 	status varchar
 );
-ALTER TABLE public.devices ADD UNIQUE (physical_id, deleted_at);
 ALTER TABLE public.devices ALTER COLUMN id TYPE int8 USING id::int8;
+ALTER TABLE public.devices ADD UNIQUE (physical_id, deleted_at);
 CREATE UNIQUE INDEX deleted_at_null_idx ON public.devices (physical_id) WHERE deleted_at IS NULL;
 
 

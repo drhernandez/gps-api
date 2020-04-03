@@ -13,15 +13,27 @@ import java.util.List;
 import com.tesis.jooq.tables.records.DevicesRecord;
 import org.jooq.Configuration;
 import org.jooq.impl.DSL;
+import static org.jooq.impl.DSL.max;
 
 import static com.tesis.config.Constants.DEFAULT_SPEED_ALERT;
-
 
 public class DeviceDaoExt extends DevicesDao{
 
     @Inject
     public DeviceDaoExt(Configuration configuration){
         super(configuration);
+    }
+
+    public com.tesis.jooq.tables.pojos.Devices createDevice(Long physicalID) throws DataException {
+
+        com.tesis.jooq.tables.pojos.Devices device = new com.tesis.jooq.tables.pojos.Devices();
+        device.setPhysicalId(physicalID);
+        device.setModel(System.getenv("CURRENT_DEVICE_MODEL"));
+        device.setSoftwareVersion(System.getenv("CURRENT_SOFTWARE_VERSION"));
+        device.setStatus(Status.INACTIVE.name());
+
+        insertDevice(device);
+        return device;
     }
 
     public void insertDevice(com.tesis.jooq.tables.pojos.Devices device) throws DataException{

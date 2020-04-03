@@ -13,6 +13,7 @@ import com.tesis.routes.Router;
 import com.tesis.services.AlertService;
 import com.tesis.utils.JsonUtils;
 import kong.unirest.UnirestException;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
@@ -39,9 +40,7 @@ public class AlertController {
     public Object createSpeedAlert(Request request, Response response) throws ApiException {
 
         SpeedAlerts speedAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
-        ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.createSpeedAlert(speedAlert);
+        ResponseDTO<SpeedAlerts> responseDTO = alertService.createSpeedAlert(speedAlert);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -52,9 +51,7 @@ public class AlertController {
 
     public Object getSpeedAlerts(Request request, Response response) throws ApiException {
 
-        ResponseDTO<List<SpeedAlerts>> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.getSpeedAlerts();
+        ResponseDTO<List<SpeedAlerts>> responseDTO = alertService.getSpeedAlerts();
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -68,21 +65,23 @@ public class AlertController {
         String param = request.params("speed_alert_id");
         Long speedAlertID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.updateSpeedAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_speed_alert_id] [method: AlertController.updateSpeedAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
             speedAlertID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_speed_alert_id] [method: AlertController.updateSpeedAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_speed_alert_id] [method: AlertController.updateSpeedAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         SpeedAlerts speedAlerts = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlerts.class);
         //Add validations
 
-        ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.updateSpeedAlert(speedAlertID, speedAlerts);
+        ResponseDTO<SpeedAlerts> responseDTO = alertService.updateSpeedAlert(speedAlertID, speedAlerts);
 
         if (responseDTO.error != null) {
             response.status(500);
@@ -97,17 +96,19 @@ public class AlertController {
         String param = request.params("device_id");
         Long deviceID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteSpeedAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         try {
             deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteSpeedAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
-        ResponseDTO responseDTO = new ResponseDTO();
-
-        responseDTO = alertService.deleteSpeedAlert(deviceID);
+        ResponseDTO<SpeedAlerts> responseDTO = alertService.deleteSpeedAlert(deviceID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -123,9 +124,7 @@ public class AlertController {
     public Object createMovementAlert(Request request, Response response) throws ApiException {
 
         MovementAlerts movementAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlerts.class);
-        ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.createMovementAlert(movementAlert);
+        ResponseDTO<MovementAlerts> responseDTO = alertService.createMovementAlert(movementAlert);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -136,9 +135,7 @@ public class AlertController {
 
     public Object getMovementAlerts(Request request, Response response) throws ApiException {
 
-        ResponseDTO<List<MovementAlerts>> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.getMovementAlert();
+        ResponseDTO<List<MovementAlerts>> responseDTO = alertService.getMovementAlert();
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -152,21 +149,23 @@ public class AlertController {
         String param = request.params("movement_alert_id");
         Long movementAlertID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_movement_alert_id] [method: AlertController.updateMovementAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_movement_alert_id] [method: AlertController.updateMovementAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         try {
             movementAlertID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_movement_alert_id] [method: AlertController.updateMovementAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_movement_alert_id] [method: AlertController.updateMovementAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
         MovementAlerts movementAlert = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlerts.class);
         //Add validations
 
-        ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.updateMovementAlert(movementAlertID, movementAlert);
+        ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(movementAlertID, movementAlert);
 
         if (responseDTO.error != null) {
             response.status(500);
@@ -181,18 +180,19 @@ public class AlertController {
         String param = request.params("device_id");
         Long deviceID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteMovementAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         try {
             deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementAlert]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteMovementAlert]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
-        ResponseDTO responseDTO = new ResponseDTO();
-//        }
-
-        responseDTO = alertService.deleteMovementAlert(deviceID);
+        ResponseDTO<MovementAlerts> responseDTO = alertService.deleteMovementAlert(deviceID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -209,9 +209,7 @@ public class AlertController {
     public Object createSpeedHistory(Request request, Response response) throws ApiException {
 
         SpeedAlertsHistory speedAlertsHistory = JsonUtils.INSTANCE.GSON().fromJson(request.body(), SpeedAlertsHistory.class);
-        ResponseDTO<SpeedAlertsHistory> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.createSpeedAlertHistory(speedAlertsHistory);
+        ResponseDTO<SpeedAlertsHistory> responseDTO = alertService.createSpeedAlertHistory(speedAlertsHistory);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -225,17 +223,19 @@ public class AlertController {
         String param = request.params("device_id");
         Long deviceID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedHistory]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteSpeedHistory]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         try {
             deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteSpeedHistory]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteSpeedHistory]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
-        ResponseDTO responseDTO = new ResponseDTO();
-
-        responseDTO = alertService.deleteSpeedAlertHistory(deviceID);
+        ResponseDTO<SpeedAlertsHistory> responseDTO = alertService.deleteSpeedAlertHistory(deviceID);
         response.status(200);
 
         if (responseDTO.error != null) {
@@ -251,9 +251,7 @@ public class AlertController {
     public Object createMovementHistory(Request request, Response response) throws ApiException {
 
         MovementAlertsHistory movementAlertsHistory = JsonUtils.INSTANCE.GSON().fromJson(request.body(), MovementAlertsHistory.class);
-        ResponseDTO<MovementAlertsHistory> responseDTO = new ResponseDTO<>();
-
-        responseDTO = alertService.createMovementAlertHistory(movementAlertsHistory);
+        ResponseDTO<MovementAlertsHistory> responseDTO = alertService.createMovementAlertHistory(movementAlertsHistory);
 
         if (responseDTO.error != null) {
             throw responseDTO.error;
@@ -267,17 +265,19 @@ public class AlertController {
         String param = request.params("device_id");
         Long deviceID;
         if (StringUtils.isBlank(param)) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementHistory]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteMovementHistory]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
         try {
             deviceID = Long.valueOf(param);
         } catch (NumberFormatException e) {
-            throw new ApiException("invalid_data", "[reason: invalid_device_id] [method: AlertController.deleteMovementHistory]");
+            throw new ApiException("invalid_data",
+                    "[reason: invalid_device_id] [method: AlertController.deleteMovementHistory]",
+                    HttpStatus.SC_BAD_REQUEST);
         }
 
-        ResponseDTO responseDTO = new ResponseDTO();
-
-        responseDTO = alertService.deleteMovementAlertHistory(deviceID);
+        ResponseDTO responseDTO = alertService.deleteMovementAlertHistory(deviceID);
         response.status(200);
 
         if (responseDTO.error != null) {

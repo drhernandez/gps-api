@@ -40,6 +40,7 @@ public enum UrlPermissions {
     GETDevices("GET /devices", EnumSet.of(Privileges.GET_DEVICE)),
     GETDevicesID("GET /devices/[0-9]*", EnumSet.of(Privileges.GET_DEVICE)),
     POSTDevices("POST /devices/", EnumSet.of(Privileges.CREATE_DEVICE)),
+    POSTDevicesBulk("POST /devices/bulk", EnumSet.of(Privileges.CREATE_DEVICE)),
     PUTDevicesID("PUT /devices/[0-9]*", EnumSet.of(Privileges.UPDATE_DEVICE)),
     DELETEDevicesID("DELETE /devices/[0-9]*", EnumSet.of(Privileges.DELETE_DEVICE)),
 

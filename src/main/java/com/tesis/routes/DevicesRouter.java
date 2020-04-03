@@ -27,8 +27,9 @@ public class DevicesRouter implements RouteGroup {
         Spark.path("/devices", () -> {
             Spark.before("", middlewares.accessTokenFilter);
             Spark.before("*", middlewares.accessTokenFilter);
-            Spark.post("", deviceController::createDevice);
-            Spark.get("", deviceController::getDevices);
+
+            Spark.post("/bulk", deviceController::bulkCreate);
+
             Spark.get("/:device_id", deviceController::getDeciveByDeviceID);
             Spark.put("/:device_id", deviceController::updateDevice);
             Spark.delete("/:device_id", deviceController::deleteDevice);
