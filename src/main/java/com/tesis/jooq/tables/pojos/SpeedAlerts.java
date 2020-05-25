@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SpeedAlerts implements Serializable {
 
-    private static final long serialVersionUID = 646248983;
+    private static final long serialVersionUID = 2072940121;
 
     private Long          id;
     private Boolean       active;
@@ -23,6 +23,7 @@ public class SpeedAlerts implements Serializable {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime activatedAt;
+    private LocalDateTime lastFired;
 
     public SpeedAlerts() {}
 
@@ -34,6 +35,7 @@ public class SpeedAlerts implements Serializable {
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
         this.activatedAt = value.activatedAt;
+        this.lastFired = value.lastFired;
     }
 
     public SpeedAlerts(
@@ -43,7 +45,8 @@ public class SpeedAlerts implements Serializable {
         Long          deviceId,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        LocalDateTime activatedAt
+        LocalDateTime activatedAt,
+        LocalDateTime lastFired
     ) {
         this.id = id;
         this.active = active;
@@ -52,6 +55,7 @@ public class SpeedAlerts implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.activatedAt = activatedAt;
+        this.lastFired = lastFired;
     }
 
     public Long getId() {
@@ -110,6 +114,14 @@ public class SpeedAlerts implements Serializable {
         this.activatedAt = activatedAt;
     }
 
+    public LocalDateTime getLastFired() {
+        return this.lastFired;
+    }
+
+    public void setLastFired(LocalDateTime lastFired) {
+        this.lastFired = lastFired;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("SpeedAlerts (");
@@ -121,6 +133,7 @@ public class SpeedAlerts implements Serializable {
         sb.append(", ").append(createdAt);
         sb.append(", ").append(updatedAt);
         sb.append(", ").append(activatedAt);
+        sb.append(", ").append(lastFired);
 
         sb.append(")");
         return sb.toString();

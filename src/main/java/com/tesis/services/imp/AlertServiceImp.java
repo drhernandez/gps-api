@@ -43,6 +43,7 @@ public class AlertServiceImp implements AlertService {
             speedAlert.setCreatedAt(LocalDateTime.now(Clock.systemUTC()));
             speedAlert.setUpdatedAt(null);
             speedAlert.setActivatedAt(null);
+            speedAlert.setLastFired(null);
             speedAlertsDao.insert(speedAlert);
             responseDTO.model = speedAlert;
         } catch (Exception e) {
@@ -112,6 +113,7 @@ public class AlertServiceImp implements AlertService {
         movementAlert.setCreatedAt(LocalDateTime.now(Clock.systemUTC()));
         movementAlert.setUpdatedAt(null);
         movementAlert.setActivatedAt(null);
+        movementAlert.setLastFired(null);
         try {
             movementAlertDao.insert(movementAlert);
             responseDTO.model = movementAlert;

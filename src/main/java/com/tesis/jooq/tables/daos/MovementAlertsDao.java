@@ -164,4 +164,18 @@ public class MovementAlertsDao extends DAOImpl<MovementAlertsRecord, com.tesis.j
     public List<com.tesis.jooq.tables.pojos.MovementAlerts> fetchByActivatedAt(LocalDateTime... values) {
         return fetch(MovementAlerts.MOVEMENT_ALERTS.ACTIVATED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>last_fired BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.MovementAlerts> fetchRangeOfLastFired(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(MovementAlerts.MOVEMENT_ALERTS.LAST_FIRED, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>last_fired IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.MovementAlerts> fetchByLastFired(LocalDateTime... values) {
+        return fetch(MovementAlerts.MOVEMENT_ALERTS.LAST_FIRED, values);
+    }
 }

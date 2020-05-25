@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MovementAlerts implements Serializable {
 
-    private static final long serialVersionUID = 870777450;
+    private static final long serialVersionUID = 1966712912;
 
     private Long          id;
     private Boolean       active;
@@ -24,6 +24,7 @@ public class MovementAlerts implements Serializable {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime activatedAt;
+    private LocalDateTime lastFired;
 
     public MovementAlerts() {}
 
@@ -36,6 +37,7 @@ public class MovementAlerts implements Serializable {
         this.createdAt = value.createdAt;
         this.updatedAt = value.updatedAt;
         this.activatedAt = value.activatedAt;
+        this.lastFired = value.lastFired;
     }
 
     public MovementAlerts(
@@ -46,7 +48,8 @@ public class MovementAlerts implements Serializable {
         Long          deviceId,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        LocalDateTime activatedAt
+        LocalDateTime activatedAt,
+        LocalDateTime lastFired
     ) {
         this.id = id;
         this.active = active;
@@ -56,6 +59,7 @@ public class MovementAlerts implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.activatedAt = activatedAt;
+        this.lastFired = lastFired;
     }
 
     public Long getId() {
@@ -122,6 +126,14 @@ public class MovementAlerts implements Serializable {
         this.activatedAt = activatedAt;
     }
 
+    public LocalDateTime getLastFired() {
+        return this.lastFired;
+    }
+
+    public void setLastFired(LocalDateTime lastFired) {
+        this.lastFired = lastFired;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("MovementAlerts (");
@@ -134,6 +146,7 @@ public class MovementAlerts implements Serializable {
         sb.append(", ").append(createdAt);
         sb.append(", ").append(updatedAt);
         sb.append(", ").append(activatedAt);
+        sb.append(", ").append(lastFired);
 
         sb.append(")");
         return sb.toString();
