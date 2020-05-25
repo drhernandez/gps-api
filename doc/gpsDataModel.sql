@@ -59,7 +59,8 @@ create table SPEED_ALERTS(
 	device_id bigint references DEVICES(id) on delete cascade unique not null,
 	created_at timestamp not null,
 	updated_at timestamp,
-	activated_at timestamp
+	activated_at timestamp,
+	last_fired timestamp
 );
 ALTER TABLE public.speed_alerts ALTER COLUMN id TYPE int8 USING id::int8;
 
@@ -72,7 +73,8 @@ create table MOVEMENT_ALERTS(
 	device_id bigint references DEVICES(id) on delete cascade unique not null,
 	created_at timestamp not null,
 	updated_at timestamp,
-	activated_at timestamp
+	activated_at timestamp,
+	last_fired timestamp
 );
 ALTER TABLE public.movement_alerts ALTER COLUMN id TYPE int8 USING id::int8;
 
