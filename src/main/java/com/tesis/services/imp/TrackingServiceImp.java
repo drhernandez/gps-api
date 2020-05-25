@@ -17,6 +17,8 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.tesis.config.Constants.*;
@@ -69,6 +71,8 @@ public class TrackingServiceImp implements TrackingService {
                                         speedAlert.getId(),
                                         tracking.getSpeed()));
                                 sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()), "SPEED");
+                                speedAlert.setLastFired(LocalDateTime.now(Clock.systemUTC()));
+                                alertService.updateSpeedAlert(speedAlert.getId(), speedAlert);
                                 speedAlertSend = true;
                             }
                         } catch (Exception e) {
@@ -91,6 +95,8 @@ public class TrackingServiceImp implements TrackingService {
                                         tracking.getLng()
                                 ));
                                 sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()), "MOVEMENT");
+                                movementAlert.setLastFired(LocalDateTime.now(Clock.systemUTC()));
+                                alertService.updateMovementAlert(movementAlert.getId(), movementAlert);
                                 movementAlertSend = true;
                             }
                         } catch (Exception e) {
