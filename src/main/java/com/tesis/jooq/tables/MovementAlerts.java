@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row8;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -33,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class MovementAlerts extends TableImpl<MovementAlertsRecord> {
 
-    private static final long serialVersionUID = -120567276;
+    private static final long serialVersionUID = -1300468456;
 
     /**
      * The reference instance of <code>public.movement_alerts</code>
@@ -87,6 +87,11 @@ public class MovementAlerts extends TableImpl<MovementAlertsRecord> {
      * The column <code>public.movement_alerts.activated_at</code>.
      */
     public final TableField<MovementAlertsRecord, LocalDateTime> ACTIVATED_AT = createField(DSL.name("activated_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+
+    /**
+     * The column <code>public.movement_alerts.last_fired</code>.
+     */
+    public final TableField<MovementAlertsRecord, LocalDateTime> LAST_FIRED = createField(DSL.name("last_fired"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
      * Create a <code>public.movement_alerts</code> table reference
@@ -177,11 +182,11 @@ public class MovementAlerts extends TableImpl<MovementAlertsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row8 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Long, Boolean, Float, Float, Long, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row8) super.fieldsRow();
+    public Row9<Long, Boolean, Float, Float, Long, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 }

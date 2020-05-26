@@ -8,6 +8,7 @@ public class Constants {
     public static final int EXPIRATION_CHANGE_TIME = 30; // in days
 
     public static final float DEFAULT_SPEED_ALERT = 60;
+    public static final float DEFAULT_ALERT_INTERVAL = 30; // in minutes
     public static final double DEFAULT_MOVEMENT_ALERT_KM = 0.02; // 20 mts
     public static final String DEFAULT_TEXT_SPEED_ALERT = "ALERTA DE VELOCIDAD!! se ha sobrepasado el límite de la alerta de velocidad.";
     public static final String DEFAULT_TEXT_MOVEMENT_ALERT = "ALERTA DE MOVIMIENTO!! se ha desplazado el vehiculo durante una alerta.";

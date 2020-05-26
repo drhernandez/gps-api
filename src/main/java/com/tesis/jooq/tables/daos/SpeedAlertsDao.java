@@ -150,4 +150,18 @@ public class SpeedAlertsDao extends DAOImpl<SpeedAlertsRecord, com.tesis.jooq.ta
     public List<com.tesis.jooq.tables.pojos.SpeedAlerts> fetchByActivatedAt(LocalDateTime... values) {
         return fetch(SpeedAlerts.SPEED_ALERTS.ACTIVATED_AT, values);
     }
+
+    /**
+     * Fetch records that have <code>last_fired BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.SpeedAlerts> fetchRangeOfLastFired(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(SpeedAlerts.SPEED_ALERTS.LAST_FIRED, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>last_fired IN (values)</code>
+     */
+    public List<com.tesis.jooq.tables.pojos.SpeedAlerts> fetchByLastFired(LocalDateTime... values) {
+        return fetch(SpeedAlerts.SPEED_ALERTS.LAST_FIRED, values);
+    }
 }
