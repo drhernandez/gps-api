@@ -17,6 +17,9 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.tesis.config.Constants.*;
@@ -61,7 +64,8 @@ public class TrackingServiceImp implements TrackingService {
                 // Control de alerta de velocidad
                 if(speedAlert != null) {
                     if(tracking.getSpeed() > speedAlert.getSpeed() &&
-                            tracking.getTime().isAfter(speedAlert.getActivatedAt())) {
+                            tracking.getTime().isAfter(speedAlert.getActivatedAt()) &&
+                            timeMinutesDiff(speedAlert.getLastFired(), tracking.getTime()) >= DEFAULT_ALERT_INTERVAL){
                         try {
                             if (!speedAlertSend) {
                                 alertService.createSpeedAlertHistory(new SpeedAlertsHistory(
@@ -69,6 +73,8 @@ public class TrackingServiceImp implements TrackingService {
                                         speedAlert.getId(),
                                         tracking.getSpeed()));
                                 sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()), "SPEED");
+                                speedAlert.setLastFired(LocalDateTime.now(Clock.systemUTC()));
+                                alertService.updateSpeedAlert(speedAlert.getId(), speedAlert);
                                 speedAlertSend = true;
                             }
                         } catch (Exception e) {
@@ -81,7 +87,8 @@ public class TrackingServiceImp implements TrackingService {
                 // Control de alerta de movimiento
                 if(movementAlert != null) {
                     if(tracking.getTime().isAfter(movementAlert.getActivatedAt()) &&
-                            checkDistance(tracking, movementAlert)){
+                            checkDistance(tracking, movementAlert) &&
+                            timeMinutesDiff(movementAlert.getLastFired(), tracking.getTime()) >= DEFAULT_ALERT_INTERVAL){
                         try {
                             if (!movementAlertSend) {
                                 alertService.createMovementAlertHistory(new MovementAlertsHistory(
@@ -91,6 +98,8 @@ public class TrackingServiceImp implements TrackingService {
                                         tracking.getLng()
                                 ));
                                 sendAlarm(trakingsDao.getDeviceIDFromPhysicalID(tracking.getDeviceId()), "MOVEMENT");
+                                movementAlert.setLastFired(LocalDateTime.now(Clock.systemUTC()));
+                                alertService.updateMovementAlert(movementAlert.getId(), movementAlert);
                                 movementAlertSend = true;
                             }
                         } catch (Exception e) {
@@ -186,5 +195,9 @@ public class TrackingServiceImp implements TrackingService {
                 throw e;
             }
         }
+    }
+
+    public long timeMinutesDiff(LocalDateTime dateFrom, LocalDateTime dateTo){
+        return LocalDateTime.from(dateFrom).until(dateTo, ChronoUnit.MINUTES);
     }
 }

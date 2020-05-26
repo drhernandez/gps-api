@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row7;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -33,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class SpeedAlerts extends TableImpl<SpeedAlertsRecord> {
 
-    private static final long serialVersionUID = 1701871572;
+    private static final long serialVersionUID = 982813550;
 
     /**
      * The reference instance of <code>public.speed_alerts</code>
@@ -82,6 +82,11 @@ public class SpeedAlerts extends TableImpl<SpeedAlertsRecord> {
      * The column <code>public.speed_alerts.activated_at</code>.
      */
     public final TableField<SpeedAlertsRecord, LocalDateTime> ACTIVATED_AT = createField(DSL.name("activated_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+
+    /**
+     * The column <code>public.speed_alerts.last_fired</code>.
+     */
+    public final TableField<SpeedAlertsRecord, LocalDateTime> LAST_FIRED = createField(DSL.name("last_fired"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
      * Create a <code>public.speed_alerts</code> table reference
@@ -172,11 +177,11 @@ public class SpeedAlerts extends TableImpl<SpeedAlertsRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Long, Boolean, Float, Long, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row8<Long, Boolean, Float, Long, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 }
