@@ -107,6 +107,7 @@ public class TrackingDaoExt extends TrackingsDao {
         return DSL.using(configuration())
                 .selectFrom(Trackings.TRACKINGS)
                 .where(searchCondition)
+                .orderBy(Trackings.TRACKINGS.TIME.desc())
                 .limit(pagination.getLimit())
                 .offset((pagination.getPage()-1)*pagination.getLimit())
                 .fetch()
