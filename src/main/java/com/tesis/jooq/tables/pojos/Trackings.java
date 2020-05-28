@@ -8,6 +8,7 @@ import com.tesis.exceptions.ParseArgsException;
 import com.tesis.utils.JsonUtils;
 
 import java.io.Serializable;
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 
@@ -70,7 +71,7 @@ public class Trackings implements Serializable {
             this.speed = Float.valueOf(args[3]);
             this.sat = Integer.valueOf(args[4]);
             this.hdop = Integer.valueOf(args[5]);
-            this.time = LocalDateTime.now();
+            this.time = LocalDateTime.now(Clock.systemUTC());
         } catch (Exception e) {
             throw new ParseArgsException("Cannot create new tracking from args: " + JsonUtils.INSTANCE.GSON().toJson(args));
         }

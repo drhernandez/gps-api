@@ -17,6 +17,8 @@ import com.tesis.utils.filters.VehicleFilters;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class VehicleServiceImp implements VehicleService {
 
             Vehicles vehicle = vehiclesDao.fetchOneById(vehicleID);
             vehicle.setStatus(newData.getStatus());
-            vehicle.setLastUpdated(LocalDateTime.now());
+            vehicle.setLastUpdated(LocalDateTime.now(Clock.systemUTC()));
             vehicle.setDeletedAt(null);
             vehicle.setUserId(newData.getUserId());
             vehicle.setPlate(newData.getPlate());

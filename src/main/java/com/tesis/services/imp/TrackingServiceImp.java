@@ -14,6 +14,7 @@ import com.tesis.services.AlertService;
 import com.tesis.services.TrackingService;
 import com.tesis.utils.filters.TrackingFilters;
 import org.apache.http.HttpStatus;
+import org.mockito.cglib.core.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,7 @@ public class TrackingServiceImp implements TrackingService {
                 if(speedAlert != null) {
                     if(tracking.getSpeed() > speedAlert.getSpeed() &&
                             tracking.getTime().isAfter(speedAlert.getActivatedAt()) &&
-                            timeMinutesDiff(speedAlert.getLastFired(), tracking.getTime()) >= DEFAULT_ALERT_INTERVAL){
+                            checkInterval(speedAlert.getLastFired(), tracking.getTime())) {
                         try {
                             if (!speedAlertSend) {
                                 alertService.createSpeedAlertHistory(new SpeedAlertsHistory(
@@ -88,7 +89,7 @@ public class TrackingServiceImp implements TrackingService {
                 if(movementAlert != null) {
                     if(tracking.getTime().isAfter(movementAlert.getActivatedAt()) &&
                             checkDistance(tracking, movementAlert) &&
-                            timeMinutesDiff(movementAlert.getLastFired(), tracking.getTime()) >= DEFAULT_ALERT_INTERVAL){
+                            checkInterval(movementAlert.getLastFired(), tracking.getTime())) {
                         try {
                             if (!movementAlertSend) {
                                 alertService.createMovementAlertHistory(new MovementAlertsHistory(
@@ -183,6 +184,11 @@ public class TrackingServiceImp implements TrackingService {
 
     }
 
+    private boolean checkInterval(LocalDateTime dateFrom, LocalDateTime dateTo){
+        if (dateFrom == null ) return true;
+        return LocalDateTime.from(dateFrom).until(dateTo, ChronoUnit.MINUTES) >= DEFAULT_ALERT_INTERVAL;
+    }
+
     public void sendAlarm(Long deviceID, String alertType) throws ApiException {
         SMSRequest alertRequest = new SMSRequest();
         UserDTO user = authService.getUser(vehiclesDao.fetchOneByDeviceId(deviceID).getUserId());
@@ -195,9 +201,5 @@ public class TrackingServiceImp implements TrackingService {
                 throw e;
             }
         }
-    }
-
-    public long timeMinutesDiff(LocalDateTime dateFrom, LocalDateTime dateTo){
-        return LocalDateTime.from(dateFrom).until(dateTo, ChronoUnit.MINUTES);
     }
 }
