@@ -39,6 +39,9 @@ public class AlertServiceUnitTest {
     @Mock
     MovementAlertHistoryDaoExt movementAlertsHistoryDao;
 
+    @Mock
+    TrackingDaoExt trackingDao;
+
     @InjectMocks
     AlertServiceImp alertService;
 
@@ -233,8 +236,14 @@ public class AlertServiceUnitTest {
     public void updateMovementAlertTest_ok(){
         MovementAlerts movementAlert = new MovementAlerts();
         movementAlert.setActive(true);
+        movementAlert.setDeviceId(1L);
+
+        Trackings location = new Trackings();
+        location.setLat(1f);
+        location.setLng(1f);
 
         Mockito.when(movementAlertDao.fetchOneById(any(Long.class))).thenReturn(movementAlert);
+        Mockito.when(trackingDao.findLocationByDeviceID(1L)).thenReturn(location);
         ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(1L, movementAlert);
 
         assertEquals(responseDTO.getModel().getActive(), movementAlert.getActive());
@@ -244,8 +253,14 @@ public class AlertServiceUnitTest {
     public void updateMovementAlertTest_error(){
         MovementAlerts movementAlert = new MovementAlerts();
         movementAlert.setActive(true);
+        movementAlert.setDeviceId(1L);
+
+        Trackings location = new Trackings();
+        location.setLat(1f);
+        location.setLng(1f);
 
         Mockito.when(movementAlertDao.fetchOneById(any(Long.class))).thenReturn(movementAlert);
+        Mockito.when(trackingDao.findLocationByDeviceID(1L)).thenReturn(location);
         Mockito.doThrow(DataAccessException.class).when(movementAlertDao).update(any(MovementAlerts.class));
         ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(1L, movementAlert);
 
