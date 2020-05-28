@@ -76,7 +76,7 @@ public class AlertServiceImp implements AlertService {
         speedAlert.setDeviceId(newSpeedAlert.getDeviceId());
         speedAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
         speedAlert.setLastFired(newSpeedAlert.getLastFired());
-        if(!newSpeedAlert.getActive())
+        if(newSpeedAlert.getActive())
             speedAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
 
         try {
@@ -151,7 +151,7 @@ public class AlertServiceImp implements AlertService {
         momovementAlert.setDeviceId(newMovementAlert.getDeviceId());
         momovementAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
         momovementAlert.setLastFired(newMovementAlert.getLastFired());
-        if(!newMovementAlert.getActive())
+        if(newMovementAlert.getActive())
             momovementAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
 
         try {
