@@ -73,13 +73,15 @@ public class AlertServiceImp implements AlertService {
     public ResponseDTO<SpeedAlerts> updateSpeedAlert(Long speedAlertID, SpeedAlerts newSpeedAlert) {
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
         SpeedAlerts speedAlert = speedAlertsDao.fetchOneById(speedAlertID);
-        speedAlert.setActive(newSpeedAlert.getActive());
+        if(!speedAlert.getActive() && newSpeedAlert.getActive()) {
+            speedAlert.setActive(newSpeedAlert.getActive());
+            speedAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
+        }
         speedAlert.setSpeed(newSpeedAlert.getSpeed());
         speedAlert.setDeviceId(newSpeedAlert.getDeviceId());
         speedAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
         speedAlert.setLastFired(newSpeedAlert.getLastFired());
-        if(newSpeedAlert.getActive())
-            speedAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
+
 
         try {
             speedAlertsDao.update(speedAlert);
@@ -147,17 +149,17 @@ public class AlertServiceImp implements AlertService {
     public ResponseDTO<MovementAlerts> updateMovementAlert(Long movementAlertID, MovementAlerts newMovementAlert) {
         ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
         MovementAlerts movementAlert = movementAlertDao.fetchOneById(movementAlertID);
-        movementAlert.setActive(newMovementAlert.getActive());
-        movementAlert.setDeviceId(newMovementAlert.getDeviceId());
-        movementAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
-        movementAlert.setLastFired(newMovementAlert.getLastFired());
 
-        if(newMovementAlert.getActive()) {
+        if(!movementAlert.getActive() && newMovementAlert.getActive()) {
             Trackings location = trackingDao.findLocationByDeviceID(movementAlert.getDeviceId());
+            movementAlert.setActive(newMovementAlert.getActive());
             movementAlert.setLat(location.getLat());
             movementAlert.setLng(location.getLng());
             movementAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
         }
+        movementAlert.setDeviceId(newMovementAlert.getDeviceId());
+        movementAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+        movementAlert.setLastFired(newMovementAlert.getLastFired());
 
         try {
             movementAlertDao.update(movementAlert);

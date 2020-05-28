@@ -235,8 +235,12 @@ public class AlertServiceUnitTest {
     @Test
     public void updateMovementAlertTest_ok(){
         MovementAlerts movementAlert = new MovementAlerts();
-        movementAlert.setActive(true);
+        movementAlert.setActive(false);
         movementAlert.setDeviceId(1L);
+
+        MovementAlerts request = new MovementAlerts();
+        request.setActive(true);
+        request.setDeviceId(1L);
 
         Trackings location = new Trackings();
         location.setLat(1f);
@@ -244,7 +248,7 @@ public class AlertServiceUnitTest {
 
         Mockito.when(movementAlertDao.fetchOneById(any(Long.class))).thenReturn(movementAlert);
         Mockito.when(trackingDao.findLocationByDeviceID(1L)).thenReturn(location);
-        ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(1L, movementAlert);
+        ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(1L, request);
 
         assertEquals(responseDTO.getModel().getActive(), movementAlert.getActive());
     }
@@ -252,8 +256,12 @@ public class AlertServiceUnitTest {
     @Test
     public void updateMovementAlertTest_error(){
         MovementAlerts movementAlert = new MovementAlerts();
-        movementAlert.setActive(true);
+        movementAlert.setActive(false);
         movementAlert.setDeviceId(1L);
+
+        MovementAlerts request = new MovementAlerts();
+        request.setActive(true);
+        request.setDeviceId(1L);
 
         Trackings location = new Trackings();
         location.setLat(1f);
@@ -262,7 +270,7 @@ public class AlertServiceUnitTest {
         Mockito.when(movementAlertDao.fetchOneById(any(Long.class))).thenReturn(movementAlert);
         Mockito.when(trackingDao.findLocationByDeviceID(1L)).thenReturn(location);
         Mockito.doThrow(DataAccessException.class).when(movementAlertDao).update(any(MovementAlerts.class));
-        ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(1L, movementAlert);
+        ResponseDTO<MovementAlerts> responseDTO = alertService.updateMovementAlert(1L, request);
 
         assertEquals(responseDTO.getError().getError(), ErrorCodes.internal_error.name());
         assertEquals(responseDTO.getError().getMessage(), "Error al modificar el movementAlert.");
