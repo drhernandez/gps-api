@@ -80,7 +80,7 @@ public class Trackings implements Serializable {
             this.speed = Float.valueOf(args[3]);
             this.sat = Integer.valueOf(args[4]);
             this.hdop = Integer.valueOf(args[5]);
-            this.time = Timestamp.valueOf(LocalDateTime.now());
+            this.time = Timestamp.valueOf(LocalDateTime.now(Clock.systemUTC()));
         } catch (Exception e) {
             throw new ParseArgsException("Cannot create new tracking from args: " + JsonUtils.INSTANCE.GSON().toJson(args));
         }
