@@ -3,7 +3,7 @@ package com.tesis.config;
 public class Constants {
 
     public static final String BODY = "body";
-    public static final int MIN_LENGTH = 6;
+    public static final int MIN_LENGTH = 5;
     public static final int EXPIRATION_RECOVERY_TIME = 1; // in days
     public static final int EXPIRATION_CHANGE_TIME = 30; // in days
 
