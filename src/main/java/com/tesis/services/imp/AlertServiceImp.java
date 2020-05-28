@@ -31,6 +31,8 @@ public class AlertServiceImp implements AlertService {
     SpeedAlertHistoryDaoExt speedAlertsHistoryDao;
     @Inject
     MovementAlertHistoryDaoExt movementAlertsHistoryDao;
+    @Inject
+    TrackingDaoExt trackingDao;
 
 
     //  ----------------  Speed Alert methods ----------------
@@ -144,21 +146,24 @@ public class AlertServiceImp implements AlertService {
     @Override
     public ResponseDTO<MovementAlerts> updateMovementAlert(Long movementAlertID, MovementAlerts newMovementAlert) {
         ResponseDTO<MovementAlerts> responseDTO = new ResponseDTO<>();
-        MovementAlerts momovementAlert = movementAlertDao.fetchOneById(movementAlertID);
-        momovementAlert.setActive(newMovementAlert.getActive());
-        momovementAlert.setLat(newMovementAlert.getLat());
-        momovementAlert.setLng(newMovementAlert.getLng());
-        momovementAlert.setDeviceId(newMovementAlert.getDeviceId());
-        momovementAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
-        momovementAlert.setLastFired(newMovementAlert.getLastFired());
-        if(newMovementAlert.getActive())
-            momovementAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
+        MovementAlerts movementAlert = movementAlertDao.fetchOneById(movementAlertID);
+        movementAlert.setActive(newMovementAlert.getActive());
+        movementAlert.setDeviceId(newMovementAlert.getDeviceId());
+        movementAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
+        movementAlert.setLastFired(newMovementAlert.getLastFired());
+
+        if(newMovementAlert.getActive()) {
+            Trackings location = trackingDao.findLocationByDeviceID(movementAlert.getDeviceId());
+            movementAlert.setLat(location.getLat());
+            movementAlert.setLng(location.getLng());
+            movementAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
+        }
 
         try {
-            movementAlertDao.update(momovementAlert);
-            responseDTO.model = momovementAlert;
+            movementAlertDao.update(movementAlert);
+            responseDTO.model = movementAlert;
         } catch (Exception e){
-            logger.error("[message: No se pudo modificar el momovementAlert {}] [error: {}]", momovementAlert.toString(), e.getMessage());
+            logger.error("[message: No se pudo modificar el movementAlert {}] [error: {}]", movementAlert.toString(), e.getMessage());
             responseDTO.error = new ApiException(ErrorCodes.internal_error.toString(), "Error al modificar el movementAlert.", e);
         }
         return responseDTO;
