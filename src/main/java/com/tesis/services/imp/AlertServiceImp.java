@@ -74,9 +74,9 @@ public class AlertServiceImp implements AlertService {
         ResponseDTO<SpeedAlerts> responseDTO = new ResponseDTO<>();
         SpeedAlerts speedAlert = speedAlertsDao.fetchOneById(speedAlertID);
         if(!speedAlert.getActive() && newSpeedAlert.getActive()) {
-            speedAlert.setActive(newSpeedAlert.getActive());
             speedAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
         }
+        speedAlert.setActive(newSpeedAlert.getActive());
         speedAlert.setSpeed(newSpeedAlert.getSpeed());
         speedAlert.setDeviceId(newSpeedAlert.getDeviceId());
         speedAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
@@ -152,11 +152,11 @@ public class AlertServiceImp implements AlertService {
 
         if(!movementAlert.getActive() && newMovementAlert.getActive()) {
             Trackings location = trackingDao.findLocationByDeviceID(movementAlert.getDeviceId());
-            movementAlert.setActive(newMovementAlert.getActive());
             movementAlert.setLat(location.getLat());
             movementAlert.setLng(location.getLng());
             movementAlert.setActivatedAt(LocalDateTime.now(Clock.systemUTC()));
         }
+        movementAlert.setActive(newMovementAlert.getActive());
         movementAlert.setDeviceId(newMovementAlert.getDeviceId());
         movementAlert.setUpdatedAt(LocalDateTime.now(Clock.systemUTC()));
         movementAlert.setLastFired(newMovementAlert.getLastFired());
