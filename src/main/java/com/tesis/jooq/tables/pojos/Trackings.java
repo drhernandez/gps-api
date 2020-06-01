@@ -65,12 +65,12 @@ public class Trackings implements Serializable {
     public Trackings(String[] args) throws ParseArgsException {
         try {
             this.id = null;
-            this.deviceId = Long.valueOf(args[0]);
-            this.lat = Float.valueOf(args[1]);
-            this.lng = Float.valueOf(args[2]);
-            this.speed = Float.valueOf(args[3]);
-            this.sat = Integer.valueOf(args[4]);
-            this.hdop = Integer.valueOf(args[5]);
+            this.deviceId = Long.valueOf(args[0].trim());
+            this.lat = Float.valueOf(args[1].trim());
+            this.lng = Float.valueOf(args[2].trim());
+            this.speed = Float.valueOf(args[3].trim());
+            this.sat = Integer.valueOf(args[4].trim());
+            this.hdop = Integer.valueOf(args[5].trim());
             this.time = LocalDateTime.now(Clock.systemUTC());
         } catch (Exception e) {
             throw new ParseArgsException("Cannot create new tracking from args: " + JsonUtils.INSTANCE.GSON().toJson(args));
