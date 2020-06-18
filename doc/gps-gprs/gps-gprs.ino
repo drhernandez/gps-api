@@ -12,9 +12,15 @@ SoftwareSerial gsm_gprs(7, 8);
 // Offset hours from gps time (UTC)
 const int offset = -3;   // UTC-3
 
-// Weft size
+// ** Weft size **
 const int SIZE = 9;
-const char EXAMPLE[66] = "00004,-31.4109,-64.1897,0.00,4,246,10-09-2018T20:51:09:000-03:00;";
+
+// ** Without datetime **
+const char EXAMPLE[36] = "00004,-31.4109,-64.1897,0.00,4,246;";
+
+// ** With datetime **
+//const char EXAMPLE[66] = "00004,-31.4109,-64.1897,0.00,4,246,10-09-2018T20:51:09:000-03:00;";
+
 char DEVICE_ID[6] = "00002";
 const int MEMORY_SIZE = (strlen(EXAMPLE)) * SIZE * sizeof(char) + 1;
 
@@ -107,13 +113,16 @@ void parseCoordinates(float flat, float flon, float speed, int sat, int hdop, ch
   strcat(coordinate_data, ",");
   itoa(hdop, value, 10);
   strcat(coordinate_data, value);
-  strcat(coordinate_data, ",");
+  strcat(coordinate_data, ";");
   
+// ** datetime with timezone mocked **
 //  strcat(coordinate_data, "10-09-2018T20:51:09:000-03:00;");
 
-  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00;",
-    day(), month(), year(), hour(), minute(), second());
-  strcat(coordinate_data, sz);
+// ** datetime with timezone **
+//  sprintf(sz, "%02d-%02d-%02dT%02d:%02d:%02d:000-03:00;",
+//    day(), month(), year(), hour(), minute(), second());
+//  strcat(coordinate_data, sz);
+
 }
 
 void buildWeft() {
