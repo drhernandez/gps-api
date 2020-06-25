@@ -70,7 +70,7 @@ void send_http_post(char *coordinate_data) {
   gsm_gprs.println("AT+HTTPPARA=\"CID\",1");
   delay(200);
   printSerialData();
-  gsm_gprs.println("AT+HTTPPARA=\"URL\",\"http://gps-locations-api.herokuapp.com/trackings\"");
+  gsm_gprs.println("AT+HTTPPARA=\"URL\",\"http://gps-core.herokuapp.com/trackings\"");
   delay(200);
   printSerialData();
   gsm_gprs.println("AT+HTTPPARA=\"CONTENT\",\"text/plain\"");
