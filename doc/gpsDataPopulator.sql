@@ -12,16 +12,20 @@ delete from BRANDS;
 insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version, status) 
 	values (10001, null, null, 'ARDUINO GENUINO/UNO', '1.0', 'ACTIVE');
 insert into DEVICES (physical_id, deleted_at, last_updated, model, software_version, status) 
-	values (10002, null, null, 'ARDUINO GENUINO/UNO', '1.0', 'ACTIVE');
+	values (00002, null, null, 'ARDUINO GENUINO/UNO', '1.0', 'ACTIVE');
 
 insert into VEHICLES values (10, 'ACTIVE', null, null, 1, 00001, 'AA 383 TI', 'Ford', 'Fiesta');
 insert into VEHICLES values (11, 'ACTIVE', null, null, 2, 00002,  'AD 257 TO', 'Toyota', 'Corolla');
 
 insert into SPEED_ALERTS (active, speed, device_id, created_at, updated_at, activated_at, last_fired) 
 	values (false, 60, 00001, NOW(), null, NOW(), null);
+insert into SPEED_ALERTS (active, speed, device_id, created_at, updated_at, activated_at, last_fired) 
+	values (false, 60, 00002, NOW(), null, NOW(), null);
 
 insert into MOVEMENT_ALERTS (active, lat, lng, device_id, created_at, updated_at, activated_at, last_fired) 
 	values (false, -31.422068, -64.186497, 00001, NOW(), null, NOW(), null);
+insert into MOVEMENT_ALERTS (active, lat, lng, device_id, created_at, updated_at, activated_at, last_fired) 
+	values (false, -31.422068, -64.186497, 00002, NOW(), null, NOW(), null);
 
 insert into SPEED_ALERTS_HISTORY values (NOW(), 1, 80);
 
