@@ -13,7 +13,7 @@ SoftwareSerial gsm_gprs(7, 8);
 const int offset = -3;   // UTC-3
 
 // ** Weft size **
-const int SIZE = 9;
+const int SIZE = 5;
 
 // ** Without datetime **
 const char EXAMPLE[36] = "00004,-31.4109,-64.1897,0.00,4,246;";
