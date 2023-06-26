@@ -1,2 +1,2 @@
 # gps-api
-Api para proyecto de geolocalización
+Backend for GPS Tracker project
